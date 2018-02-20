@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mertesen.blog()</title>
+    <link>https://mertesen.github.io/</link>
+    <atom:link href="https://mertesen.github.io//feed.xml" rel="self" type="application/rss+xml" />
+    <description>Kisisel Blog</description>
+    <language>en-gb</language>
+    <pubDate>Sal, 20 Şub 2018 20:40:38 +0200</pubDate>
+    <lastBuildDate>Sal, 20 Şub 2018 20:40:38 +0200</lastBuildDate>
+
+    <item>
+      <title>Distributed Sistem Mimarileri - 2</title>
+      <link>https://mertesen.github.io//blog/2018/distributed_sistem_mimarileri_2.html</link>
+      <pubDate>Pzt, 19 Şub 2018 00:00:00 +0200</pubDate>
+      <guid isPermaLink="false">blog/2018/distributed_sistem_mimarileri_2.html</guid>
+      <description><p><strong>1. Centralized(Merkezi olan)</strong><br> Client – Server mimarisinde; en çok kullanılan stil. Request x Respond.<br> Multitiered Architectures(Çok katmanlı mimariler); en basit organizasyon sadece iki tip makinenin olduğudur. 1.client 2. Server. Her şeyi server yaparken, client adeta dumb bir terminal, grafiksel bir interfacedir. Bu 2 tier yani iki katmanlı mimaridir. Seçimler spektrumunu çiz.<br> 3 tiers yani 3 katman olursa aradaki server “client-server” mimarisinde olur. Çünkü kendisine istek atılırken kendisi de başka bir servera istek atar. 3 tiers: http, j2ee and database.</p></description>	  
+    </item><item>
+      <title>Distributed Sistem Mimarileri - 1</title>
+      <link>https://mertesen.github.io//blog/2018/distributed_sistem_mimarileri_1.html</link>
+      <pubDate>Pzt, 19 Şub 2018 00:00:00 +0200</pubDate>
+      <guid isPermaLink="false">blog/2018/distributed_sistem_mimarileri_1.html</guid>
+      <description><p><strong>1. Layered architecture(katmanlı mimari)</strong><br> Her katman altındaki katmanın arayüzünü kullanıyor. Yani aşağıdaki katman server yukarıdaki katman client. OSİ yapısı gibi. Örn;multi-tier web apps</p></description>	  
+    </item><item>
+      <title>Distributed Computing Systems</title>
+      <link>https://mertesen.github.io//blog/2018/distributed_computing_systems.html</link>
+      <pubDate>Pzt, 19 Şub 2018 00:00:00 +0200</pubDate>
+      <guid isPermaLink="false">blog/2018/distributed_computing_systems.html</guid>
+      <description><p><strong>a. Cluster Computing</strong><br> Daha fazla işlem gücü elde etmek için high speed local area network’te haberleşen homojen bilgisayar kümelerinin çalışmasıdır. Nodelardan biri master node ise yani hiyerarşi varsa beowulf cluster computing’dir.</p></description>	  
+    </item><item>
+      <title>Dağıtık Sistemler Notları</title>
+      <link>https://mertesen.github.io//blog/2018/dagitik-sistemler-1.html</link>
+      <pubDate>Paz, 18 Şub 2018 00:00:00 +0200</pubDate>
+      <guid isPermaLink="false">blog/2018/dagitik-sistemler-1.html</guid>
+      <description><p>Birbirinden bağımsız ancak bir ağ üzerinden haberleşerek uyumlu bir biçimde tek bir hesaplama birimi gibi çalışan bilgisayarlar topluluğudur.</p></description>	  
+    </item>
+
+  </channel> 
+</rss>

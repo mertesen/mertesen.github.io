@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    <url>
+        <loc>https://mertesen.github.io//about.html</loc>
+        <lastmod>2018-02-18</lastmod>
+    </url><url>
+        <loc>https://mertesen.github.io//blog/2018/distributed_sistem_mimarileri_2.html</loc>
+        <lastmod>2018-02-19</lastmod>
+    </url><url>
+        <loc>https://mertesen.github.io//blog/2018/distributed_sistem_mimarileri_1.html</loc>
+        <lastmod>2018-02-19</lastmod>
+    </url><url>
+        <loc>https://mertesen.github.io//blog/2018/distributed_computing_systems.html</loc>
+        <lastmod>2018-02-19</lastmod>
+    </url><url>
+        <loc>https://mertesen.github.io//blog/2018/dagitik-sistemler-1.html</loc>
+        <lastmod>2018-02-18</lastmod>
+    </url>
+</urlset>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Distributed Sistem Mimarileri - 2</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Kisisel Blog">
+        <meta name="author" content="Mert Esen">
+        <!--<meta name="keywords" content="" th:if="${content.tags != null}" th:content="${#strings.listJoin(content.tags, ' , ')} ?: '' ">-->
+        <meta name="generator" content="JBake">
+
+        <!-- Bootstrap Core CSS -->
+        <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Theme CSS -->
+        <link href="../../css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="../../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <link rel="shortcut icon" href="../../favicon.ico"/>
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        Menu <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="../../index.html">mertesen.blog()</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="../../about.html">About me</a>
+                        </li>
+                        
+                        
+                        
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+
+        <!-- Page Header -->
+        <!-- Set your background image for this header on the line below. -->
+        <header class="intro-header" style="background-image: url(&#39;../../img/yosemite.jpg&#39;) ; background-color:#101010">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div class="post-heading">
+                            <h1>Distributed Sistem Mimarileri - 2</h1>
+                            
+                            <span class="meta">Posted by <b>Mert Esen</b> on 
+                                Şubat 19, 2018
+                                <span> Tags: 
+                                    <span> 
+                                        <a href="../../tags/distributed systems.html" class="" >distributed systems</a></span> 
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Post Content -->
+        <article>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><h1>Distributed Sistem Mimarileri - 2</h1> 
+<h2>System Architectures(Sistem mimarileri)</h2> 
+<p><strong>1. Centralized(Merkezi olan)</strong><br> Client – Server mimarisinde; en çok kullanılan stil. Request x Respond.<br> Multitiered Architectures(Çok katmanlı mimariler); en basit organizasyon sadece iki tip makinenin olduğudur. 1.client 2. Server. Her şeyi server yaparken, client adeta dumb bir terminal, grafiksel bir interfacedir. Bu 2 tier yani iki katmanlı mimaridir. Seçimler spektrumunu çiz.<br> 3 tiers yani 3 katman olursa aradaki server “client-server” mimarisinde olur. Çünkü kendisine istek atılırken kendisi de başka bir servera istek atar. 3 tiers: http, j2ee and database.</p> 
+<p><strong>2. Decentralized(Merkezi olmayan</strong><br> Distribution(dağıtım);<br> <strong>a.</strong> Veritical Distribution(dikey dağıtım); çoklu katman mimarisi; farklı katmanlar farklı makinelere atanmıştır.<br> Mantıksal olarak farklı componentler farklı makinelerin üzerindedir.<br> Merkezi olabilir de olmayabilir de.<br> <strong>b.</strong> Horizontal Distribution(yatay dağıtım);örn: peer to peer sistemler.<br> Merkezi olmazlar.<br> Client ya da server fiziksel olarak mantıksal eşparçalara bölünmüş olabilir. Ama her parça kendi veri setinde çalışıyor. Yük dengelemesi sağlıyor bu da.<br> <strong>Peer-to-peer Sistemler</strong>; cilent ve server arasındaki ayrımı kaldırır. Her process aynı anda hem client hem de server gibi davranır.<br> Overlay network of nodes<br> Nodelar kendi adreslerini kullanırlar. Mesajlaşırken Ip kullanmazlar.<br> Nodeler istekte bulunanın bilmediği routten gitme isteğinde bulunabilirler. Mantıksal ya da sanal networklerdir. Fiziksel networkun üstüne build edilirler.<br> P2p sistemlerin tipleri; Structered(yapılandırılmış): Chord ve Can sistemleri Unstructered(yapılandırılmamış): node’a yönelik değil, bir yapı yok.<br> Chord Sistem: zincir halinde sıralanırlar ve buna göre hashlenirler. Her node’un iki sorumluluğu vardır. Arama ve içerik sağlamak. Burada sorumlu nodelar vardır. Mod aldığında denk gelen node’un ilk büyük sorumlu node’udur.<br> Content Addressable Network(CAN) : Orta nokta kayması.Eğer node çıkarsa, düzgün bir eşkenar görünecek şekilde devreder.<br> Unstructured p2p systems<br> Mesajlar flooding yoluyla iletiliyor.<br> Komşular fiziksel yakınlığa göre seçiliyor. Ya da ne zaman overlay networke dahil olduklarına göre seçilir. Superpeers olarak bazı nodelar seçkin node olarak seçiliyorlar. Sorumluluk alabiliyor bu superpeers.</p> 
+<p><strong>3. Hybrid(Birleşik yapılar)</strong><br> a. Edge – Server Systems; Content Delivery Networks<br> b. Collaborative Distrubuted Systems; Torrent yapısı, trackerlar.</p> 
+<p><strong>4. Middleware</strong><br> Uygulamalar ve dağıtık platformlar arasındaki form katmanı.<br> Amacı dağıtık sistemlerde transparency<br> İnterceptorler; klasik akışı keserek başka bir koda yönlendirip o iş bittiğinde tekrar kestiği yere geri dönmesini sağlayan yazılım.<br> Adaptive Software/Computing<br> Hazır bir sistemin içine adaptive bir component eklenmesi. Yani mesela öyle bir middleware katmanı yazılıyor ki yazılan her hangi bir kodu reliable yapıyor. Çevresel değişime göre kendini adapte eden. Sistemde cpu çok yorulmaya başladı sistemden başka bir cpu ekle, ya da kullanılmıyor cpulardan birini kapat.<br> Adaptive Computing gerçeklemek için konseptler;<br> a. Separation of concerns(Aspect-oriented software/comp)(Endişelerin ayrımı)<br> Aspect odaklı yani özellik odaklı bir yaklaşım. Örn; test servisleri. Hazır toollar her koda uyabiliyor. Unit testing.<br> b. Computational Reflection(self inspection) örn;Garbage collection in java<br> c. Component-based design(dynamic component composition)<br> İhtiyaç anında devreye alınan component mantığı. Just In Time (JIT)<br> Örn;late binding in programming languages</p> 
+<p><strong>5. Self-managing systems(autonomic systems)</strong><br> Kendi kendini yöneten, kontrol eden sistemler. Otonom computing. Sistem çevreyi inceleyip uygun önlemleri alıyor.</p></div>
+                </div>
+            </div>
+        </article>
+        <hr/>
+        <div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    </div></div></div>
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <ul class="list-inline text-center"> 
+                            <li>
+                                <a href="../../feed.xml" title="Subscribe to RSS feed">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/mertesen_">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/mertesen">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://linkedin.com/in/mertesen/">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="copyright text-muted">&copy;  <span>Mert Esen</span> <span>2018</span> | Clean Blog theme by <a href="https://startbootstrap.com/template-overviews/clean-blog/">Start Bootstrap</a> | Baked with <a href="http://jbake.org">JBake <span>v${jbakeVersion}</span></a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- jQuery -->
+        <script src="../../vendor/jquery/jquery.min.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../../vendor/bootstrap/js/bootstrap.min.js" ></script>
+
+        <!-- Theme JavaScript -->
+        <script src="../../js/clean-blog.min.js"></script>
+
+        
+
+    </body>
+
+</html>
