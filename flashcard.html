@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Distraction-free mode styles */
+        .distraction-free {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .distraction-free .flashcard {
+            width: 500px;
+            height: 350px;
+            margin-bottom: 30px;
+        }
+
+        .distraction-free .flashcard-term {
+            font-size: 2.2rem;
+        }
+
+        .distraction-free .flashcard-definition {
+            font-size: 1.4rem;
+        }
+
+        .distraction-free-controls {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .df-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .df-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .df-btn.exit-btn {
+            background: rgba(255,99,99,0.3);
+            border-color: rgba(255,99,99,0.5);
+        }
+
+        .df-btn.exit-btn:hover {
+            background: rgba(255,99,99,0.5);
+        }
+
+        /* Flip animation enhancement */
+        .flip-animation {
+            animation: flipPulse 0.6s ease-in-out;
+        }
+
+        @keyframes flipPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .control-btn.active {
+            background: rgba(255,255,255,0.4);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .flashcard-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            perspective: 1000px;
+            width: 400px;
+            height: 280px;
+            margin: 0 20px;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .flashcard-front {
+            background: linear-gradient(145deg, #fff, #f0f0f0);
+            color: #333;
+        }
+
+        .flashcard-back {
+            background: linear-gradient(145deg, #4a90e2, #357abd);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-term {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .flashcard-definition {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        .category-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.1);
+            color: rgba(0,0,0,0.6);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .flashcard-back .category-tag {
+            background: rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.8);
+        }
+
+        .navigation {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:active {
+            transform: translateY(0);
+        }
+
+        .nav-btn.flip-btn {
+            background: linear-gradient(145deg, #FF6B6B, #FF5252);
+        }
+
+        .stats {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            min-width: 300px;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .stats-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .flip-instruction {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .flashcard {
+                width: 300px;
+                height: 220px;
+                margin: 0 10px;
+            }
+            
+            .flashcard-term {
+                font-size: 1.5rem;
+            }
+            
+            .flashcard-definition {
+                font-size: 1rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Software Engineer Flashcards</h1>
+        <p>Click card to flip • Use Next for random term</p>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn active" onclick="setMode('term-first')">Term First</button>
+        <button class="control-btn" onclick="setMode('definition-first')">Definition First</button>
+        <button class="control-btn" onclick="enterDistractionFreeMode()">🎯 Focus Mode</button>
+    </div>
+
+    <div class="category-filter">
+        <button class="category-btn active" onclick="filterCategory('all')">All</button>
+        <button class="category-btn" onclick="filterCategory('System Components')">System Components</button>
+        <button class="category-btn" onclick="filterCategory('Data Management')">Data Management</button>
+        <button class="category-btn" onclick="filterCategory('Event-Driven')">Event-Driven</button>
+        <button class="category-btn" onclick="filterCategory('Reliability')">Reliability</button>
+        <button class="category-btn" onclick="filterCategory('Observability')">Observability</button>
+        <button class="category-btn" onclick="filterCategory('API')">API</button>
+    </div>
+
+    <div class="flashcard-container">
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="category-tag" id="front-category"></div>
+                    <div class="flashcard-content" id="front-content"></div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="category-tag" id="back-category"></div>
+                    <div class="flashcard-content" id="back-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Distraction-free mode overlay -->
+    <div id="distraction-free-overlay" class="distraction-free" style="display: none;">
+        <div class="flashcard" id="df-flashcard">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="category-tag" id="df-front-category"></div>
+                    <div class="flashcard-content" id="df-front-content"></div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="category-tag" id="df-back-category"></div>
+                    <div class="flashcard-content" id="df-back-content"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="distraction-free-controls">
+            <button class="df-btn" onclick="flipDistractionFreeCard()">🔄 Flip Card</button>
+            <button class="df-btn" onclick="nextDistractionFreeCard()">➡️ Next Random</button>
+            <button class="df-btn exit-btn" onclick="exitDistractionFreeMode()">❌ Exit Focus Mode</button>
+        </div>
+    </div>
+
+    <div class="flip-instruction">
+        💡 Click the card to flip it
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn flip-btn" onclick="flipCard()">🔄 Flip Card</button>
+        <button class="nav-btn" onclick="nextCard()">➡️ Next Random</button>
+    </div>
+
+    <div class="stats">
+        <div class="stats-row">
+            <span><strong>Category:</strong></span>
+            <span id="current-category-display">All</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Cards in Category:</strong></span>
+            <span id="category-total">0</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Cards Viewed:</strong></span>
+            <span id="viewed-count">0</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Current Card:</strong></span>
+            <span id="current-card-number">1</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            // System Components & Patterns
+            { term: "API Gateway", definition: "A single entry point for client requests, handling routing, auth, rate-limiting, etc.", category: "System Components" },
+            { term: "Reverse Proxy", definition: "A server that forwards client requests to backend servers, often for load balancing or SSL.", category: "System Components" },
+            { term: "Load Balancer", definition: "Distributes incoming traffic across multiple servers to improve availability and responsiveness.", category: "System Components" },
+            { term: "Message Queue", definition: "A buffer between producers and consumers for asynchronous message processing.", category: "System Components" },
+            { term: "Broker", definition: "Middleware (e.g., Kafka, RabbitMQ) that routes and stores messages for communication between services.", category: "System Components" },
+            { term: "At Most Once", definition: "No duplicates, but messages may be lost.", category: "System Components" },
+            { term: "At Least Once", definition: "No loss, but duplicates may occur.", category: "System Components" },
+            { term: "Exactly Once", definition: "Each message is processed one and only one time.", category: "System Components" },
+            { term: "Circuit Breaker", definition: "Prevents repeated calls to a failing service by opening a circuit and retrying later.", category: "System Components" },
+            { term: "Retry Policy", definition: "Defines how failed operations are retried (e.g., exponential backoff, max attempts).", category: "System Components" },
+            { term: "Timeout", definition: "A limit on how long to wait for a response before giving up.", category: "System Components" },
+            { term: "Rate Limiting", definition: "Restricting how many requests a client can make in a given time frame.", category: "System Components" },
+            
+            // Data Management
+            { term: "Database Transaction", definition: "A unit of work performed within a database that is atomic and reliable.", category: "Data Management" },
+            { term: "Sharding", definition: "Splitting a database into smaller, distributed partitions (shards) for scalability.", category: "Data Management" },
+            { term: "Replication", definition: "Copying data across multiple nodes to ensure fault tolerance and availability.", category: "Data Management" },
+            { term: "Optimistic Locking", definition: "Assumes no conflict, checks version/timestamp before update.", category: "Data Management" },
+            { term: "Pessimistic Locking", definition: "Locks records upon reading to prevent concurrent writes.", category: "Data Management" },
+            { term: "Immutable Data", definition: "Data that cannot be changed after creation, aiding concurrency and versioning.", category: "Data Management" },
+            { term: "Outbox Pattern", definition: "Stores domain events in a local DB table and then forwards them to a message broker.", category: "Data Management" },
+            
+            // Event-Driven & Streaming
+            { term: "Event Sourcing", definition: "Storing state changes as a series of immutable events.", category: "Event-Driven" },
+            { term: "Event Stream", definition: "A continuous, append-only sequence of events.", category: "Event-Driven" },
+            { term: "Data Stream Processing", definition: "Real-time transformation and analysis of data as it flows through systems.", category: "Event-Driven" },
+            { term: "Kafka", definition: "A distributed event streaming platform for high-throughput, fault-tolerant messaging.", category: "Event-Driven" },
+            { term: "Consumer Group (Kafka)", definition: "A set of consumers sharing the workload of a Kafka topic's partitions.", category: "Event-Driven" },
+            { term: "Compaction (Kafka)", definition: "Retains only the latest message for each key in a topic.", category: "Event-Driven" },
+            { term: "Backpressure", definition: "When consumers signal producers to slow down due to being overloaded.", category: "Event-Driven" },
+            { term: "Dead Letter Queue", definition: "A queue that stores messages that failed processing for later inspection or retries.", category: "Event-Driven" },
+            { term: "Fan-out", definition: "One input to multiple outputs.", category: "Event-Driven" },
+            { term: "Fan-in", definition: "Multiple inputs to one output.", category: "Event-Driven" },
+            
+            // Reliability & Resilience
+            { term: "Service Discovery", definition: "Automatic detection of services and their addresses in a network.", category: "Reliability" },
+            { term: "Leader Election", definition: "A mechanism for choosing a coordinator in distributed systems.", category: "Reliability" },
+            { term: "Raft Algorithm", definition: "A consensus algorithm for maintaining a consistent state across distributed nodes.", category: "Reliability" },
+            { term: "Zookeeper", definition: "A distributed coordination service often used for leader election and service discovery.", category: "Reliability" },
+            { term: "Service Mesh", definition: "Manages communication, security, and monitoring between microservices (e.g., Istio, Linkerd).", category: "Reliability" },
+            { term: "Sidecar Pattern", definition: "Deploying support services (e.g., proxy, logger) alongside application containers.", category: "Reliability" },
+            { term: "Blue-Green Deployment", definition: "Two environments (blue and green) for safe, zero-downtime deployment.", category: "Reliability" },
+            { term: "Canary Deployment", definition: "Releasing new features to a small user group before full rollout.", category: "Reliability" },
+            { term: "Chaos Engineering", definition: "Deliberately injecting faults to test system resilience and recovery.", category: "Reliability" },
+            
+            // Observability & Monitoring
+            { term: "Observability", definition: "The ability to understand system internals using logs, metrics, and traces.", category: "Observability" },
+            { term: "Telemetry", definition: "Automated remote data collection from system components.", category: "Observability" },
+            { term: "Tracing", definition: "Tracking a single request's journey through multiple services.", category: "Observability" },
+            { term: "OpenTelemetry", definition: "A standard for collecting distributed traces, metrics, and logs.", category: "Observability" },
+            { term: "Prometheus", definition: "An open-source time-series database and monitoring system.", category: "Observability" },
+            { term: "Grafana", definition: "A visualization platform used with Prometheus and other data sources.", category: "Observability" },
+            
+            // API & Integration
+            { term: "REST", definition: "An architectural style using stateless HTTP for resource-based communication.", category: "API" },
+            { term: "gRPC", definition: "A high-performance, contract-based RPC framework using Protocol Buffers.", category: "API" },
+            { term: "GraphQL", definition: "A query language that lets clients request only the data they need.", category: "API" },
+            { term: "CQRS", definition: "Separates read and write operations into different models for scalability.", category: "API" },
+            { term: "SAGA Pattern", definition: "Manages distributed transactions using a sequence of local transactions coordinated via events or commands.", category: "API" }
+        ];
+
+        let currentMode = 'term-first';
+        let currentCategory = 'all';
+        let currentCard = null;
+        let filteredCards = [];
+        let viewedCards = new Set();
+        let cardHistory = [];
+
+        function getFilteredCards() {
+            return currentCategory === 'all' 
+                ? flashcards 
+                : flashcards.filter(card => card.category === currentCategory);
+        }
+
+        function getRandomCard() {
+            filteredCards = getFilteredCards();
+            if (filteredCards.length === 0) return null;
+            
+            const randomIndex = Math.floor(Math.random() * filteredCards.length);
+            return filteredCards[randomIndex];
+        }
+
+        function displayCard(card) {
+            if (!card) return;
+            
+            currentCard = card;
+            const flashcardElement = document.getElementById('flashcard');
+            const isTermFirst = currentMode === 'term-first';
+            
+            // Reset flip state
+            flashcardElement.classList.remove('flipped');
+            
+            // Set content based on mode
+            const frontContent = isTermFirst ? card.term : card.definition;
+            const backContent = isTermFirst ? card.definition : card.term;
+            const frontClass = isTermFirst ? 'flashcard-term' : 'flashcard-definition';
+            const backClass = isTermFirst ? 'flashcard-definition' : 'flashcard-term';
+            
+            document.getElementById('front-content').innerHTML = `<div class="${frontClass}">${frontContent}</div>`;
+            document.getElementById('back-content').innerHTML = `<div class="${backClass}">${backContent}</div>`;
+            document.getElementById('front-category').textContent = card.category;
+            document.getElementById('back-category').textContent = card.category;
+            
+            // Add to viewed cards
+            viewedCards.add(card.term);
+            cardHistory.push(card.term);
+            
+            updateStats();
+        }
+
+        function flipCard() {
+            const flashcardElement = document.getElementById('flashcard');
+            flashcardElement.classList.add('flip-animation');
+            flashcardElement.classList.toggle('flipped');
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                flashcardElement.classList.remove('flip-animation');
+            }, 600);
+        }
+
+        function nextCard() {
+            const newCard = getRandomCard();
+            if (newCard) {
+                displayCard(newCard);
+            }
+        }
+
+        // Distraction-free mode functions
+        function enterDistractionFreeMode() {
+            document.getElementById('distraction-free-overlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Copy current card to distraction-free mode
+            if (currentCard) {
+                displayDistractionFreeCard(currentCard);
+            }
+        }
+
+        function exitDistractionFreeMode() {
+            document.getElementById('distraction-free-overlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function displayDistractionFreeCard(card) {
+            if (!card) return;
+            
+            const isTermFirst = currentMode === 'term-first';
+            const frontContent = isTermFirst ? card.term : card.definition;
+            const backContent = isTermFirst ? card.definition : card.term;
+            const frontClass = isTermFirst ? 'flashcard-term' : 'flashcard-definition';
+            const backClass = isTermFirst ? 'flashcard-definition' : 'flashcard-term';
+            
+            // Reset flip state
+            document.getElementById('df-flashcard').classList.remove('flipped');
+            
+            document.getElementById('df-front-content').innerHTML = `<div class="${frontClass}">${frontContent}</div>`;
+            document.getElementById('df-back-content').innerHTML = `<div class="${backClass}">${backContent}</div>`;
+            document.getElementById('df-front-category').textContent = card.category;
+            document.getElementById('df-back-category').textContent = card.category;
+        }
+
+        function flipDistractionFreeCard() {
+            const flashcardElement = document.getElementById('df-flashcard');
+            flashcardElement.classList.add('flip-animation');
+            flashcardElement.classList.toggle('flipped');
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                flashcardElement.classList.remove('flip-animation');
+            }, 600);
+        }
+
+        function nextDistractionFreeCard() {
+            const newCard = getRandomCard();
+            if (newCard) {
+                currentCard = newCard;
+                displayDistractionFreeCard(newCard);
+                
+                // Also update the main card for when user exits focus mode
+                displayCard(newCard);
+            }
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Redisplay current card with new mode
+            if (currentCard) {
+                displayCard(currentCard);
+            }
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Reset viewed cards for new category
+            viewedCards.clear();
+            cardHistory = [];
+            
+            // Load first card from new category
+            const newCard = getRandomCard();
+            if (newCard) {
+                displayCard(newCard);
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            const categoryTotal = getFilteredCards().length;
+            const viewedCount = viewedCards.size;
+            const progress = categoryTotal > 0 ? (viewedCount / categoryTotal) * 100 : 0;
+            
+            document.getElementById('current-category-display').textContent = 
+                currentCategory === 'all' ? 'All Categories' : currentCategory;
+            document.getElementById('category-total').textContent = categoryTotal;
+            document.getElementById('viewed-count').textContent = viewedCount;
+            document.getElementById('current-card-number').textContent = cardHistory.length;
+            document.getElementById('progress-fill').style.width = Math.min(progress, 100) + '%';
+        }
+
+        // Add click event to card for flipping
+        document.getElementById('flashcard').addEventListener('click', flipCard);
+        
+        // Add click event to distraction-free card for flipping
+        document.getElementById('df-flashcard').addEventListener('click', flipDistractionFreeCard);
+
+        // Keyboard shortcuts for distraction-free mode
+        document.addEventListener('keydown', function(e) {
+            const dfOverlay = document.getElementById('distraction-free-overlay');
+            if (dfOverlay.style.display === 'flex') {
+                if (e.key === 'Escape') {
+                    exitDistractionFreeMode();
+                } else if (e.key === ' ' || e.key === 'Spacebar') {
+                    e.preventDefault();
+                    flipDistractionFreeCard();
+                } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                    nextDistractionFreeCard();
+                }
+            }
+        });
+
+        // Initialize the app
+        function init() {
+            const firstCard = getRandomCard();
+            if (firstCard) {
+                displayCard(firstCard);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
