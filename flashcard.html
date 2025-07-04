@@ -157,6 +157,7 @@
         .theme-btn.midnight { background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%); }
         .theme-btn.neon { background: linear-gradient(135deg, #0F0F23 0%, #1A1A2E 100%); }
         .theme-btn.pastel { background: linear-gradient(135deg, #FFB3E6 0%, #FFE4E1 100%); }
+        .theme-btn.dark { background: linear-gradient(135deg, rgba(235, 219, 178, 0.2), #FFE4E1 100%); }
 
         .controls {
             display: flex;
@@ -597,6 +598,29 @@
             --shadow-color: rgba(139,69,19,0.2);
         }
 
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #1d2021 0%, #282828 100%); /* Dark background */
+            --card-front-gradient: linear-gradient(145deg, #3c3836, #504945); /* Subtle card front */
+            --card-back-gradient: linear-gradient(145deg, #458588, #076678); /* Blue-ish  tone */
+            --button-gradient: linear-gradient(145deg, #98971a, #b8bb26); /* Dark green */
+            --flip-button-gradient: linear-gradient(145deg, #cc241d, #fb4934); /* red */
+            --text-primary: #ebdbb2; /* Main foreground */
+            --text-secondary: #d5c4a1; /* Softer text */
+            --text-on-card: #ebdbb2;
+            --glass-bg: rgba(60, 56, 54, 0.2); /* Muted dark */
+            --glass-border: rgba(60, 56, 54, 0.3);
+            --glass-hover: rgba(60, 56, 54, 0.4);
+            --category-tag-bg: rgba(235, 219, 178, 0.1); /* Light yellow */
+            --category-tag-text: rgba(235, 219, 178, 1);
+            --category-tag-back-bg: rgba(235, 219, 178, 0.2);
+            --category-tag-back-text: rgba(235, 219, 178, 0.8);
+            --progress-gradient: linear-gradient(90deg, #98971a, #b8bb26); /* green progress */
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --exit-btn-bg: rgba(204, 36, 29, 0.3); /* red */
+            --exit-btn-border: rgba(204, 36, 29, 0.5);
+            --exit-btn-hover: rgba(204, 36, 29, 0.6);
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -654,6 +678,7 @@
             <div class="theme-btn midnight" data-theme="midnight" title="Midnight Gray" onclick="setTheme('midnight', event)"></div>
             <div class="theme-btn neon" data-theme="neon" title="Neon Dark" onclick="setTheme('neon', event)"></div>
             <div class="theme-btn pastel" data-theme="pastel" title="Pastel Pink" onclick="setTheme('pastel', event)"></div>
+            <div class="theme-btn dark" data-theme="dark" title="Dark" onclick="setTheme('dark', event)"></div>
         </div>
     
         <div class="category-filter">
@@ -1237,7 +1262,11 @@
         document.getElementById('flashcard').addEventListener('click', flipCard);
         
         // Add click event to distraction-free card for flipping
-        document.getElementById('df-flashcard').addEventListener('click', flipDistractionFreeCard);
+        document.getElementById('df-flashcard').addEventListener('click', (e) => {
+            if (!draggedFarDF) {
+                flipDistractionFreeCard();
+            }
+        });
 
         // Keyboard shortcuts for distraction-free mode
         document.addEventListener('keydown', function(e) {
@@ -1318,6 +1347,7 @@
         // Card swipe effect - end
 
         // DF Card swipe effect - start
+        let draggedFarDF = false;
         let isDraggingDF = false;
         let startXDF = 0;
         let currentXDF = 0;
@@ -1342,11 +1372,16 @@
             currentXDF = getX(e);
             const deltaX = currentXDF - startXDF;
         
+            // Determine if user has dragged "far enough"
+            if (Math.abs(deltaX) > 10) {
+                draggedFarDF = true;
+            }
+
             dfCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`;
         }
 
         function endDragDF(e) {
-            if (!isDraggingDF) return;
+            if (!isDraggingDF || !draggedFarDF) return;
             isDraggingDF = false;
         
             const deltaX = currentXDF - startXDF;
@@ -1361,7 +1396,11 @@
             } else {
                 dfCard.style.transform = 'translateX(0px) rotate(0deg)';
             }
-        
+
+            setTimeout(() => {
+                draggedFarDF = false; // reset after animation
+            }, 300);
+
             document.removeEventListener('mousemove', onDragDF);
             document.removeEventListener('mouseup', endDragDF);
             document.removeEventListener('touchmove', onDragDF);
