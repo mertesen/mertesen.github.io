@@ -51,6 +51,8 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            display: flex;
+            justify-content: center;
         }
 
         .distraction-free .flashcard {
@@ -271,6 +273,8 @@
             width: 400px;
             height: 280px;
             margin: 0 20px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            will-change: transform;
         }
 
         .flashcard-inner {
@@ -280,6 +284,16 @@
             transition: transform 0.6s;
             transform-style: preserve-3d;
             cursor: pointer;
+        }
+
+        .flashcard.discard-left {
+            transform: translateX(-150%) rotate(-15deg);
+            opacity: 0;
+        }
+
+        .flashcard.discard-right {
+            transform: translateX(150%) rotate(15deg);
+            opacity: 0;
         }
 
         .flashcard.flipped .flashcard-inner {
@@ -443,6 +457,27 @@
         .settings-panel.open {
             max-height: 330px; /* adjust depending on your content */
             padding: 20px;
+        }
+
+        /* Slide out to right */
+        @keyframes slideOutRight {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Slide in from left */
+        @keyframes slideInLeft {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Apply animation classes */
+        .card-slide-out {
+            animation: slideOutRight 0.4s ease forwards;
+        }
+
+        .card-slide-in {
+            animation: slideInLeft 0.4s ease forwards;
         }
 
         [data-theme="default"] {
@@ -652,16 +687,16 @@
                 <div class="flashcard-front">
                     <div class="tag-container">
                         <div class="tag category-tag" id="front-category"></div>
-                        <div class="tag difficulty-tag" id="front-difficulty"></div>
-                        <div class="tag frequency-tag" id="front-frequency"></div>
+                        <div class="tag difficulty-tag" id="front-difficulty" hidden></div>
+                        <div class="tag frequency-tag" id="front-frequency" hidden></div>
                     </div>
                     <div class="flashcard-content" id="front-content"></div>
                 </div>
                 <div class="flashcard-back">
                     <div class="tag-container">
                         <div class="tag category-tag" id="back-category"></div>
-                        <div class="tag difficulty-tag" id="back-difficulty"></div>
-                        <div class="tag frequency-tag" id="back-frequency"></div>
+                        <div class="tag difficulty-tag" id="back-difficulty" hidden></div>
+                        <div class="tag frequency-tag" id="back-frequency" hidden></div>
                     </div>
                     <div class="flashcard-content" id="back-content"></div>
                 </div>
@@ -686,14 +721,14 @@
         
         <div class="distraction-free-controls">
             <button class="df-btn" onclick="flipDistractionFreeCard()">🔄 Flip</button>
-            <button class="df-btn" onclick="nextDistractionFreeCard()">➡️ Next</button>
+            <button class="df-btn" onclick="nextDistractionFreeCardWithAnimation()">➡️ Next</button>
             <button class="df-btn exit-btn" onclick="exitDistractionFreeMode()">❌ Exit Focus Mode</button>
         </div>
     </div>
 
     <div class="navigation">
         <button class="nav-btn flip-btn" onclick="flipCard()">🔄 Flip Card</button>
-        <button class="nav-btn" onclick="nextCard()">➡️ Next Random</button>
+        <button class="nav-btn" onclick="nextCardWithAnimation()">➡️ Next Random</button>
     </div>
 
     <div class="stats">
@@ -988,6 +1023,31 @@
             }
         }
 
+        function nextCardWithAnimation() {
+            const cardEl = document.getElementById('flashcard');
+    
+            // Animate current card out
+            cardEl.classList.add('card-slide-out');
+
+            // Wait for animation to finish before replacing content
+            setTimeout(() => {
+                // Load new card
+                const newCard = getRandomCard();
+                if (newCard) {
+                    displayCard(newCard);
+                }
+            
+                // Remove old animation class and trigger slide-in
+                cardEl.classList.remove('card-slide-out');
+                cardEl.classList.add('card-slide-in');
+            
+                // Clean up slide-in class after it finishes
+                setTimeout(() => {
+                    cardEl.classList.remove('card-slide-in');
+                }, 400);
+            }, 400);
+        }
+
         // Distraction-free mode functions
         function enterDistractionFreeMode() {
             document.getElementById('distraction-free-overlay').style.display = 'flex';
@@ -1042,6 +1102,34 @@
                 // Also update the main card for when user exits focus mode
                 displayCard(newCard);
             }
+        }
+
+        function nextDistractionFreeCardWithAnimation() {
+            const cardEl = document.getElementById('df-flashcard');
+    
+            // Animate current card out
+            cardEl.classList.add('card-slide-out');
+
+            // Wait for animation to finish before replacing content
+            setTimeout(() => {
+                // Load new card
+                const newCard = getRandomCard();
+                if (newCard) {
+                    displayDistractionFreeCard(newCard);
+
+                    // Also update the main card for when user exits focus mode
+                    displayCard(newCard);
+                }
+            
+                // Remove old animation class and trigger slide-in
+                cardEl.classList.remove('card-slide-out');
+                cardEl.classList.add('card-slide-in');
+            
+                // Clean up slide-in class after it finishes
+                setTimeout(() => {
+                    cardEl.classList.remove('card-slide-in');
+                }, 400);
+            }, 400);
         }
 
         function setTheme(theme, event) {
@@ -1165,6 +1253,129 @@
                 }
             }
         });
+
+        // Card swipe effect - start
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+
+        const card = document.getElementById('flashcard');
+
+        card.addEventListener('touchstart', startDrag);
+
+        function startDrag(e) {
+            isDragging = true;
+            startX = getX(e);
+        
+            document.addEventListener('touchmove', onDrag);
+            document.addEventListener('touchend', endDrag);
+        }
+
+        function onDrag(e) {
+            if (!isDragging) return;
+            currentX = getX(e);
+            const deltaX = currentX - startX;
+        
+            // Move the card with the cursor
+            card.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`;
+        }
+
+        function endDrag(e) {
+            if (!isDragging) return;
+            isDragging = false;
+        
+            const deltaX = currentX - startX;
+        
+            // Swipe threshold
+            const threshold = 100;
+        
+            if (deltaX > threshold) {
+                card.classList.add('discard-right');
+                triggerNextCard();
+            } else if (deltaX < -threshold) {
+                card.classList.add('discard-left');
+                triggerNextCard();
+            } else {
+                // Snap back
+                card.style.transform = 'translateX(0px) rotate(0deg)';
+            }
+        
+            document.removeEventListener('touchmove', onDrag);
+            document.removeEventListener('touchend', endDrag);
+        }
+
+        function getX(e) {
+            return e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+        }
+
+        function triggerNextCard() {
+            setTimeout(() => {
+                card.classList.remove('discard-left', 'discard-right');
+                card.style.transform = 'translateX(0px) rotate(0deg)';
+                nextCard(); // load next card
+            }, 300);
+        }
+        // Card swipe effect - end
+
+        // DF Card swipe effect - start
+        let isDraggingDF = false;
+        let startXDF = 0;
+        let currentXDF = 0;
+
+        const dfCard = document.getElementById('df-flashcard');
+
+        dfCard.addEventListener('mousedown', startDragDF);
+        dfCard.addEventListener('touchstart', startDragDF);
+
+        function startDragDF(e) {
+            isDraggingDF = true;
+            startXDF = getX(e);
+        
+            document.addEventListener('mousemove', onDragDF);
+            document.addEventListener('mouseup', endDragDF);
+            document.addEventListener('touchmove', onDragDF);
+            document.addEventListener('touchend', endDragDF);
+        }
+
+        function onDragDF(e) {
+            if (!isDraggingDF) return;
+            currentXDF = getX(e);
+            const deltaX = currentXDF - startXDF;
+        
+            dfCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`;
+        }
+
+        function endDragDF(e) {
+            if (!isDraggingDF) return;
+            isDraggingDF = false;
+        
+            const deltaX = currentXDF - startXDF;
+            const threshold = 100;
+        
+            if (deltaX > threshold) {
+                dfCard.classList.add('discard-right');
+                triggerNextDistractionFreeCard();
+            } else if (deltaX < -threshold) {
+                dfCard.classList.add('discard-left');
+                triggerNextDistractionFreeCard();
+            } else {
+                dfCard.style.transform = 'translateX(0px) rotate(0deg)';
+            }
+        
+            document.removeEventListener('mousemove', onDragDF);
+            document.removeEventListener('mouseup', endDragDF);
+            document.removeEventListener('touchmove', onDragDF);
+            document.removeEventListener('touchend', endDragDF);
+        }
+
+        function triggerNextDistractionFreeCard() {
+            setTimeout(() => {
+                dfCard.classList.remove('discard-left', 'discard-right');
+                dfCard.style.transform = 'translateX(0px) rotate(0deg)';
+                nextDistractionFreeCard(); // load next DF card
+            }, 300);
+        }
+        // DF Card swipe effect - end
 
         document.addEventListener('click', (e) => {
             const panel = document.getElementById('settings-panel');
