@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🃏</text></svg>">
+<meta name="theme-color" content="#333">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,13 +15,14 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-gradient);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            color: var(--text-secondary);
         }
 
         .header {
@@ -31,7 +34,7 @@
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px var(--shadow-color);
         }
 
         /* Distraction-free mode styles */
@@ -41,7 +44,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-gradient);
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -72,8 +75,8 @@
         }
 
         .df-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.3);
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
             color: white;
             padding: 15px 30px;
             border-radius: 25px;
@@ -86,17 +89,17 @@
 
         .df-btn:hover {
             background: rgba(255,255,255,0.3);
-            border-color: rgba(255,255,255,0.5);
+            border-color: var(--glass-hover);
             transform: translateY(-2px);
         }
 
         .df-btn.exit-btn {
-            background: rgba(255,99,99,0.3);
-            border-color: rgba(255,99,99,0.5);
+            background: var(--exit-btn-bg);
+            border-color: var(--exit-btn-border);
         }
 
         .df-btn.exit-btn:hover {
-            background: rgba(255,99,99,0.5);
+            background: var(--exit-btn-hover);
         }
 
         /* Flip animation enhancement */
@@ -115,6 +118,44 @@
             opacity: 0.9;
         }
 
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--glass-border);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .theme-btn.active {
+            border-color: var(--text-secondary);
+            transform: scale(1.2);
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .theme-btn.default { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .theme-btn.ocean { background: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%); }
+        .theme-btn.forest { background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%); }
+        .theme-btn.sunset { background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); }
+        .theme-btn.midnight { background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%); }
+        .theme-btn.neon { background: linear-gradient(135deg, #0F0F23 0%, #1A1A2E 100%); }
+        .theme-btn.pastel { background: linear-gradient(135deg, #FFB3E6 0%, #FFE4E1 100%); }
+
         .controls {
             display: flex;
             justify-content: center;
@@ -126,7 +167,7 @@
         .control-btn {
             background: rgba(255,255,255,0.2);
             border: 2px solid rgba(255,255,255,0.3);
-            color: white;
+            color: var(--category-tag-text);
             padding: 12px 24px;
             border-radius: 25px;
             cursor: pointer;
@@ -155,9 +196,9 @@
         }
 
         .category-btn {
-            background: rgba(255,255,255,0.15);
+            background: var(--category-tag-bg);
             border: 1px solid rgba(255,255,255,0.3);
-            color: white;
+            color: var(--category-tag-text);
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
@@ -166,6 +207,54 @@
         }
 
         .category-btn:hover, .category-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .difficulty-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .difficulty-btn {
+            background: var(--category-tag-bg);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--category-tag-text);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-btn:hover, .difficulty-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .frequency-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .frequency-btn {
+            background: var(--category-tag-bg);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--category-tag-text);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .frequency-btn:hover, .frequency-btn.active {
             background: rgba(255,255,255,0.3);
             border-color: rgba(255,255,255,0.5);
         }
@@ -213,13 +302,13 @@
         }
 
         .flashcard-front {
-            background: linear-gradient(145deg, #fff, #f0f0f0);
-            color: #333;
+            background: var(--card-front-gradient);
+            color: var(--text-on-card);
         }
 
         .flashcard-back {
-            background: linear-gradient(145deg, #4a90e2, #357abd);
-            color: white;
+            background: var(--card-back-gradient);
+            color: var(--text-secondary);
             transform: rotateY(180deg);
         }
 
@@ -236,21 +325,30 @@
             opacity: 0.9;
         }
 
-        .category-tag {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0,0,0,0.1);
-            color: rgba(0,0,0,0.6);
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            font-weight: 500;
+        .tag-container {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          justify-content: flex-end;
+          max-width: 80%; /* prevent overflow */
+        }
+
+        .tag {
+          background: var(--category-tag-bg);
+          color: var(--category-tag-text);
+          padding: 6px 12px;
+          border-radius: 15px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          white-space: nowrap;
         }
 
         .flashcard-back .category-tag {
-            background: rgba(255,255,255,0.2);
-            color: rgba(255,255,255,0.8);
+            background: var(--category-tag-back-bg);
+            color: var(--category-tag-back-text);
         }
 
         .navigation {
@@ -260,7 +358,7 @@
         }
 
         .nav-btn {
-            background: linear-gradient(145deg, #4CAF50, #45a049);
+            background: var(--button-gradient);;
             border: none;
             color: white;
             padding: 15px 30px;
@@ -282,7 +380,7 @@
         }
 
         .nav-btn.flip-btn {
-            background: linear-gradient(145deg, #FF6B6B, #FF5252);
+            background: var(--flip-button-gradient);
         }
 
         .stats {
@@ -309,7 +407,7 @@
         .progress-bar {
             width: 100%;
             height: 10px;
-            background: rgba(255,255,255,0.3);
+            background: var(--progress-gradient);
             border-radius: 5px;
             margin-top: 15px;
             overflow: hidden;
@@ -327,6 +425,141 @@
             font-size: 0.9rem;
             margin-top: 10px;
             text-align: center;
+        }
+
+        .settings-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(6px);
+            border-radius: 12px;
+            padding: 0 20px; /* Horizontal only */
+            margin: 10px 0;
+            color: white;
+        }
+
+        /* When expanded */
+        .settings-panel.open {
+            max-height: 330px; /* adjust depending on your content */
+            padding: 20px;
+        }
+
+        [data-theme="default"] {
+            /* Default theme (Purple Gradient) */
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #f0f0f0);
+            --card-back-gradient: linear-gradient(145deg, #4a90e2, #357abd);
+            --button-gradient: linear-gradient(145deg, #4CAF50, #45a049);
+            --flip-button-gradient: linear-gradient(145deg, #FF6B6B, #FF5252);
+            --text-primary: #333;
+            --text-secondary: white;
+            --text-on-card: #333;
+            --glass-bg: rgba(255,255,255,0.2);
+            --glass-border: rgba(255,255,255,0.3);
+            --glass-hover: rgba(255,255,255,0.3);
+            --category-tag-bg: rgba(0,0,0,0.1);
+            --category-tag-text: rgba(255,255,255);
+            --category-tag-back-bg: rgba(255,255,255,0.2);
+            --category-tag-back-text: rgba(255,255,255,0.8);
+            --progress-gradient: linear-gradient(90deg, #4CAF50, #45a049);
+            --shadow-color: rgba(0,0,0,0.3);
+            --exit-btn-bg: rgba(255,99,99,0.3);
+            --exit-btn-border: rgba(255,99,99,0.5);
+            --exit-btn-hover: rgba(255,99,99,0.5);
+        }
+
+        [data-theme="ocean"] {
+            --bg-gradient: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #f0f8ff);
+            --card-back-gradient: linear-gradient(145deg, #1976D2, #0D47A1);
+            --category-tag-text: rgba(255,255,255);
+            --category-tag-bg: rgba(0,0,0,0.1);
+            --category-tag-back-bg: rgba(255,255,255,0.2);
+            --category-tag-back-text: rgba(255,255,255,0.8);
+            --button-gradient: linear-gradient(145deg, #00BCD4, #0097A7);
+            --flip-button-gradient: linear-gradient(145deg, #FF9800, #F57C00);
+            --progress-gradient: linear-gradient(90deg, #00BCD4, #0097A7);
+        }
+
+        [data-theme="forest"] {
+            --bg-gradient: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #f1f8e9);
+            --category-tag-text: rgba(255,255,255);
+            --category-tag-bg: rgba(0,0,0,0.1);
+            --category-tag-back-bg: rgba(255,255,255,0.2);
+            --category-tag-back-text: rgba(255,255,255,0.8);
+            --card-back-gradient: linear-gradient(145deg, #2E7D32, #1B5E20);
+            --button-gradient: linear-gradient(145deg, #8BC34A, #689F38);
+            --flip-button-gradient: linear-gradient(145deg, #FF5722, #D84315);
+            --progress-gradient: linear-gradient(90deg, #8BC34A, #689F38);
+        }
+
+        [data-theme="sunset"] {
+            --bg-gradient: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #fff8f0);
+            --card-back-gradient: linear-gradient(145deg, #E91E63, #C2185B);
+            --category-tag-text: rgba(255,255,255);
+            --category-tag-bg: rgba(0,0,0,0.1);
+            --category-tag-back-bg: rgba(255,255,255,0.2);
+            --category-tag-back-text: rgba(255,255,255,0.8);
+            --button-gradient: linear-gradient(145deg, #FF9800, #F57C00);
+            --flip-button-gradient: linear-gradient(145deg, #9C27B0, #7B1FA2);
+            --progress-gradient: linear-gradient(90deg, #FF9800, #F57C00);
+        }
+
+        [data-theme="midnight"] {
+            --bg-gradient: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+            --card-front-gradient: linear-gradient(145deg, #34495E, #2C3E50);
+            --card-back-gradient: linear-gradient(145deg, #1ABC9C, #16A085);
+            --button-gradient: linear-gradient(145deg, #3498DB, #2980B9);
+            --flip-button-gradient: linear-gradient(145deg, #E74C3C, #C0392B);
+            --text-primary: #ECF0F1;
+            --text-on-card: #ECF0F1;
+            --text-secondary: white;
+            --category-tag-bg: rgba(255,255,255,0.1);
+            --category-tag-text: rgba(255,255,255,0.7);
+            --category-tag-back-bg: rgba(255,255,255,0.2);
+            --category-tag-back-text: rgba(255,255,255,0.9);
+            --progress-gradient: linear-gradient(90deg, #3498DB, #2980B9);
+        }
+
+        [data-theme="neon"] {
+            --bg-gradient: linear-gradient(135deg, #0F0F23 0%, #1A1A2E 100%);
+            --card-front-gradient: linear-gradient(145deg, #16213E, #0F3460);
+            --card-back-gradient: linear-gradient(145deg, #E94560, #F16268);
+            --button-gradient: linear-gradient(145deg, #0F3460, #16213E);
+            --flip-button-gradient: linear-gradient(145deg, #E94560, #F16268);
+            --text-primary: #00D4FF;
+            --text-secondary: #b7d1e8;
+            --text-on-card: #00D4FF;
+            --glass-bg: rgba(0,212,255,0.1);
+            --glass-border: rgba(0,212,255,0.3);
+            --glass-hover: rgba(0,212,255,0.2);
+            --category-tag-bg: rgba(0,212,255,0.2);
+            --category-tag-text: rgba(0,212,255,0.8);
+            --category-tag-back-bg: rgba(255,255,255,0.2);
+            --category-tag-back-text: rgba(0,212,255,0.8);
+            --progress-gradient: linear-gradient(90deg, #00D4FF, #0F3460);
+            --shadow-color: rgba(0,212,255,0.3);
+        }
+
+        [data-theme="pastel"] {
+            --bg-gradient: linear-gradient(135deg, #FFB3E6 0%, #FFE4E1 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #FFF0F5);
+            --card-back-gradient: linear-gradient(145deg, #DDA0DD, #DA70D6);
+            --button-gradient: linear-gradient(145deg, #98FB98, #90EE90);
+            --flip-button-gradient: linear-gradient(145deg, #FFB6C1, #FFA0B4);
+            --text-primary: #8B4513;
+            --text-secondary: #8B4513;
+            --text-on-card: #8B4513;
+            --glass-bg: rgba(255,255,255,0.4);
+            --glass-border: rgba(255,255,255,0.6);
+            --glass-hover: rgba(255,255,255,0.6);
+            --category-tag-bg: rgba(139,69,19,0.1);
+            --category-tag-text: rgba(139,69,19,0.7);
+            --progress-gradient: linear-gradient(90deg, #98FB98, #90EE90);
+            --shadow-color: rgba(139,69,19,0.2);
         }
 
         @media (max-width: 768px) {
@@ -359,37 +592,77 @@
         }
     </style>
 </head>
-<body>
+<body data-theme="default">
     <div class="header">
         <h1>Software Engineer Flashcards</h1>
-        <p>Click card to flip • Use Next for random term</p>
+        <p>Click card to flip • Use Next or Right Arrow on keyboard for random term</p>
     </div>
 
     <div class="controls">
         <button class="control-btn active" onclick="setMode('term-first')">Term First</button>
         <button class="control-btn" onclick="setMode('definition-first')">Definition First</button>
         <button class="control-btn" onclick="enterDistractionFreeMode()">🎯 Focus Mode</button>
+        <!-- Toggle button -->
+        <button class="control-btn" onclick="toggleSettings()">⚙️ Settings</button>
     </div>
-
-    <div class="category-filter">
-        <button class="category-btn active" onclick="filterCategory('all')">All</button>
-        <button class="category-btn" onclick="filterCategory('System Components')">System Components</button>
-        <button class="category-btn" onclick="filterCategory('Data Management')">Data Management</button>
-        <button class="category-btn" onclick="filterCategory('Event-Driven')">Event-Driven</button>
-        <button class="category-btn" onclick="filterCategory('Reliability')">Reliability</button>
-        <button class="category-btn" onclick="filterCategory('Observability')">Observability</button>
-        <button class="category-btn" onclick="filterCategory('API')">API</button>
-    </div>
+    
+    <!-- Sliding settings panel -->
+    <div id="settings-panel" class="settings-panel">
+        <h3>Settings</h3>
+        <p>Here you can configure your preferences.</p>
+        <br>
+        <div class="theme-selector">
+            <div class="theme-btn default active" data-theme="default" title="Purple Gradient" onclick="setTheme('default', event)"></div>
+            <div class="theme-btn ocean" data-theme="ocean" title="Ocean Blue" onclick="setTheme('ocean', event)"></div>
+            <div class="theme-btn forest" data-theme="forest" title="Forest Green" onclick="setTheme('forest', event)"></div>
+            <div class="theme-btn sunset" data-theme="sunset" title="Sunset Orange" onclick="setTheme('sunset', event)"></div>
+            <div class="theme-btn midnight" data-theme="midnight" title="Midnight Gray" onclick="setTheme('midnight', event)"></div>
+            <div class="theme-btn neon" data-theme="neon" title="Neon Dark" onclick="setTheme('neon', event)"></div>
+            <div class="theme-btn pastel" data-theme="pastel" title="Pastel Pink" onclick="setTheme('pastel', event)"></div>
+        </div>
+    
+        <div class="category-filter">
+            <button class="category-btn active" onclick="filterCategory('all')">All</button>
+            <button class="category-btn" onclick="filterCategory('System Components')">System Components</button>
+            <button class="category-btn" onclick="filterCategory('Data Management')">Data Management</button>
+            <button class="category-btn" onclick="filterCategory('Event-Driven')">Event-Driven</button>
+            <button class="category-btn" onclick="filterCategory('Reliability')">Reliability</button>
+            <button class="category-btn" onclick="filterCategory('Observability')">Observability</button>
+            <button class="category-btn" onclick="filterCategory('API')">API</button>
+        </div>
+    
+        <div class="difficulty-filter">
+            <button class="difficulty-btn active" onclick="filterDifficulty('all')">All</button>
+            <button class="difficulty-btn" onclick="filterDifficulty('Beginner')">Beginner</button>
+            <button class="difficulty-btn" onclick="filterDifficulty('Intermediate')">Intermediate</button>
+            <button class="difficulty-btn" onclick="filterDifficulty('Advanced')">Advanced</button>
+        </div>
+    
+        <div class="frequency-filter">
+            <button class="frequency-btn active" onclick="filterFrequency('all')">All</button>
+            <button class="frequency-btn" onclick="filterFrequency('Common')">Common</button>
+            <button class="frequency-btn" onclick="filterFrequency('Moderate')">Moderate</button>
+            <button class="frequency-btn" onclick="filterFrequency('Rare')">Rare</button>
+        </div>
+    </div>    
 
     <div class="flashcard-container">
         <div class="flashcard" id="flashcard">
             <div class="flashcard-inner">
                 <div class="flashcard-front">
-                    <div class="category-tag" id="front-category"></div>
+                    <div class="tag-container">
+                        <div class="tag category-tag" id="front-category"></div>
+                        <div class="tag difficulty-tag" id="front-difficulty"></div>
+                        <div class="tag frequency-tag" id="front-frequency"></div>
+                    </div>
                     <div class="flashcard-content" id="front-content"></div>
                 </div>
                 <div class="flashcard-back">
-                    <div class="category-tag" id="back-category"></div>
+                    <div class="tag-container">
+                        <div class="tag category-tag" id="back-category"></div>
+                        <div class="tag difficulty-tag" id="back-difficulty"></div>
+                        <div class="tag frequency-tag" id="back-frequency"></div>
+                    </div>
                     <div class="flashcard-content" id="back-content"></div>
                 </div>
             </div>
@@ -401,25 +674,21 @@
         <div class="flashcard" id="df-flashcard">
             <div class="flashcard-inner">
                 <div class="flashcard-front">
-                    <div class="category-tag" id="df-front-category"></div>
+                    <div class="category-tag" id="df-front-category" hidden></div>
                     <div class="flashcard-content" id="df-front-content"></div>
                 </div>
                 <div class="flashcard-back">
-                    <div class="category-tag" id="df-back-category"></div>
+                    <div class="category-tag" id="df-back-category" hidden></div>
                     <div class="flashcard-content" id="df-back-content"></div>
                 </div>
             </div>
         </div>
         
         <div class="distraction-free-controls">
-            <button class="df-btn" onclick="flipDistractionFreeCard()">🔄 Flip Card</button>
-            <button class="df-btn" onclick="nextDistractionFreeCard()">➡️ Next Random</button>
+            <button class="df-btn" onclick="flipDistractionFreeCard()">🔄 Flip</button>
+            <button class="df-btn" onclick="nextDistractionFreeCard()">➡️ Next</button>
             <button class="df-btn exit-btn" onclick="exitDistractionFreeMode()">❌ Exit Focus Mode</button>
         </div>
-    </div>
-
-    <div class="flip-instruction">
-        💡 Click the card to flip it
     </div>
 
     <div class="navigation">
@@ -452,78 +721,213 @@
     <script>
         const flashcards = [
             // System Components & Patterns
-            { term: "API Gateway", definition: "A single entry point for client requests, handling routing, auth, rate-limiting, etc.", category: "System Components" },
-            { term: "Reverse Proxy", definition: "A server that forwards client requests to backend servers, often for load balancing or SSL.", category: "System Components" },
-            { term: "Load Balancer", definition: "Distributes incoming traffic across multiple servers to improve availability and responsiveness.", category: "System Components" },
-            { term: "Message Queue", definition: "A buffer between producers and consumers for asynchronous message processing.", category: "System Components" },
-            { term: "Broker", definition: "Middleware (e.g., Kafka, RabbitMQ) that routes and stores messages for communication between services.", category: "System Components" },
-            { term: "At Most Once", definition: "No duplicates, but messages may be lost.", category: "System Components" },
-            { term: "At Least Once", definition: "No loss, but duplicates may occur.", category: "System Components" },
-            { term: "Exactly Once", definition: "Each message is processed one and only one time.", category: "System Components" },
-            { term: "Circuit Breaker", definition: "Prevents repeated calls to a failing service by opening a circuit and retrying later.", category: "System Components" },
-            { term: "Retry Policy", definition: "Defines how failed operations are retried (e.g., exponential backoff, max attempts).", category: "System Components" },
-            { term: "Timeout", definition: "A limit on how long to wait for a response before giving up.", category: "System Components" },
-            { term: "Rate Limiting", definition: "Restricting how many requests a client can make in a given time frame.", category: "System Components" },
-            
+            { term: "API Gateway", definition: "A single entry point for client requests, handling routing, auth, rate-limiting, etc.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Reverse Proxy", definition: "A server that forwards client requests to backend servers, often for load balancing or SSL.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Load Balancer", definition: "Distributes incoming traffic across multiple servers to improve availability and responsiveness.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Message Queue", definition: "A buffer between producers and consumers for asynchronous message processing.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Broker", definition: "Middleware (e.g., Kafka, RabbitMQ) that routes and stores messages for communication between services.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "At Most Once", definition: "No duplicates, but messages may be lost.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "At Least Once", definition: "No loss, but duplicates may occur.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Exactly Once", definition: "Each message is processed one and only one time.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Circuit Breaker", definition: "Prevents repeated calls to a failing service by opening a circuit and retrying later.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Retry Policy", definition: "Defines how failed operations are retried (e.g., exponential backoff, max attempts).", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Timeout", definition: "A limit on how long to wait for a response before giving up.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Rate Limiting", definition: "Restricting how many requests a client can make in a given time frame.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Service Registry", definition: "A dynamic database of available services and their locations, used in service discovery.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Edge Service", definition: "A component at the network boundary handling requests before they reach core services.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Sidecar Proxy", definition: "A proxy deployed alongside a service container to manage communication and policies.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Service Orchestrator", definition: "Manages workflows between multiple services, often enforcing execution order and handling failures.", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Service Choreography", definition: "A decentralized way for services to interact by emitting and reacting to events.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Ingress Controller", definition: "Manages external access to services in a Kubernetes cluster, typically via HTTP.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Daemon", definition: "A background service process that performs tasks independently of user input.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Worker Pool", definition: "A set of processes or threads consuming tasks from a shared queue.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Task Scheduler", definition: "A component that triggers tasks or jobs at scheduled intervals or based on conditions.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Configuration Server", definition: "Centralizes external configuration for services in a distributed system.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Bootstrap Node", definition: "A node that helps new nodes discover and join a distributed system.", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Init Container", definition: "A special container in Kubernetes that runs before the main container to prepare dependencies.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Orchestration Engine", definition: "Coordinates deployment, scaling, and lifecycle of containers or services.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Envoy", definition: "A high-performance proxy used in service mesh architectures.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Service Façade", definition: "A layer that provides a simplified interface to a complex subsystem.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Ingress Controller", definition: "Manages external access to services in a Kubernetes cluster, typically via HTTP/HTTPS.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "DaemonSet", definition: "Ensures a copy of a pod runs on all or some nodes in a Kubernetes cluster.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Stateful Service", definition: "A service that maintains state across requests or sessions.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Service Registry", definition: "Stores metadata about services, enabling discovery and routing.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Init System", definition: "The first process started during boot, used to manage services (e.g., systemd).", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
+
+
             // Data Management
-            { term: "Database Transaction", definition: "A unit of work performed within a database that is atomic and reliable.", category: "Data Management" },
-            { term: "Sharding", definition: "Splitting a database into smaller, distributed partitions (shards) for scalability.", category: "Data Management" },
-            { term: "Replication", definition: "Copying data across multiple nodes to ensure fault tolerance and availability.", category: "Data Management" },
-            { term: "Optimistic Locking", definition: "Assumes no conflict, checks version/timestamp before update.", category: "Data Management" },
-            { term: "Pessimistic Locking", definition: "Locks records upon reading to prevent concurrent writes.", category: "Data Management" },
-            { term: "Immutable Data", definition: "Data that cannot be changed after creation, aiding concurrency and versioning.", category: "Data Management" },
-            { term: "Outbox Pattern", definition: "Stores domain events in a local DB table and then forwards them to a message broker.", category: "Data Management" },
-            
+            { term: "Database Transaction", definition: "A unit of work performed within a database that is atomic and reliable.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Sharding", definition: "Splitting a database into smaller, distributed partitions (shards) for scalability.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Replication", definition: "Copying data across multiple nodes to ensure fault tolerance and availability.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Optimistic Locking", definition: "Assumes no conflict, checks version/timestamp before update.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Pessimistic Locking", definition: "Locks records upon reading to prevent concurrent writes.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Immutable Data", definition: "Data that cannot be changed after creation, aiding concurrency and versioning.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Moderate" },
+            { term: "Outbox Pattern", definition: "Stores domain events in a local DB table and then forwards them to a message broker.", category: "Data Management", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Change Data Capture (CDC)", definition: "Capturing changes in a database and pushing them to downstream systems in real-time.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Schema Evolution", definition: "Managing changes to data schema without breaking consumers.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Soft Delete", definition: "Marking data as deleted without removing it physically from storage.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Eventual Consistency", definition: "The system will become consistent over time, given no new updates.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Snapshotting", definition: "Capturing the full state of a dataset or system at a specific point in time.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Write-Ahead Logging (WAL)", definition: "A technique where changes are logged before being applied to ensure recoverability.", category: "Data Management", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Data Lake", definition: "A centralized repository for storing raw structured and unstructured data at any scale.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Data Lineage", definition: "The history and transformation path of data from origin to current form.", category: "Data Management", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Indexing", definition: "Creating a data structure that improves retrieval speed for queries.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Column-Oriented Database", definition: "Stores data tables by column rather than row, optimized for analytical queries.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Materialized View", definition: "A database object that contains the results of a query and can be refreshed.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Eventual Write Consistency", definition: "Writes may be delayed across replicas but will converge eventually.", category: "Data Management", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Secondary Index", definition: "An index built on non-primary key attributes to improve query performance.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Cold Storage", definition: "Low-cost, infrequently accessed data storage, often used for archiving.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Moderate" },
+            { term: "Compaction", definition: "The process of merging and cleaning up fragmented or obsolete data in storage systems.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Data Contract", definition: "An agreement that defines the format and expectations of shared data between services.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Schema Registry", definition: "Manages and validates data schemas, often in streaming systems like Kafka.", category: "Data Management", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Bitemporal Data", definition: "Captures both actual event time and system record time.", category: "Data Management", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Bloom Filter", definition: "A space-efficient data structure for checking set membership with possible false positives.", category: "Data Management", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "ACID Compliance", definition: "Guarantees that database transactions are Atomic, Consistent, Isolated, and Durable.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Common" },
+
+
             // Event-Driven & Streaming
-            { term: "Event Sourcing", definition: "Storing state changes as a series of immutable events.", category: "Event-Driven" },
-            { term: "Event Stream", definition: "A continuous, append-only sequence of events.", category: "Event-Driven" },
-            { term: "Data Stream Processing", definition: "Real-time transformation and analysis of data as it flows through systems.", category: "Event-Driven" },
-            { term: "Kafka", definition: "A distributed event streaming platform for high-throughput, fault-tolerant messaging.", category: "Event-Driven" },
-            { term: "Consumer Group (Kafka)", definition: "A set of consumers sharing the workload of a Kafka topic's partitions.", category: "Event-Driven" },
-            { term: "Compaction (Kafka)", definition: "Retains only the latest message for each key in a topic.", category: "Event-Driven" },
-            { term: "Backpressure", definition: "When consumers signal producers to slow down due to being overloaded.", category: "Event-Driven" },
-            { term: "Dead Letter Queue", definition: "A queue that stores messages that failed processing for later inspection or retries.", category: "Event-Driven" },
-            { term: "Fan-out", definition: "One input to multiple outputs.", category: "Event-Driven" },
-            { term: "Fan-in", definition: "Multiple inputs to one output.", category: "Event-Driven" },
-            
+            { term: "Event Sourcing", definition: "Storing state changes as a series of immutable events.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Event Stream", definition: "A continuous, append-only sequence of events.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Data Stream Processing", definition: "Real-time transformation and analysis of data as it flows through systems.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Kafka", definition: "A distributed event streaming platform for high-throughput, fault-tolerant messaging.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Consumer Group (Kafka)", definition: "A set of consumers sharing the workload of a Kafka topic's partitions.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Compaction (Kafka)", definition: "Retains only the latest message for each key in a topic.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Backpressure", definition: "When consumers signal producers to slow down due to being overloaded.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Dead Letter Queue", definition: "A queue that stores messages that failed processing for later inspection or retries.", category: "Event-Driven", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Fan-out", definition: "One input to multiple outputs.", category: "Event-Driven", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Fan-in", definition: "Multiple inputs to one output.", category: "Event-Driven", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Publish-Subscribe Pattern", definition: "A messaging pattern where publishers send messages to topics, and subscribers receive relevant messages.", category: "Event-Driven", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Idempotent Consumer", definition: "A consumer that can process the same message multiple times without adverse effects.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Event Envelope", definition: "Additional metadata attached to an event, such as correlation ID or schema version.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Event Carried State Transfer", definition: "Embedding state in events to avoid synchronous lookups from consumers.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Stream Partitioning", definition: "Splitting a stream into logical partitions for scalability and parallel processing.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Watermarking", definition: "A technique in stream processing to indicate event time progress for late data handling.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Replay", definition: "Reprocessing past events from a log to rebuild state or recover from errors.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Schema Registry", definition: "A service to store and validate data schemas (e.g., Avro) for serialized event messages.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Event Drift", definition: "A situation where producers and consumers interpret the same event differently due to version mismatches.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Event Store", definition: "A specialized database optimized for storing and querying event streams.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Topic", definition: "A named channel in a messaging system to which producers write and consumers subscribe.", category: "Event-Driven", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Message Acknowledgment", definition: "Confirmation that a message was received and processed successfully.", category: "Event-Driven", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Schema Evolution (Kafka)", definition: "Managing changes to message formats in a backward-compatible way.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Transactional Messaging", definition: "Guarantees that a group of messages are published or consumed atomically.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Poison Message", definition: "A message that repeatedly fails processing and often ends up in a dead letter queue.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Checkpointing", definition: "Recording the last processed offset to enable recovery and replay.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Event Envelope", definition: "Wraps event data with metadata such as timestamp, type, and correlation ID.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Idempotent Producer", definition: "A message producer that avoids duplicates when retrying.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Stream Join", definition: "Combining data from two or more streams based on a common key or window.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Windowing", definition: "Grouping streaming data into finite time-based or count-based chunks for processing.", category: "Event-Driven", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Watermark", definition: "Indicates progress in event time in stream processing to handle out-of-order events.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Rare" },
+
             // Reliability & Resilience
-            { term: "Service Discovery", definition: "Automatic detection of services and their addresses in a network.", category: "Reliability" },
-            { term: "Leader Election", definition: "A mechanism for choosing a coordinator in distributed systems.", category: "Reliability" },
-            { term: "Raft Algorithm", definition: "A consensus algorithm for maintaining a consistent state across distributed nodes.", category: "Reliability" },
-            { term: "Zookeeper", definition: "A distributed coordination service often used for leader election and service discovery.", category: "Reliability" },
-            { term: "Service Mesh", definition: "Manages communication, security, and monitoring between microservices (e.g., Istio, Linkerd).", category: "Reliability" },
-            { term: "Sidecar Pattern", definition: "Deploying support services (e.g., proxy, logger) alongside application containers.", category: "Reliability" },
-            { term: "Blue-Green Deployment", definition: "Two environments (blue and green) for safe, zero-downtime deployment.", category: "Reliability" },
-            { term: "Canary Deployment", definition: "Releasing new features to a small user group before full rollout.", category: "Reliability" },
-            { term: "Chaos Engineering", definition: "Deliberately injecting faults to test system resilience and recovery.", category: "Reliability" },
-            
+            { term: "Service Discovery", definition: "Automatic detection of services and their addresses in a network.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Leader Election", definition: "A mechanism for choosing a coordinator in distributed systems.", category: "Reliability", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Raft Algorithm", definition: "A consensus algorithm for maintaining a consistent state across distributed nodes.", category: "Reliability", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Zookeeper", definition: "A distributed coordination service often used for leader election and service discovery.", category: "Reliability", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Service Mesh", definition: "Manages communication, security, and monitoring between microservices (e.g., Istio, Linkerd).", category: "Reliability", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Sidecar Pattern", definition: "Deploying support services (e.g., proxy, logger) alongside application containers.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Blue-Green Deployment", definition: "Two environments (blue and green) for safe, zero-downtime deployment.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Canary Deployment", definition: "Releasing new features to a small user group before full rollout.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Chaos Engineering", definition: "Deliberately injecting faults to test system resilience and recovery.", category: "Reliability", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Graceful Degradation", definition: "A system design approach that allows partial functionality during partial failure.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Health Check", definition: "A diagnostic endpoint or probe used to determine the health of a service.", category: "Reliability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Redundancy", definition: "Having duplicate systems or components to increase fault tolerance.", category: "Reliability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Self-Healing System", definition: "A system that automatically detects and recovers from faults.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Failover", definition: "Automatically switching to a backup component or system upon failure.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Quorum", definition: "The minimum number of nodes that must agree for a distributed operation to proceed.", category: "Reliability", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Bulkhead Pattern", definition: "Isolating system components to prevent failure from spreading.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Watchdog Timer", definition: "A timer that resets the system if it becomes unresponsive beyond a threshold.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Rare" },
+            { term: "Heartbeat", definition: "Regular signals sent to indicate a component is still alive.", category: "Reliability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Graceful Shutdown", definition: "The process of allowing a service to complete in-flight tasks before terminating.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Service Timeout", definition: "A maximum duration a service will wait for an operation before failing it.", category: "Reliability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Connection Pooling", definition: "Reusing a limited set of connections to improve performance and resource usage.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Stateful Set", definition: "A Kubernetes resource for managing stateful applications with persistent identities.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Idempotency Key", definition: "A token used to prevent duplicated operations in distributed transactions.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Distributed Lock", definition: "A mechanism to ensure mutual exclusion in a distributed system.", category: "Reliability", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Heartbeat Timeout", definition: "The threshold after which a missed heartbeat indicates service failure.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Auto-healing", definition: "Automatically replaces failed components to maintain system health.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Health Check", definition: "A mechanism to verify if a service is running and healthy.", category: "Reliability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Split-Brain Scenario", definition: "When a cluster splits into isolated partitions that act independently, risking inconsistency.", category: "Reliability", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Quorum", definition: "The minimum number of nodes required to reach consensus in distributed systems.", category: "Reliability", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Graceful Degradation", definition: "Designing systems to reduce functionality under load rather than failing completely.", category: "Reliability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+
             // Observability & Monitoring
-            { term: "Observability", definition: "The ability to understand system internals using logs, metrics, and traces.", category: "Observability" },
-            { term: "Telemetry", definition: "Automated remote data collection from system components.", category: "Observability" },
-            { term: "Tracing", definition: "Tracking a single request's journey through multiple services.", category: "Observability" },
-            { term: "OpenTelemetry", definition: "A standard for collecting distributed traces, metrics, and logs.", category: "Observability" },
-            { term: "Prometheus", definition: "An open-source time-series database and monitoring system.", category: "Observability" },
-            { term: "Grafana", definition: "A visualization platform used with Prometheus and other data sources.", category: "Observability" },
-            
+            { term: "Observability", definition: "The ability to understand system internals using logs, metrics, and traces.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Telemetry", definition: "Automated remote data collection from system components.", category: "Observability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Tracing", definition: "Tracking a single request's journey through multiple services.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "OpenTelemetry", definition: "A standard for collecting distributed traces, metrics, and logs.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Prometheus", definition: "An open-source time-series database and monitoring system.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Grafana", definition: "A visualization platform used with Prometheus and other data sources.", category: "Observability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Metrics Aggregator", definition: "A system that collects and summarizes metrics from multiple services or hosts.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Log Aggregation", definition: "Centralizing logs from multiple sources for querying and analysis.", category: "Observability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Alerting", definition: "Triggering notifications based on predefined conditions or anomalies.", category: "Observability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Histogram", definition: "A metric type that shows distribution across value ranges (buckets).", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Trace Context", definition: "Metadata passed through services to correlate logs and spans of a request.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Dashboards", definition: "Visual interfaces that show system metrics and statuses in real-time.", category: "Observability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Span", definition: "A single operation in a distributed trace, including duration and metadata.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Anomaly Detection", definition: "Using rules or ML to detect unusual behavior in system metrics or logs.", category: "Observability", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "SLI/SLO/SLA", definition: "Service Level Indicator/Objective/Agreement—metrics and targets for service reliability.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Synthetic Monitoring", definition: "Simulating user interactions to monitor service availability and response.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Service Map", definition: "A visual graph showing service dependencies and their health status.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Logging Correlation ID", definition: "A unique ID used to trace logs across services for a single request.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Real User Monitoring (RUM)", definition: "Collecting telemetry from real users interacting with a frontend or service.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Span Exporter", definition: "A component that sends collected trace data to external observability tools.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Time Series Database (TSDB)", definition: "A database optimized for storing and querying timestamped data points.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Distributed Log Tracing", definition: "Tracking events across services using logs instead of full-fledged tracing systems.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Histogram", definition: "A metric type that shows the distribution of observed values over time.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Metric Aggregation", definition: "Combining multiple data points into summaries like avg, max, min.", category: "Observability", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Alert Fatigue", definition: "Desensitization to alerts due to excessive noise or false positives.", category: "Observability", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Log Rotation", definition: "The process of archiving and deleting old log files to save space.", category: "Observability", difficulty: "Beginner", usageFrequency: "Moderate" },
+            { term: "Anomaly Detection", definition: "Using statistical or machine learning methods to identify unusual behavior.", category: "Observability", difficulty: "Advanced", usageFrequency: "Moderate" },
+
+
             // API & Integration
-            { term: "REST", definition: "An architectural style using stateless HTTP for resource-based communication.", category: "API" },
-            { term: "gRPC", definition: "A high-performance, contract-based RPC framework using Protocol Buffers.", category: "API" },
-            { term: "GraphQL", definition: "A query language that lets clients request only the data they need.", category: "API" },
-            { term: "CQRS", definition: "Separates read and write operations into different models for scalability.", category: "API" },
-            { term: "SAGA Pattern", definition: "Manages distributed transactions using a sequence of local transactions coordinated via events or commands.", category: "API" }
+            { term: "REST", definition: "An architectural style using stateless HTTP for resource-based communication.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "gRPC", definition: "A high-performance, contract-based RPC framework using Protocol Buffers.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "GraphQL", definition: "A query language that lets clients request only the data they need.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "CQRS", definition: "Separates read and write operations into different models for scalability.", category: "API", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "SAGA Pattern", definition: "Manages distributed transactions using a sequence of local transactions coordinated via events or commands.", category: "API", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Webhooks", definition: "HTTP callbacks triggered by specific events, notifying other systems in real time.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "API Rate Throttling", definition: "Delaying or denying requests when API usage exceeds defined thresholds.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "API Contract", definition: "A defined agreement about request/response structure between API producers and consumers.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "HATEOAS", definition: "A constraint of REST where clients dynamically navigate resources via hyperlinks in responses.", category: "API", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "OpenAPI Specification", definition: "A standard, machine-readable format for defining RESTful APIs.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Service Virtualization", definition: "Simulating dependent systems during testing when real APIs aren't available.", category: "API", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "API Gateway Pattern", definition: "A design pattern where one gateway handles authentication, routing, and transformation for multiple services.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "API Key", definition: "A token used to authenticate and authorize access to an API.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "OAuth 2.0", definition: "An authorization framework that allows limited access to resources on behalf of a user.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "JWT (JSON Web Token)", definition: "A compact, URL-safe token format for representing claims between two parties.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Payload", definition: "The part of the request or response that contains the actual data being transmitted.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Request Throttling", definition: "Deliberately delaying or limiting the number of requests a client can make.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Service Contract Testing", definition: "Verifies that service integrations meet predefined interface agreements.", category: "API", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "CORS", definition: "A browser security policy that restricts cross-origin HTTP requests.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Rate Limiter", definition: "A component that restricts how often a user can call an API or service.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "gRPC Streaming", definition: "A gRPC feature that allows streaming multiple messages in a single call.", category: "API", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "HATEOAS", definition: "Hypermedia as the Engine of Application State; a REST constraint for discoverability via links.", category: "API", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "API Gateway Pattern", definition: "A pattern where a single point handles routing, auth, and aggregation for microservices.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Content Negotiation", definition: "Allows clients to specify the preferred format (e.g., JSON, XML) in requests.", category: "API", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "OpenAPI", definition: "A standard, language-agnostic specification for documenting REST APIs.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Idempotent HTTP Method", definition: "An HTTP method (e.g., PUT, DELETE) that can be safely retried without side effects.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+
+
         ];
 
         let currentMode = 'term-first';
         let currentCategory = 'all';
+        let currentDifficulty = 'all';
+        let currentFrequency = 'all';
         let currentCard = null;
         let filteredCards = [];
         let viewedCards = new Set();
         let cardHistory = [];
 
         function getFilteredCards() {
-            return currentCategory === 'all' 
-                ? flashcards 
-                : flashcards.filter(card => card.category === currentCategory);
+            return flashcards.filter(card => {
+              const matchCategory = currentCategory === "all" || card.category === currentCategory;
+              const matchDifficulty = currentDifficulty === "all" || card.difficulty === currentDifficulty;
+              const matchUsage = currentFrequency === "all" || card.usageFrequency === currentFrequency;
+
+              return matchCategory && matchDifficulty && matchUsage;
+            });
         }
 
         function getRandomCard() {
@@ -536,7 +940,7 @@
 
         function displayCard(card) {
             if (!card) return;
-            
+            localStorage.setItem('lastCard', card.term);
             currentCard = card;
             const flashcardElement = document.getElementById('flashcard');
             const isTermFirst = currentMode === 'term-first';
@@ -554,6 +958,10 @@
             document.getElementById('back-content').innerHTML = `<div class="${backClass}">${backContent}</div>`;
             document.getElementById('front-category').textContent = card.category;
             document.getElementById('back-category').textContent = card.category;
+            document.getElementById('front-difficulty').textContent = card.difficulty;
+            document.getElementById('back-difficulty').textContent = card.difficulty;
+            document.getElementById('front-frequency').textContent = card.usageFrequency;
+            document.getElementById('back-frequency').textContent = card.usageFrequency;
             
             // Add to viewed cards
             viewedCards.add(card.term);
@@ -598,7 +1006,7 @@
 
         function displayDistractionFreeCard(card) {
             if (!card) return;
-            
+            localStorage.setItem('lastCard', card.term);
             const isTermFirst = currentMode === 'term-first';
             const frontContent = isTermFirst ? card.term : card.definition;
             const backContent = isTermFirst ? card.definition : card.term;
@@ -636,6 +1044,24 @@
             }
         }
 
+        function setTheme(theme, event) {
+            // Update data-theme attribute on the <body>
+            document.body.setAttribute('data-theme', theme);
+            
+            // Remove active class from all theme buttons
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        
+            // Redisplay current card with new theme
+            if (currentCard) {
+                displayCard(currentCard);
+            }
+        }
+
         function setMode(mode) {
             currentMode = mode;
             document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
@@ -663,6 +1089,47 @@
             }
             
             updateStats();
+        }
+
+        function filterDifficulty(difficulty) {
+            currentDifficulty = difficulty;
+            document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Reset viewed cards for new category
+            viewedCards.clear();
+            cardHistory = [];
+            
+            // Load first card from new category
+            const newCard = getRandomCard();
+            if (newCard) {
+                displayCard(newCard);
+            }
+            
+            updateStats();
+        }
+
+        function filterFrequency(frequency) {
+            currentFrequency = frequency;
+            document.querySelectorAll('.frequency-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Reset viewed cards for new category
+            viewedCards.clear();
+            cardHistory = [];
+            
+            // Load first card from new category
+            const newCard = getRandomCard();
+            if (newCard) {
+                displayCard(newCard);
+            }
+            
+            updateStats();
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            panel.classList.toggle('open');
         }
 
         function updateStats() {
@@ -699,11 +1166,47 @@
             }
         });
 
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('settings-panel');
+            const toggleButton = e.target.closest('button[onclick="toggleSettings()"]');
+
+            if (!panel.contains(e.target) && !toggleButton && panel.classList.contains('open')) {
+                panel.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') nextCard();
+            else if (e.key === ' ') flipCard();
+        });
+        
+        // On load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) setTheme(savedTheme);
+        });
+
+        // Modify setTheme()
+        function setTheme(theme, event) {
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme); // Save to localStorage
+        
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            if (event) event.target.classList.add('active');
+            if (currentCard) displayCard(currentCard);
+        }
+
         // Initialize the app
         function init() {
-            const firstCard = getRandomCard();
-            if (firstCard) {
-                displayCard(firstCard);
+            const savedTerm = localStorage.getItem('lastCard');
+            if (savedTerm) {
+                const savedCard = flashcards.find(card => card.term === savedTerm);
+                if (savedCard) displayCard(savedCard);
+            } else {
+                const firstCard = getRandomCard();
+                if (firstCard) {
+                    displayCard(firstCard);
+                }
             }
         }
 
