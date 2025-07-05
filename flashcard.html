@@ -78,6 +78,7 @@
             gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
         }
 
         .df-btn {
@@ -458,7 +459,7 @@
 
         .settings-panel {
             max-height: 0;
-            overflow: hidden;
+            overflow: auto;
             transition: max-height 0.4s ease, padding 0.4s ease;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(6px);
@@ -815,7 +816,7 @@
         }
     
         .flashcard-term {
-            font-size: 1.4rem;
+            font-size: 2rem;
         }
     
         .flashcard-definition {
@@ -840,7 +841,7 @@
     
         .df-btn {
             width: 90%;
-            max-width: 250px;
+            max-width: 350px;
         }
     }
     
@@ -967,9 +968,8 @@
         </div>
         
         <div class="distraction-free-controls">
-            <button class="df-btn" onclick="previousDistractionFreeCardWithAnimation()">⬅️ Previous</button>
-            <button class="df-btn" onclick="flipDistractionFreeCard()">🔄 Flip</button>
             <button class="df-btn" onclick="nextDistractionFreeCardWithAnimation()">➡️ Next</button>
+            <button class="df-btn" onclick="previousDistractionFreeCardWithAnimation()">⬅️ Previous</button>
             <button class="df-btn exit-btn" onclick="exitDistractionFreeMode()">❌ Exit Focus Mode</button>
         </div>
     </div>
@@ -1753,7 +1753,23 @@
             if (currentCard) displayCard(currentCard);
         }
 
-        // Initialize the app
+        // Click navigation in distraction-free mode
+        document.getElementById('distraction-free-overlay').addEventListener('click', function(e) {
+            const flashcard = document.getElementById('df-flashcard');
+            const controls = document.querySelector('.distraction-free-controls');
+            if (flashcard.contains(e.target) || controls.contains(e.target)) return;
+        
+            const x = e.clientX;
+            const screenWidth = window.innerWidth;
+        
+            if (x < screenWidth / 2) {
+                previousDistractionFreeCardWithAnimation();
+            } else {
+                nextDistractionFreeCardWithAnimation();
+            }
+        });
+
+// Initialize the app
         function init() {
             // Load previous card from localStorage
             const savedPreviousCard = localStorage.getItem('previousCard');
