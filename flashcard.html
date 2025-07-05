@@ -48,6 +48,7 @@
             background: var(--bg-gradient);
             z-index: 1000;
             display: flex;
+            overflow-y: auto; /* Enable vertical scrolling if needed */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -57,8 +58,10 @@
         }
 
         .distraction-free .flashcard {
-            width: 500px;
-            height: 350px;
+            width: 90%;
+            max-width: 500px;
+            height: auto;
+            aspect-ratio: 4 / 3; /* maintain card shape on resize */
             margin-bottom: 30px;
         }
 
@@ -800,33 +803,63 @@
             --shadow-color: rgba(64,224,208,0.3);
         }
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .flashcard {
-                width: 300px;
-                height: 220px;
-                margin: 0 10px;
-            }
-            
-            .flashcard-term {
-                font-size: 1.5rem;
-            }
-            
-            .flashcard-definition {
-                font-size: 1rem;
-            }
-            
-            .navigation {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .nav-btn {
-                width: 200px;
-            }
+        .header h1 {
+            font-size: 1.8rem;
         }
+    
+        .flashcard {
+            width: 90%;
+            height: auto;
+            aspect-ratio: 4 / 3;
+            margin: 0 10px;
+        }
+    
+        .flashcard-term {
+            font-size: 1.4rem;
+        }
+    
+        .flashcard-definition {
+            font-size: 1rem;
+        }
+    
+        .navigation {
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        .nav-btn {
+            width: 90%;
+            max-width: 200px;
+        }
+    
+        .distraction-free-controls {
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+    
+        .df-btn {
+            width: 90%;
+            max-width: 250px;
+        }
+    }
+    
+    @media (orientation: landscape) and (max-height: 500px) {
+        .distraction-free {
+            padding: 10px;
+            overflow-y: auto;
+            justify-content: flex-start;
+        }
+    
+        .flashcard {
+            width: 95%;
+            aspect-ratio: 4 / 3;
+        }
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
     </style>
 </head>
 <body data-theme="default">
