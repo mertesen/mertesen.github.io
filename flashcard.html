@@ -23,6 +23,7 @@
             justify-content: center;
             padding: 20px;
             color: var(--text-secondary);
+            transition: all 0.6s ease, color 0.6s ease;
         }
 
         .header {
@@ -158,6 +159,14 @@
         .theme-btn.neon { background: linear-gradient(135deg, #0F0F23 0%, #1A1A2E 100%); }
         .theme-btn.pastel { background: linear-gradient(135deg, #FFB3E6 0%, #FFE4E1 100%); }
         .theme-btn.dark { background: linear-gradient(135deg, rgba(235, 219, 178, 0.2), #FFE4E1 100%); }
+        .theme-btn.aurora { background: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%); }
+        .theme-btn.volcano { background: linear-gradient(135deg, #FF4500 0%, #8B0000 100%); }
+        .theme-btn.arctic { background: linear-gradient(135deg, #E0F6FF 0%, #81D4FA 100%); }
+        .theme-btn.cyberpunk { background: linear-gradient(135deg, #000000 0%, #330066 100%); }
+        .theme-btn.golden { background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%); }
+        .theme-btn.cosmic { background: linear-gradient(135deg, #000428 0%, #009ffd 100%); }
+        .theme-btn.retro { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
+        .theme-btn.mint { background: linear-gradient(135deg, #00f5ff 0%, #55efc4 100%); }
 
         .controls {
             display: flex;
@@ -267,6 +276,8 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 30px;
+            width: 100%;
+            padding: 0 10px;
         }
 
         .flashcard {
@@ -481,6 +492,11 @@
             animation: slideInLeft 0.4s ease forwards;
         }
 
+        /* Fade in only on hover (desktop) */
+        .flashcard:hover {
+            opacity: 0.9;
+        }
+
         [data-theme="default"] {
             /* Default theme (Purple Gradient) */
             --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -621,6 +637,168 @@
             --exit-btn-hover: rgba(204, 36, 29, 0.6);
         }
 
+        [data-theme="aurora"] {
+            --bg-gradient: linear-gradient(135deg, #00C9FF 0%, #92FE9D 50%, #FFB6C1 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #f0ffff);
+            --card-back-gradient: linear-gradient(145deg, #4B0082, #8A2BE2);
+            --button-gradient: linear-gradient(145deg, #32CD32, #00FF7F);
+            --flip-button-gradient: linear-gradient(145deg, #FF1493, #FF69B4);
+            --text-primary: #2F4F4F;
+            --text-secondary: white;
+            --text-on-card: #2F4F4F;
+            --glass-bg: rgba(255,255,255,0.25);
+            --glass-border: rgba(255,255,255,0.4);
+            --glass-hover: rgba(255,255,255,0.35);
+            --category-tag-bg: rgba(0,0,0,0.1);
+            --category-tag-text: rgba(255,255,255,0.9);
+            --category-tag-back-bg: rgba(255,255,255,0.3);
+            --category-tag-back-text: rgba(255,255,255,0.9);
+            --progress-gradient: linear-gradient(90deg, #32CD32, #00FF7F);
+            --shadow-color: rgba(0,201,255,0.3);
+        }
+
+        [data-theme="volcano"] {
+            --bg-gradient: linear-gradient(135deg, #FF4500 0%, #8B0000 50%, #2F4F4F 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #fff5ee);
+            --card-back-gradient: linear-gradient(145deg, #DC143C, #B22222);
+            --button-gradient: linear-gradient(145deg, #FF8C00, #FF4500);
+            --flip-button-gradient: linear-gradient(145deg, #FFD700, #FFA500);
+            --text-primary: #2F4F4F;
+            --text-secondary: white;
+            --text-on-card: #2F4F4F;
+            --glass-bg: rgba(255,255,255,0.15);
+            --glass-border: rgba(255,255,255,0.25);
+            --glass-hover: rgba(255,255,255,0.3);
+            --category-tag-bg: rgba(0,0,0,0.2);
+            --category-tag-text: rgba(255,255,255,0.9);
+            --category-tag-back-bg: rgba(255,255,255,0.25);
+            --category-tag-back-text: rgba(255,255,255,0.9);
+            --progress-gradient: linear-gradient(90deg, #FF8C00, #FF4500);
+            --shadow-color: rgba(255,69,0,0.4);
+        }
+
+        [data-theme="arctic"] {
+            --bg-gradient: linear-gradient(135deg, #E0F6FF 0%, #B3E5FC 50%, #81D4FA 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #f0f8ff);
+            --card-back-gradient: linear-gradient(145deg, #4682B4, #5F9EA0);
+            --button-gradient: linear-gradient(145deg, #87CEEB, #4682B4);
+            --flip-button-gradient: linear-gradient(145deg, #FF6347, #FF4500);
+            --text-primary: #2F4F4F;
+            --text-secondary: white;
+            --text-on-card: #2F4F4F;
+            --glass-bg: rgba(255,255,255,0.6);
+            --glass-border: rgba(255,255,255,0.8);
+            --glass-hover: rgba(255,255,255,0.7);
+            --category-tag-bg: rgba(47,79,79,0.1);
+            --category-tag-text: rgba(47,79,79,0.8);
+            --category-tag-back-bg: rgba(255,255,255,0.4);
+            --category-tag-back-text: rgba(255,255,255,0.9);
+            --progress-gradient: linear-gradient(90deg, #87CEEB, #4682B4);
+            --shadow-color: rgba(70,130,180,0.3);
+        }
+
+        [data-theme="cyberpunk"] {
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #1a0033 50%, #330066 100%);
+            --card-front-gradient: linear-gradient(145deg, #1a0033, #000000);
+            --card-back-gradient: linear-gradient(145deg, #ff0080, #cc0066);
+            --button-gradient: linear-gradient(145deg, #00ff41, #00cc33);
+            --flip-button-gradient: linear-gradient(145deg, #ff0080, #ff1493);
+            --text-primary: #00ff41;
+            --text-secondary: #ff0080;
+            --text-on-card: #00ff41;
+            --glass-bg: rgba(0,255,65,0.1);
+            --glass-border: rgba(0,255,65,0.3);
+            --glass-hover: rgba(0,255,65,0.2);
+            --category-tag-bg: rgba(0,255,65,0.2);
+            --category-tag-text: rgba(0,255,65,0.9);
+            --category-tag-back-bg: rgba(255,0,128,0.2);
+            --category-tag-back-text: rgba(255,0,128,0.9);
+            --progress-gradient: linear-gradient(90deg, #00ff41, #ff0080);
+            --shadow-color: rgba(0,255,65,0.4);
+            --exit-btn-bg: rgba(255,0,128,0.3);
+            --exit-btn-border: rgba(255,0,128,0.5);
+            --exit-btn-hover: rgba(255,0,128,0.6);
+        }
+
+        [data-theme="golden"] {
+            --bg-gradient: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #fffacd);
+            --card-back-gradient: linear-gradient(145deg, #B8860B, #DAA520);
+            --button-gradient: linear-gradient(145deg, #FFD700, #FFA500);
+            --flip-button-gradient: linear-gradient(145deg, #8B4513, #A0522D);
+            --text-primary: #8B4513;
+            --text-secondary: white;
+            --text-on-card: #8B4513;
+            --glass-bg: rgba(255,215,0,0.2);
+            --glass-border: rgba(255,215,0,0.4);
+            --glass-hover: rgba(255,215,0,0.3);
+            --category-tag-bg: rgba(139,69,19,0.2);
+            --category-tag-text: rgba(139,69,19,0.9);
+            --category-tag-back-bg: rgba(255,255,255,0.3);
+            --category-tag-back-text: rgba(139,69,19,0.9);
+            --progress-gradient: linear-gradient(90deg, #FFD700, #FFA500);
+            --shadow-color: rgba(255,215,0,0.4);
+        }
+
+        [data-theme="cosmic"] {
+            --bg-gradient: linear-gradient(135deg, #000428 0%, #004e92 50%, #009ffd 100%);
+            --card-front-gradient: linear-gradient(145deg, #1a1a2e, #16213e);
+            --card-back-gradient: linear-gradient(145deg, #7b68ee, #9370db);
+            --button-gradient: linear-gradient(145deg, #4169e1, #6495ed);
+            --flip-button-gradient: linear-gradient(145deg, #ff6347, #ff7f50);
+            --text-primary: #e6e6fa;
+            --text-secondary: white;
+            --text-on-card: #e6e6fa;
+            --glass-bg: rgba(230,230,250,0.1);
+            --glass-border: rgba(230,230,250,0.2);
+            --glass-hover: rgba(230,230,250,0.15);
+            --category-tag-bg: rgba(230,230,250,0.15);
+            --category-tag-text: rgba(230,230,250,0.9);
+            --category-tag-back-bg: rgba(255,255,255,0.2);
+            --category-tag-back-text: rgba(230,230,250,0.9);
+            --progress-gradient: linear-gradient(90deg, #4169e1, #6495ed);
+            --shadow-color: rgba(65,105,225,0.3);
+        }
+
+        [data-theme="retro"] {
+            --bg-gradient: linear-gradient(135deg, #f7971e 0%, #ffd200 50%, #ffb347 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff8dc, #faebd7);
+            --card-back-gradient: linear-gradient(145deg, #cd853f, #d2691e);
+            --button-gradient: linear-gradient(145deg, #ff6b35, #f7931e);
+            --flip-button-gradient: linear-gradient(145deg, #8b0000, #dc143c);
+            --text-primary: #8b4513;
+            --text-secondary: white;
+            --text-on-card: #8b4513;
+            --glass-bg: rgba(255,248,220,0.4);
+            --glass-border: rgba(255,248,220,0.6);
+            --glass-hover: rgba(255,248,220,0.5);
+            --category-tag-bg: rgba(139,69,19,0.2);
+            --category-tag-text: rgba(139,69,19,0.9);
+            --category-tag-back-bg: rgba(255,255,255,0.3);
+            --category-tag-back-text: rgba(139,69,19,0.9);
+            --progress-gradient: linear-gradient(90deg, #ff6b35, #f7931e);
+            --shadow-color: rgba(247,151,30,0.3);
+        }
+
+        [data-theme="mint"] {
+            --bg-gradient: linear-gradient(135deg, #00f5ff 0%, #00cec9 50%, #55efc4 100%);
+            --card-front-gradient: linear-gradient(145deg, #fff, #f0ffff);
+            --card-back-gradient: linear-gradient(145deg, #20b2aa, #008b8b);
+            --button-gradient: linear-gradient(145deg, #40e0d0, #48d1cc);
+            --flip-button-gradient: linear-gradient(145deg, #ff7f50, #ff6347);
+            --text-primary: #2f4f4f;
+            --text-secondary: white;
+            --text-on-card: #2f4f4f;
+            --glass-bg: rgba(255,255,255,0.3);
+            --glass-border: rgba(255,255,255,0.5);
+            --glass-hover: rgba(255,255,255,0.4);
+            --category-tag-bg: rgba(47,79,79,0.1);
+            --category-tag-text: rgba(47,79,79,0.8);
+            --category-tag-back-bg: rgba(255,255,255,0.3);
+            --category-tag-back-text: rgba(255,255,255,0.9);
+            --progress-gradient: linear-gradient(90deg, #40e0d0, #48d1cc);
+            --shadow-color: rgba(64,224,208,0.3);
+        }
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -678,7 +856,16 @@
             <div class="theme-btn midnight" data-theme="midnight" title="Midnight Gray" onclick="setTheme('midnight', event)"></div>
             <div class="theme-btn neon" data-theme="neon" title="Neon Dark" onclick="setTheme('neon', event)"></div>
             <div class="theme-btn pastel" data-theme="pastel" title="Pastel Pink" onclick="setTheme('pastel', event)"></div>
+            <div class="theme-btn aurora" data-theme="aurora" title="Aurora" onclick="setTheme('aurora', event)"></div>
+            <div class="theme-btn volcano" data-theme="volcano" title="Volcano" onclick="setTheme('volcano', event)"></div>
+            <div class="theme-btn arctic" data-theme="arctic" title="Arctic" onclick="setTheme('arctic', event)"></div>
+            <div class="theme-btn cyberpunk" data-theme="cyberpunk" title="Cyberpunk" onclick="setTheme('cyberpunk', event)"></div>
+            <div class="theme-btn golden" data-theme="golden" title="Golden" onclick="setTheme('golden', event)"></div>
+            <div class="theme-btn cosmic" data-theme="cosmic" title="Cosmic" onclick="setTheme('cosmic', event)"></div>
+            <div class="theme-btn retro" data-theme="retro" title="Retro" onclick="setTheme('retro', event)"></div>
+            <div class="theme-btn mint" data-theme="mint" title="Mint" onclick="setTheme('mint', event)"></div>
             <div class="theme-btn dark" data-theme="dark" title="Dark" onclick="setTheme('dark', event)"></div>
+
         </div>
     
         <div class="category-filter">
@@ -689,6 +876,8 @@
             <button class="category-btn" onclick="filterCategory('Reliability')">Reliability</button>
             <button class="category-btn" onclick="filterCategory('Observability')">Observability</button>
             <button class="category-btn" onclick="filterCategory('API')">API</button>
+            <button class="category-btn" onclick="filterCategory('Security')">Security</button>
+            <button class="category-btn" onclick="filterCategory('Tools')">Tools</button>
         </div>
     
         <div class="difficulty-filter">
@@ -745,6 +934,7 @@
         </div>
         
         <div class="distraction-free-controls">
+            <button class="df-btn" onclick="previousDistractionFreeCardWithAnimation()">⬅️ Previous</button>
             <button class="df-btn" onclick="flipDistractionFreeCard()">🔄 Flip</button>
             <button class="df-btn" onclick="nextDistractionFreeCardWithAnimation()">➡️ Next</button>
             <button class="df-btn exit-btn" onclick="exitDistractionFreeMode()">❌ Exit Focus Mode</button>
@@ -752,6 +942,7 @@
     </div>
 
     <div class="navigation">
+        <button class="nav-btn" onclick="previousCardWithAnimation()">⬅️ Previous</button>
         <button class="nav-btn flip-btn" onclick="flipCard()">🔄 Flip Card</button>
         <button class="nav-btn" onclick="nextCardWithAnimation()">➡️ Next Random</button>
     </div>
@@ -762,7 +953,15 @@
             <span id="current-category-display">All</span>
         </div>
         <div class="stats-row">
-            <span><strong>Cards in Category:</strong></span>
+            <span><strong>Difficulty:</strong></span>
+            <span id="current-difficulty-display">All</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Usage Frequency:</strong></span>
+            <span id="current-frequency-display">All</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Cards in Filter:</strong></span>
             <span id="category-total">0</span>
         </div>
         <div class="stats-row">
@@ -813,7 +1012,47 @@
             { term: "Stateful Service", definition: "A service that maintains state across requests or sessions.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
             { term: "Service Registry", definition: "Stores metadata about services, enabling discovery and routing.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
             { term: "Init System", definition: "The first process started during boot, used to manage services (e.g., systemd).", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
-
+            { term: "Service Level Objective (SLO)", definition: "A measurable goal for system reliability and performance.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "CAP Theorem", definition: "States that a distributed system can only guarantee two of the following three: Consistency, Availability, and Partition Tolerance.", category: "System Components", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Horizontal Scaling", definition: "Adding more machines to handle increased load instead of increasing the capacity of a single machine.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Vertical Scaling", definition: "Increasing the capacity of a single machine (CPU, RAM) to handle more load.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Eventual Consistency", definition: "A model where updates will propagate eventually and all nodes will become consistent over time.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Strong Consistency", definition: "Guarantees that every read returns the most recent write.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Load Shedding", definition: "Dropping requests when the system is overloaded to preserve stability for prioritized traffic.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Write Amplification", definition: "A phenomenon where a small logical write causes multiple physical writes, often in SSDs or DBs.", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Read Replicas", definition: "Database replicas used to serve read traffic and reduce load on the primary database.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Thundering Herd", definition: "A burst of identical requests hitting the system simultaneously (e.g., after cache miss).", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Cache Invalidation", definition: "The process of removing outdated data from the cache when the underlying data changes.", category: "System Components", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Bloom Filter", definition: "A probabilistic data structure to test whether an element is in a set, with false positives allowed.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Distributed Consensus", definition: "A protocol (like Raft or Paxos) that helps nodes in a distributed system agree on a single value.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Service Granularity", definition: "The size and scope of functionality that a service owns; fine-grained vs coarse-grained.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Single Point of Failure (SPOF)", definition: "A part of the system that, if it fails, causes the whole system to fail.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Cold Start", definition: "The delay when initializing a service, container, or function that's not yet warm.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Tail Latency", definition: "The latency experienced by the slowest requests; important in distributed systems.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Data Locality", definition: "Keeping compute close to the data to reduce latency and improve performance.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Quorum Write", definition: "A write considered successful only after being acknowledged by a majority of nodes.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Leader-Follower Pattern", definition: "One leader handles writes; followers replicate and serve reads.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Back-of-the-Envelope Calculation", definition: "Rough estimates to assess feasibility of architectural components (e.g., storage, QPS).", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Write-Through Cache", definition: "Updates both the cache and the underlying storage on write operations.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Write-Back Cache", definition: "Updates only the cache initially; underlying storage is updated later.", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Circuit Breaking Pattern", definition: "Prevents repeated calls to a failing service by opening a temporary 'circuit'.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Bulkhead Isolation", definition: "Isolates components or service partitions to contain failures.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Idempotent Operation", definition: "An operation that can be applied multiple times without changing the result beyond the initial application.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "High Availability (HA)", definition: "Designing systems to ensure continuous operation despite failures.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Latency Budget", definition: "The allowable time a system or service has to respond under an SLA.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Georeplication", definition: "Distributing data across regions to reduce latency and improve availability.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Sticky Sessions", definition: "Routing a user’s requests to the same backend instance during a session.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Split-Brain", definition: "A situation where cluster nodes lose communication and operate independently, leading to inconsistency.", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Leader Election", definition: "The process of choosing one node as the primary for coordination.", category: "System Components", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Snowballing Failure", definition: "A cascading failure where one service's slowdown causes widespread degradation.", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Graceful Shutdown", definition: "A service shuts down cleanly, finishing active requests and freeing resources.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Service Discovery", definition: "Mechanism by which services dynamically locate each other in a distributed system.", category: "System Components", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Service Registry", definition: "A database where services register and lookup other service endpoints.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Strangler Fig Pattern", definition: "Gradually replacing parts of a monolith by routing traffic to new services.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "API Composition", definition: "Combining responses from multiple microservices into a single API response.", category: "System Components", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Snapshot Isolation", definition: "A concurrency control method where transactions operate on a consistent snapshot of the DB.", category: "System Components", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Out-of-Order Execution", definition: "Processing tasks or events not in the order received, often for performance.", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Monotonic Reads", definition: "Guarantees that subsequent reads by a user won’t return older data.", category: "System Components", difficulty: "Advanced", usageFrequency: "Rare" },
 
             // Data Management
             { term: "Database Transaction", definition: "A unit of work performed within a database that is atomic and reliable.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Common" },
@@ -843,7 +1082,6 @@
             { term: "Bitemporal Data", definition: "Captures both actual event time and system record time.", category: "Data Management", difficulty: "Advanced", usageFrequency: "Rare" },
             { term: "Bloom Filter", definition: "A space-efficient data structure for checking set membership with possible false positives.", category: "Data Management", difficulty: "Advanced", usageFrequency: "Moderate" },
             { term: "ACID Compliance", definition: "Guarantees that database transactions are Atomic, Consistent, Isolated, and Durable.", category: "Data Management", difficulty: "Beginner", usageFrequency: "Common" },
-
 
             // Event-Driven & Streaming
             { term: "Event Sourcing", definition: "Storing state changes as a series of immutable events.", category: "Event-Driven", difficulty: "Advanced", usageFrequency: "Moderate" },
@@ -939,7 +1177,6 @@
             { term: "Log Rotation", definition: "The process of archiving and deleting old log files to save space.", category: "Observability", difficulty: "Beginner", usageFrequency: "Moderate" },
             { term: "Anomaly Detection", definition: "Using statistical or machine learning methods to identify unusual behavior.", category: "Observability", difficulty: "Advanced", usageFrequency: "Moderate" },
 
-
             // API & Integration
             { term: "REST", definition: "An architectural style using stateless HTTP for resource-based communication.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
             { term: "gRPC", definition: "A high-performance, contract-based RPC framework using Protocol Buffers.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
@@ -967,6 +1204,70 @@
             { term: "Content Negotiation", definition: "Allows clients to specify the preferred format (e.g., JSON, XML) in requests.", category: "API", difficulty: "Intermediate", usageFrequency: "Moderate" },
             { term: "OpenAPI", definition: "A standard, language-agnostic specification for documenting REST APIs.", category: "API", difficulty: "Beginner", usageFrequency: "Common" },
             { term: "Idempotent HTTP Method", definition: "An HTTP method (e.g., PUT, DELETE) that can be safely retried without side effects.", category: "API", difficulty: "Intermediate", usageFrequency: "Common" },
+            
+            // Security
+            { term: "Authentication", definition: "Verifying the identity of a user or system.", category: "Security", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Authorization", definition: "Determining what actions a user or system is allowed to perform.", category: "Security", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "OAuth 2.0", definition: "A protocol for authorization that lets third-party apps access user data without exposing credentials.", category: "Security", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "JWT", definition: "JSON Web Token; a compact way to securely transmit information between parties.", category: "Security", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "SSO (Single Sign-On)", definition: "An authentication scheme that allows users to log in once and access multiple systems.", category: "Security", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "CORS", definition: "Cross-Origin Resource Sharing; a browser security feature restricting cross-site HTTP requests.", category: "Security", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "XSS (Cross-Site Scripting)", definition: "A vulnerability where malicious scripts are injected into web pages.", category: "Security", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "CSRF", definition: "Cross-Site Request Forgery; tricks users into making unwanted requests to a site where they're authenticated.", category: "Security", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Hashing", definition: "Transforming data into a fixed-size string that represents its contents.", category: "Security", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Encryption", definition: "Encoding information so only authorized parties can access it.", category: "Security", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "TLS/SSL", definition: "Protocols that secure communications over networks (HTTPS).", category: "Security", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Secret Management", definition: "Storing, accessing, and controlling sensitive credentials and tokens.", category: "Security", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Zero Trust", definition: "A security model assuming no implicit trust, requiring verification for every access.", category: "Security", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Security Posture", definition: "An organization's overall strength and readiness to prevent or respond to threats.", category: "Security", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Vulnerability Scanner", definition: "A tool that detects known security flaws in systems and applications.", category: "Security", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "IAM (Identity & Access Management)", definition: "Processes and tools for managing digital identities and permissions.", category: "Security", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Audit Logging", definition: "Recording actions taken by users and systems for accountability and forensics.", category: "Security", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Penetration Testing", definition: "Simulated attacks to find exploitable vulnerabilities in systems.", category: "Security", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Security Headers", definition: "HTTP headers that improve the security of web applications.", category: "Security", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Least Privilege", definition: "Giving users only the access necessary to perform their job.", category: "Security", difficulty: "Beginner", usageFrequency: "Common" },
+
+            // Tools
+            { term: "Docker", definition: "A containerization platform that packages applications with their dependencies.", category: "Tools", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Kubernetes", definition: "An orchestration system for deploying, scaling, and managing containerized applications.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Terraform", definition: "An Infrastructure as Code tool for managing cloud and on-prem resources.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Ansible", definition: "A configuration management tool for automating software provisioning and deployment.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Prometheus", definition: "An open-source tool for monitoring and alerting based on time-series data.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Grafana", definition: "A visualization tool for dashboards and metrics, often paired with Prometheus.", category: "Tools", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Vault", definition: "A tool for securely storing and accessing secrets, tokens, and credentials.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Jenkins", definition: "An automation server for continuous integration and continuous delivery (CI/CD).", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "GitHub Actions", definition: "A CI/CD tool built into GitHub for automating workflows and deployments.", category: "Tools", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Argo CD", definition: "A GitOps continuous delivery tool for Kubernetes.", category: "Tools", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Helm", definition: "A Kubernetes package manager for defining, installing, and upgrading applications.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Istio", definition: "A service mesh for managing microservice traffic, security, and observability.", category: "Tools", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Linkerd", definition: "A lightweight service mesh alternative to Istio for Kubernetes.", category: "Tools", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Kafka", definition: "A distributed event streaming platform for high-throughput, real-time messaging.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "RabbitMQ", definition: "A message broker that supports multiple messaging protocols for service communication.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Fluentd", definition: "An open-source log collector that unifies data collection and forwarding.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Logstash", definition: "A tool for processing and forwarding logs, often used in the ELK stack.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "ElasticSearch", definition: "A distributed search and analytics engine commonly used for log and metrics analysis.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Consul", definition: "A service mesh and service discovery tool by HashiCorp.", category: "Tools", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Datadog", definition: "A commercial observability platform for monitoring, security, and analytics.", category: "Tools", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "CircleCI", definition: "A cloud-native CI/CD tool known for fast builds and parallel job execution.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Pulumi", definition: "An Infrastructure as Code tool using general-purpose languages like TypeScript or Python.", category: "Tools", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Spinnaker", definition: "A continuous delivery platform for managing multi-cloud deployments.", category: "Tools", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Nomad", definition: "A workload orchestrator for deploying containers and legacy applications.", category: "Tools", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Buildkite", definition: "A CI/CD tool that runs pipelines on your own infrastructure with cloud UI.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Skaffold", definition: "A command-line tool for continuous development on Kubernetes-native apps.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Tilt", definition: "A tool for rapid local Kubernetes development and live updates.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Rare" },
+            { term: "Kind", definition: "Kubernetes in Docker; creates local clusters for testing.", category: "Tools", difficulty: "Beginner", usageFrequency: "Moderate" },
+            { term: "Minikube", definition: "A local Kubernetes cluster for learning and testing.", category: "Tools", difficulty: "Beginner", usageFrequency: "Moderate" },
+            { term: "K9s", definition: "A terminal-based UI to interact with Kubernetes clusters.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Tanka", definition: "A tool to manage Kubernetes configurations using Jsonnet.", category: "Tools", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Kustomize", definition: "A Kubernetes-native configuration tool for customizing YAML files.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Open Policy Agent (OPA)", definition: "A policy engine for enforcing fine-grained control across systems.", category: "Tools", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Falco", definition: "A runtime security tool for Kubernetes that detects abnormal behavior.", category: "Tools", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Sysdig", definition: "A monitoring, security, and troubleshooting platform for containers.", category: "Tools", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "New Relic", definition: "A SaaS observability platform offering APM, logs, and dashboards.", category: "Tools", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "PagerDuty", definition: "An incident response tool that notifies and escalates alerts to on-call teams.", category: "Tools", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Sentry", definition: "An error-tracking tool that helps developers monitor and fix crashes in real-time.", category: "Tools", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Splunk", definition: "A platform for searching, monitoring, and analyzing machine-generated data.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Artifactory", definition: "A repository manager for storing build artifacts and dependencies.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
 
 
         ];
@@ -976,9 +1277,11 @@
         let currentDifficulty = 'all';
         let currentFrequency = 'all';
         let currentCard = null;
+        let previousCard = null;
         let filteredCards = [];
         let viewedCards = new Set();
         let cardHistory = [];
+        
 
         function getFilteredCards() {
             return flashcards.filter(card => {
@@ -1000,6 +1303,12 @@
 
         function displayCard(card) {
             if (!card) return;
+
+            if (currentCard && currentCard !== card) {
+                previousCard = currentCard;
+                localStorage.setItem('previousCard', JSON.stringify(previousCard));
+            }
+
             localStorage.setItem('lastCard', card.term);
             currentCard = card;
             const flashcardElement = document.getElementById('flashcard');
@@ -1091,6 +1400,13 @@
 
         function displayDistractionFreeCard(card) {
             if (!card) return;
+
+            // Store current card as previous before switching
+            if (currentCard && currentCard !== card) {
+                previousCard = currentCard;
+                localStorage.setItem('previousCard', JSON.stringify(previousCard));
+            }
+
             localStorage.setItem('lastCard', card.term);
             const isTermFirst = currentMode === 'term-first';
             const frontContent = isTermFirst ? card.term : card.definition;
@@ -1105,6 +1421,90 @@
             document.getElementById('df-back-content').innerHTML = `<div class="${backClass}">${backContent}</div>`;
             document.getElementById('df-front-category').textContent = card.category;
             document.getElementById('df-back-category').textContent = card.category;
+        }
+
+        // New function to go to previous card
+        function previousCardFunction() {
+            if (previousCard) {
+                // Temporarily store current as next previous
+                const temp = currentCard;
+                displayCard(previousCard);
+                previousCard = temp;
+                localStorage.setItem('previousCard', JSON.stringify(previousCard));
+            }
+        }
+
+        // New function to go to previous card with animation
+        function previousCardWithAnimation() {
+            if (!previousCard) return;
+
+            const cardEl = document.getElementById('flashcard');
+
+            // Animate current card out (slide to right)
+            cardEl.classList.add('card-slide-out');
+
+            setTimeout(() => {
+                // Load previous card
+                const temp = currentCard;
+                displayCard(previousCard);
+                previousCard = temp;
+                localStorage.setItem('previousCard', JSON.stringify(previousCard));
+
+                // Remove old animation class and trigger slide-in
+                cardEl.classList.remove('card-slide-out');
+                cardEl.classList.add('card-slide-in');
+
+                // Clean up slide-in class after it finishes
+                setTimeout(() => {
+                    cardEl.classList.remove('card-slide-in');
+                }, 400);
+            }, 400);
+        }
+
+        // New function for distraction-free mode previous card
+        function previousDistractionFreeCard() {
+            if (previousCard) {
+                // Temporarily store current as next previous
+                const temp = currentCard;
+                currentCard = previousCard;
+                displayDistractionFreeCard(previousCard);
+                previousCard = temp;
+                localStorage.setItem('previousCard', JSON.stringify(previousCard));
+
+                // Also update the main card for when user exits focus mode
+                displayCard(currentCard);
+            }
+        }
+
+        // New function for distraction-free mode previous card with animation
+        function previousDistractionFreeCardWithAnimation() {
+            if (!previousCard) return;
+
+            const cardEl = document.getElementById('df-flashcard');
+
+            // Animate current card out
+            cardEl.classList.add('card-slide-out');
+
+            setTimeout(() => {
+                // Load previous card
+                const temp = currentCard;
+                currentCard = previousCard;
+                displayDistractionFreeCard(previousCard);
+                previousCard = temp;
+                localStorage.setItem('previousCard', JSON.stringify(previousCard));
+
+                // Also update the main card for when user exits focus mode
+                displayCard(currentCard);
+
+                // Remove old animation class and trigger slide-in
+                cardEl.classList.remove('card-slide-out');
+                cardEl.classList.add('card-slide-in');
+
+                // Clean up slide-in class after it finishes
+                setTimeout(() => {
+                    cardEl.classList.remove('card-slide-in');
+                }, 400);
+            }, 400);
         }
 
         function flipDistractionFreeCard() {
@@ -1252,6 +1652,10 @@
             
             document.getElementById('current-category-display').textContent = 
                 currentCategory === 'all' ? 'All Categories' : currentCategory;
+            document.getElementById('current-difficulty-display').textContent = 
+                currentDifficulty === 'all' ? 'All Difficulties' : currentDifficulty;
+            document.getElementById('current-frequency-display').textContent = 
+                currentFrequency === 'all' ? 'All Frequencies' : currentFrequency;
             document.getElementById('category-total').textContent = categoryTotal;
             document.getElementById('viewed-count').textContent = viewedCount;
             document.getElementById('current-card-number').textContent = cardHistory.length;
@@ -1262,11 +1666,7 @@
         document.getElementById('flashcard').addEventListener('click', flipCard);
         
         // Add click event to distraction-free card for flipping
-        document.getElementById('df-flashcard').addEventListener('click', (e) => {
-            if (!draggedFarDF) {
-                flipDistractionFreeCard();
-            }
-        });
+        document.getElementById('df-flashcard').addEventListener('click',flipDistractionFreeCard);
 
         // Keyboard shortcuts for distraction-free mode
         document.addEventListener('keydown', function(e) {
@@ -1279,142 +1679,11 @@
                     flipDistractionFreeCard();
                 } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
                     nextDistractionFreeCard();
+                } else if (e.key === 'ArrowLeft') {
+                    previousDistractionFreeCardWithAnimation();
                 }
             }
         });
-
-        // Card swipe effect - start
-        let isDragging = false;
-        let startX = 0;
-        let currentX = 0;
-
-        const card = document.getElementById('flashcard');
-
-        card.addEventListener('touchstart', startDrag);
-
-        function startDrag(e) {
-            isDragging = true;
-            startX = getX(e);
-        
-            document.addEventListener('touchmove', onDrag);
-            document.addEventListener('touchend', endDrag);
-        }
-
-        function onDrag(e) {
-            if (!isDragging) return;
-            currentX = getX(e);
-            const deltaX = currentX - startX;
-        
-            // Move the card with the cursor
-            card.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`;
-        }
-
-        function endDrag(e) {
-            if (!isDragging) return;
-            isDragging = false;
-        
-            const deltaX = currentX - startX;
-        
-            // Swipe threshold
-            const threshold = 100;
-        
-            if (deltaX > threshold) {
-                card.classList.add('discard-right');
-                triggerNextCard();
-            } else if (deltaX < -threshold) {
-                card.classList.add('discard-left');
-                triggerNextCard();
-            } else {
-                // Snap back
-                card.style.transform = 'translateX(0px) rotate(0deg)';
-            }
-        
-            document.removeEventListener('touchmove', onDrag);
-            document.removeEventListener('touchend', endDrag);
-        }
-
-        function getX(e) {
-            return e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
-        }
-
-        function triggerNextCard() {
-            setTimeout(() => {
-                card.classList.remove('discard-left', 'discard-right');
-                card.style.transform = 'translateX(0px) rotate(0deg)';
-                nextCard(); // load next card
-            }, 300);
-        }
-        // Card swipe effect - end
-
-        // DF Card swipe effect - start
-        let draggedFarDF = false;
-        let isDraggingDF = false;
-        let startXDF = 0;
-        let currentXDF = 0;
-
-        const dfCard = document.getElementById('df-flashcard');
-
-        dfCard.addEventListener('mousedown', startDragDF);
-        dfCard.addEventListener('touchstart', startDragDF);
-
-        function startDragDF(e) {
-            isDraggingDF = true;
-            startXDF = getX(e);
-        
-            document.addEventListener('mousemove', onDragDF);
-            document.addEventListener('mouseup', endDragDF);
-            document.addEventListener('touchmove', onDragDF);
-            document.addEventListener('touchend', endDragDF);
-        }
-
-        function onDragDF(e) {
-            if (!isDraggingDF) return;
-            currentXDF = getX(e);
-            const deltaX = currentXDF - startXDF;
-        
-            // Determine if user has dragged "far enough"
-            if (Math.abs(deltaX) > 10) {
-                draggedFarDF = true;
-            }
-
-            dfCard.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`;
-        }
-
-        function endDragDF(e) {
-            if (!isDraggingDF || !draggedFarDF) return;
-            isDraggingDF = false;
-        
-            const deltaX = currentXDF - startXDF;
-            const threshold = 100;
-        
-            if (deltaX > threshold) {
-                dfCard.classList.add('discard-right');
-                triggerNextDistractionFreeCard();
-            } else if (deltaX < -threshold) {
-                dfCard.classList.add('discard-left');
-                triggerNextDistractionFreeCard();
-            } else {
-                dfCard.style.transform = 'translateX(0px) rotate(0deg)';
-            }
-
-            setTimeout(() => {
-                draggedFarDF = false; // reset after animation
-            }, 300);
-
-            document.removeEventListener('mousemove', onDragDF);
-            document.removeEventListener('mouseup', endDragDF);
-            document.removeEventListener('touchmove', onDragDF);
-            document.removeEventListener('touchend', endDragDF);
-        }
-
-        function triggerNextDistractionFreeCard() {
-            setTimeout(() => {
-                dfCard.classList.remove('discard-left', 'discard-right');
-                dfCard.style.transform = 'translateX(0px) rotate(0deg)';
-                nextDistractionFreeCard(); // load next DF card
-            }, 300);
-        }
-        // DF Card swipe effect - end
 
         document.addEventListener('click', (e) => {
             const panel = document.getElementById('settings-panel');
@@ -1425,9 +1694,14 @@
             }
         });
 
+        // Enhanced keyboard shortcuts for normal mode
         document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight') nextCard();
-            else if (e.key === ' ') flipCard();
+            const dfOverlay = document.getElementById('distraction-free-overlay');
+            if (dfOverlay.style.display !== 'flex') {
+                if (e.key === 'ArrowRight') nextCard();
+                else if (e.key === 'ArrowLeft') previousCardWithAnimation();
+                else if (e.key === ' ') flipCard();
+            }
         });
         
         // On load
@@ -1448,6 +1722,16 @@
 
         // Initialize the app
         function init() {
+            // Load previous card from localStorage
+            const savedPreviousCard = localStorage.getItem('previousCard');
+            if (savedPreviousCard) {
+                try {
+                    previousCard = JSON.parse(savedPreviousCard);
+                } catch (e) {
+                    console.log('Error parsing previous card from localStorage');
+                }
+            }
+    
             const savedTerm = localStorage.getItem('lastCard');
             if (savedTerm) {
                 const savedCard = flashcards.find(card => card.term === savedTerm);
