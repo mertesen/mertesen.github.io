@@ -879,8 +879,7 @@
     
     <!-- Sliding settings panel -->
     <div id="settings-panel" class="settings-panel">
-        <h3>Settings</h3>
-        <p>Here you can configure your preferences.</p>
+        <h3>Theme</h3>
         <br>
         <div class="theme-selector">
             <div class="theme-btn default active" data-theme="default" title="Purple Gradient" onclick="setTheme('default', event)"></div>
@@ -902,6 +901,10 @@
 
         </div>
     
+        <hr style="opacity: 0.3;">
+        <br>
+        <h3>Category</h3>
+        <br>
         <div class="category-filter">
             <button class="category-btn active" onclick="filterCategory('all')">All</button>
             <button class="category-btn" onclick="filterCategory('System Components')">System Components</button>
@@ -912,8 +915,13 @@
             <button class="category-btn" onclick="filterCategory('API')">API</button>
             <button class="category-btn" onclick="filterCategory('Security')">Security</button>
             <button class="category-btn" onclick="filterCategory('Tools')">Tools</button>
+            <button class="category-btn" onclick="filterCategory('AI Systems')">AI Systems</button>
         </div>
     
+        <hr style="opacity: 0.3;">
+        <br>
+        <h3>Difficulty</h3>
+        <br>
         <div class="difficulty-filter">
             <button class="difficulty-btn active" onclick="filterDifficulty('all')">All</button>
             <button class="difficulty-btn" onclick="filterDifficulty('Beginner')">Beginner</button>
@@ -921,6 +929,10 @@
             <button class="difficulty-btn" onclick="filterDifficulty('Advanced')">Advanced</button>
         </div>
     
+        <hr style="opacity: 0.3;">
+        <br>
+        <h3>Frequency</h3>
+        <br>
         <div class="frequency-filter">
             <button class="frequency-btn active" onclick="filterFrequency('all')">All</button>
             <button class="frequency-btn" onclick="filterFrequency('Common')">Common</button>
@@ -1302,6 +1314,47 @@
             { term: "Splunk", definition: "A platform for searching, monitoring, and analyzing machine-generated data.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Common" },
             { term: "Artifactory", definition: "A repository manager for storing build artifacts and dependencies.", category: "Tools", difficulty: "Intermediate", usageFrequency: "Moderate" },
 
+            // AI 
+            { term: "Model Inference", definition: "The process of using a trained model to make predictions on new data.", category: "AI Systems", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Feature Store", definition: "A centralized repository for storing, managing, and serving ML features.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Model Drift", definition: "The degradation of model performance over time due to changes in input data patterns.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Model Registry", definition: "A versioned storage system for managing ML models, metadata, and deployment stages.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "A/B Testing (ML)", definition: "Evaluating multiple ML models or configurations in parallel to choose the best performer.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Online Inference", definition: "Real-time predictions made in response to live requests.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Batch Inference", definition: "Generating predictions in bulk for large datasets at scheduled intervals.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Retraining Pipeline", definition: "An automated process that updates models using fresh data.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "MLOps", definition: "The discipline of deploying, monitoring, and maintaining machine learning models in production.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Vector Database", definition: "A database optimized for storing and querying high-dimensional vector embeddings.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Embedding", definition: "A dense vector representation of data (e.g. text, images) used for similarity or input to models.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Semantic Search", definition: "Search based on meaning using embeddings and vector similarity, rather than keywords.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Prompt Engineering", definition: "Crafting input prompts to elicit desired outputs from language models.", category: "AI Systems", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "RAG (Retrieval-Augmented Generation)", definition: "Combines external knowledge retrieval with generation from a language model.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Latency Budget (AI)", definition: "Time constraints placed on AI systems to return predictions within acceptable limits.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Token Limit", definition: "The maximum number of tokens a language model can process in a single input.", category: "AI Systems", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Cold Start (Model)", definition: "Delay in serving predictions due to model loading or warm-up time.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Fine-tuning", definition: "Adjusting a pre-trained model's weights using domain-specific labeled data.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Zero-Shot Learning", definition: "The ability of a model to generalize to tasks it was not explicitly trained on.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "LLM Gateway", definition: "An API service that handles routing, prompt enrichment, logging, and access control for LLMs.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Model Serving", definition: "Deploying and exposing ML models as scalable services via APIs or endpoints.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Latency vs Accuracy Tradeoff", definition: "Balancing response time with model performance when deploying AI systems.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Common" },
+            { term: "Model Versioning", definition: "Tracking changes to models and allowing rollback or comparison between versions.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Explainability (XAI)", definition: "Techniques that make model decisions interpretable to humans.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Concept Drift", definition: "A shift in the statistical properties of target variables over time, affecting model accuracy.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Multi-Modal Model", definition: "A model that takes inputs from different data types such as text, image, and audio.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Quantization", definition: "Reducing the precision of model weights (e.g., from float32 to int8) to improve inference speed and memory use.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Distillation", definition: "Training a smaller model (student) to replicate the behavior of a larger one (teacher).", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Model Cascade", definition: "Using lightweight models first and escalating to more complex ones if needed.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Rare" },
+            { term: "Safety Classifier", definition: "A model component that detects and filters harmful, toxic, or unsafe outputs.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Guardrails", definition: "Pre- and post-processing rules or filters that enforce constraints on AI outputs.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Tokenization", definition: "Splitting raw text into chunks (tokens) that a model can process.", category: "AI Systems", difficulty: "Beginner", usageFrequency: "Common" },
+            { term: "Beam Search", definition: "A decoding algorithm that keeps multiple hypotheses during text generation.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Top-k Sampling", definition: "A decoding strategy that samples from the top-k most likely next tokens.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Top-p Sampling (Nucleus)", definition: "A decoding method that samples from the smallest possible set of words whose cumulative probability exceeds p.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Context Window", definition: "The maximum amount of text (in tokens) a language model can consider at once.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Common" },
+            { term: "Embedding Cache", definition: "A layer that stores frequently queried embeddings to reduce redundant computation.", category: "AI Systems", difficulty: "Intermediate", usageFrequency: "Moderate" },
+            { term: "Neural Search", definition: "Search based on semantic similarity using embeddings and deep learning models.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "LLMOps", definition: "Operational practices and tools for deploying and managing large language models in production.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
+            { term: "Agents (AI)", definition: "Autonomous systems that use LLMs to perform actions based on reasoning, planning, and memory.", category: "AI Systems", difficulty: "Advanced", usageFrequency: "Moderate" },
 
         ];
 
