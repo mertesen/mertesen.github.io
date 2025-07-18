@@ -1,5 +1,6 @@
         
 let currentMode = 'term-first';
+let selectedCategories = ['all'];
 let currentCategory = 'all';
 let currentDifficulty = 'all';
 let currentFrequency = 'all';
@@ -11,12 +12,13 @@ let cardHistory = [];
         
 function getFilteredCards() {
     return flashcards.filter(card => {
-      const matchCategory = currentCategory === "all" || card.category === currentCategory;
+      const matchCategory = selectedCategories.includes('all') || selectedCategories.includes(card.category);
       const matchDifficulty = currentDifficulty === "all" || card.difficulty === currentDifficulty;
       const matchUsage = currentFrequency === "all" || card.usageFrequency === currentFrequency;
       return matchCategory && matchDifficulty && matchUsage;
     });
 }
+
 function getRandomCard() {
     filteredCards = getFilteredCards();
     if (filteredCards.length === 0) return null;
@@ -274,21 +276,43 @@ function setMode(mode) {
 }
 
 function filterCategory(category) {
-    currentCategory = category;
-    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    
-    // Reset viewed cards for new category
-    viewedCards.clear();
-    cardHistory = [];
-    
-    // Load first card from new category
+    if (category === 'all' ) {
+        selectedCategories = ['all'];
+    } else {
+        // Remove 'all' if selecting specific categories
+        selectedCategories = selectedCategories.filter(cat => cat !== 'all');
+
+        if (selectedCategories.includes(category)) {
+            // Unselect category
+            selectedCategories = selectedCategories.filter(cat => cat !== category);
+        } else {
+            // Add category
+            selectedCategories.push(category);
+        }
+
+        // If none selected, default back to 'all'
+        if (selectedCategories.length === 0) {
+            selectedCategories = ['all'];
+        }
+    }
     const newCard = getRandomCard();
     if (newCard) {
         displayCard(newCard);
     }
-    
+    updateCategoryButtons();
     updateStats();
+}
+
+function updateCategoryButtons() {
+    const buttons = document.querySelectorAll('.category-btn');
+    buttons.forEach(button => {
+        const category = button.textContent.trim();
+        if (selectedCategories.includes(category) || (category === 'All' && selectedCategories.includes('all'))) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
 }
 
 function filterDifficulty(difficulty) {
@@ -336,7 +360,7 @@ function updateStats() {
     const progress = categoryTotal > 0 ? (viewedCount / categoryTotal) * 100 : 0;
     
     document.getElementById('current-category-display').textContent = 
-        currentCategory === 'all' ? 'All Categories' : currentCategory;
+        selectedCategories.includes('all') ? 'All Categories' : selectedCategories;
     document.getElementById('current-difficulty-display').textContent = 
         currentDifficulty === 'all' ? 'All Difficulties' : currentDifficulty;
     document.getElementById('current-frequency-display').textContent = 
