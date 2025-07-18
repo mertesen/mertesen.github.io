@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🃏</text></svg>">
+<meta name="theme-color" content="#333">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="flashcard-data.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body data-theme="default">
+    <div class="header">
+        <h1>Software Engineer Flashcards</h1>
+        <p>Click card to flip • Use Next or Right Arrow on keyboard for random term</p>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn active" onclick="setMode('term-first')">Term First</button>
+        <button class="control-btn" onclick="setMode('definition-first')">Definition First</button>
+        <button class="control-btn" onclick="enterDistractionFreeMode()">🎯 Focus Mode</button>
+        <button class="control-btn" onclick="toggleSettings()">⚙️ Settings</button>
+    </div>
+    
+    <div id="settings-panel" class="settings-panel">
+        <h3>Theme</h3>
+        <br>
+        <div class="theme-selector">
+            <div class="theme-btn default active" data-theme="default" title="Purple Gradient" onclick="setTheme('default', event)"></div>
+            <div class="theme-btn ocean" data-theme="ocean" title="Ocean Blue" onclick="setTheme('ocean', event)"></div>
+            <div class="theme-btn forest" data-theme="forest" title="Forest Green" onclick="setTheme('forest', event)"></div>
+            <div class="theme-btn sunset" data-theme="sunset" title="Sunset Orange" onclick="setTheme('sunset', event)"></div>
+            <div class="theme-btn midnight" data-theme="midnight" title="Midnight Gray" onclick="setTheme('midnight', event)"></div>
+            <div class="theme-btn neon" data-theme="neon" title="Neon Dark" onclick="setTheme('neon', event)"></div>
+            <div class="theme-btn pastel" data-theme="pastel" title="Pastel Pink" onclick="setTheme('pastel', event)"></div>
+            <div class="theme-btn aurora" data-theme="aurora" title="Aurora" onclick="setTheme('aurora', event)"></div>
+            <div class="theme-btn volcano" data-theme="volcano" title="Volcano" onclick="setTheme('volcano', event)"></div>
+            <div class="theme-btn arctic" data-theme="arctic" title="Arctic" onclick="setTheme('arctic', event)"></div>
+            <div class="theme-btn cyberpunk" data-theme="cyberpunk" title="Cyberpunk" onclick="setTheme('cyberpunk', event)"></div>
+            <div class="theme-btn golden" data-theme="golden" title="Golden" onclick="setTheme('golden', event)"></div>
+            <div class="theme-btn cosmic" data-theme="cosmic" title="Cosmic" onclick="setTheme('cosmic', event)"></div>
+            <div class="theme-btn retro" data-theme="retro" title="Retro" onclick="setTheme('retro', event)"></div>
+            <div class="theme-btn mint" data-theme="mint" title="Mint" onclick="setTheme('mint', event)"></div>
+            <div class="theme-btn dark" data-theme="dark" title="Dark" onclick="setTheme('dark', event)"></div>
+
+        </div>
+    
+        <hr style="opacity: 0.3;">
+        <br>
+        <h3>Category</h3>
+        <br>
+        <div class="category-filter">
+            <button class="category-btn active" onclick="filterCategory('all')">All</button>
+            <button class="category-btn" onclick="filterCategory('System Components')">System Components</button>
+            <button class="category-btn" onclick="filterCategory('Data Management')">Data Management</button>
+            <button class="category-btn" onclick="filterCategory('Event-Driven')">Event-Driven</button>
+            <button class="category-btn" onclick="filterCategory('Reliability')">Reliability</button>
+            <button class="category-btn" onclick="filterCategory('Observability')">Observability</button>
+            <button class="category-btn" onclick="filterCategory('API')">API</button>
+            <button class="category-btn" onclick="filterCategory('Security')">Security</button>
+            <button class="category-btn" onclick="filterCategory('Tools')">Tools</button>
+            <button class="category-btn" onclick="filterCategory('AI Systems')">AI Systems</button>
+        </div>
+    
+        <hr style="opacity: 0.3;">
+        <br>
+        <h3>Difficulty</h3>
+        <br>
+        <div class="difficulty-filter">
+            <button class="difficulty-btn active" onclick="filterDifficulty('all')">All</button>
+            <button class="difficulty-btn" onclick="filterDifficulty('Beginner')">Beginner</button>
+            <button class="difficulty-btn" onclick="filterDifficulty('Intermediate')">Intermediate</button>
+            <button class="difficulty-btn" onclick="filterDifficulty('Advanced')">Advanced</button>
+        </div>
+    
+        <hr style="opacity: 0.3;">
+        <br>
+        <h3>Frequency</h3>
+        <br>
+        <div class="frequency-filter">
+            <button class="frequency-btn active" onclick="filterFrequency('all')">All</button>
+            <button class="frequency-btn" onclick="filterFrequency('Common')">Common</button>
+            <button class="frequency-btn" onclick="filterFrequency('Moderate')">Moderate</button>
+            <button class="frequency-btn" onclick="filterFrequency('Rare')">Rare</button>
+        </div>
+    </div>    
+
+    <div class="flashcard-container">
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="tag-container">
+                        <div class="tag category-tag" id="front-category"></div>
+                        <div class="tag difficulty-tag" id="front-difficulty" hidden></div>
+                        <div class="tag frequency-tag" id="front-frequency" hidden></div>
+                    </div>
+                    <div class="flashcard-content" id="front-content"></div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="tag-container">
+                        <div class="tag category-tag" id="back-category"></div>
+                        <div class="tag difficulty-tag" id="back-difficulty" hidden></div>
+                        <div class="tag frequency-tag" id="back-frequency" hidden></div>
+                    </div>
+                    <div class="flashcard-content" id="back-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="distraction-free-overlay" class="distraction-free" style="display: none;">
+        <div class="flashcard" id="df-flashcard">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <div class="category-tag" id="df-front-category" hidden></div>
+                    <div class="flashcard-content" id="df-front-content"></div>
+                </div>
+                <div class="flashcard-back">
+                    <div class="category-tag" id="df-back-category" hidden></div>
+                    <div class="flashcard-content" id="df-back-content"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="distraction-free-controls">
+            <button class="df-btn" onclick="nextDistractionFreeCardWithAnimation()">➡️ Next</button>
+            <button class="df-btn" onclick="previousDistractionFreeCardWithAnimation()">⬅️ Previous</button>
+            <button class="df-btn exit-btn" onclick="exitDistractionFreeMode()">❌ Exit Focus Mode</button>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousCardWithAnimation()">⬅️ Previous</button>
+        <button class="nav-btn flip-btn" onclick="flipCard()">🔄 Flip Card</button>
+        <button class="nav-btn" onclick="nextCardWithAnimation()">➡️ Next Random</button>
+    </div>
+
+    <div class="stats">
+        <div class="stats-row">
+            <span><strong>Category:</strong></span>
+            <span id="current-category-display">All</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Difficulty:</strong></span>
+            <span id="current-difficulty-display">All</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Usage Frequency:</strong></span>
+            <span id="current-frequency-display">All</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Cards in Filter:</strong></span>
+            <span id="category-total">0</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Cards Viewed:</strong></span>
+            <span id="viewed-count">0</span>
+        </div>
+        <div class="stats-row">
+            <span><strong>Current Card:</strong></span>
+            <span id="current-card-number">1</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    
+</body>
+</html>
