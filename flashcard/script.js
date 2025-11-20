@@ -326,10 +326,15 @@ function enterDistractionFreeMode() {
     if (currentCard) {
         displayDistractionFreeCard(currentCard);
     }
+
+    applyModeChangeAnimation();
 }
 function exitDistractionFreeMode() {
     document.getElementById('distraction-free-overlay').style.display = 'none';
     document.body.style.overflow = 'auto';
+
+    applyModeChangeAnimation();
+
 }
 function displayDistractionFreeCard(card) {
     if (!card) return;
@@ -363,6 +368,13 @@ function previousCardFunction() {
         localStorage.setItem('previousCard', JSON.stringify(previousCard));
     }
 }
+function applyModeChangeAnimation() {
+    const container = document.getElementById("flashcard-container");
+    container.classList.remove("mode-change");
+    void container.offsetWidth; // reflow (animation reset)
+    container.classList.add("mode-change");
+}
+
 // New function to go to previous card with animation
 function previousCardWithAnimation() {
     if (!previousCard) return;

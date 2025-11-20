@@ -1501,3 +1501,17 @@ body {
 [data-theme="apple"] .heatmap-cell.level-2 { background-color: #40C463; } 
 [data-theme="apple"] .heatmap-cell.level-3 { background-color: #30A14E; } 
 [data-theme="apple"] .heatmap-cell.level-4 { background-color: #216E39; }
+
+.mode-change {
+    animation: modeFade .35s ease;
+}
+  
+@keyframes modeFade {
+  0% { opacity: 0; transform: scale(.97); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.flashcard:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,.12),
+              0 0 15px var(--accent-glow, rgba(100,150,255,.25));
+}
