@@ -19,7 +19,7 @@
     <div class="controls">
         <button class="control-btn active" onclick="setMode('term-first')">Term First</button>
         <button class="control-btn" onclick="setMode('definition-first')">Definition First</button>
-        <button class="control-btn" onclick="enterDistractionFreeMode()">🎯 Focus Mode</button>
+        <button class="control-btn" onclick="startQuizMode()">🧠 Quiz Mode</button> <button class="control-btn" onclick="toggleSearch()">🔍 Search (Cmd+K)</button> <button class="control-btn" onclick="enterDistractionFreeMode()">🎯 Focus Mode</button>
         <button class="control-btn" onclick="toggleSettings()">⚙️ Settings</button>
     </div>
     
@@ -43,6 +43,8 @@
             <div class="theme-btn retro" data-theme="retro" title="Retro" onclick="setTheme('retro', event)"></div>
             <div class="theme-btn mint" data-theme="mint" title="Mint" onclick="setTheme('mint', event)"></div>
             <div class="theme-btn dark" data-theme="dark" title="Dark" onclick="setTheme('dark', event)"></div>
+            <div class="theme-btn apple" data-theme="apple" title="Minimalist Pro" onclick="setTheme('apple', event)"></div>
+            <div class="theme-btn crystal" data-theme="crystal" title="Crystal Pro" onclick="setTheme('crystal', event)"></div>
 
         </div>
     
@@ -84,6 +86,27 @@
             <button class="frequency-btn" onclick="filterFrequency('Moderate')">Moderate</button>
             <button class="frequency-btn" onclick="filterFrequency('Rare')">Rare</button>
         </div>
+
+
+        <hr style="opacity: 0.3;">
+        <br>
+        <h3>Data Management</h3>
+        <br>
+        <div class="data-controls" style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="control-btn" onclick="exportProgress()">📥 Export Progress</button>
+            <button class="control-btn" onclick="triggerImport()">📤 Import Progress</button>
+
+            <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importProgress(event)">
+        </div>
+<br>
+
+<hr style="opacity: 0.3;">
+<br>
+<h3>Activity Heatmap (Last 365 Days)</h3>
+<p style="font-size: 0.9rem; margin-bottom: 15px;">Your consistency drives the Leitner System. Keep the graph green!</p>
+<div id="activity-heatmap" class="heatmap-container">
+    </div>
+<br>
     </div>    
 
     <div class="flashcard-container">
@@ -104,6 +127,7 @@
                         <div class="tag frequency-tag" id="back-frequency" hidden></div>
                     </div>
                     <div class="flashcard-content" id="back-content"></div>
+                    <div class="deep-dive-container" id="deep-dive-links"></div>
                 </div>
             </div>
         </div>
@@ -131,9 +155,38 @@
     </div>
 
     <div class="navigation">
-        <button class="nav-btn" onclick="previousCardWithAnimation()">⬅️ Previous</button>
-        <button class="nav-btn flip-btn" onclick="flipCard()">🔄 Flip Card</button>
-        <button class="nav-btn" onclick="nextCardWithAnimation()">➡️ Next Random</button>
+        <div id="standard-nav" style="display: flex; gap: 15px; align-items: center;">
+            <button class="nav-btn" onclick="previousCardWithAnimation()" title="Previous">⬅️</button>
+            <button class="nav-btn flip-btn" onclick="flipCard()">Flip Card</button>
+            <button class="nav-btn" onclick="nextCardWithAnimation()" title="Next">➡️</button>
+        </div>
+    
+        <div id="leitner-nav" class="leitner-controls">
+            <button class="leitner-btn dont-know" onclick="handleLeitnerRating(false)">Missed</button>
+            <button class="leitner-btn know" onclick="handleLeitnerRating(true)">Knew</button>
+        </div>
+    </div>
+
+    <div id="search-overlay" class="search-overlay" style="display: none;" onclick="closeSearch(event)">
+        <div class="search-modal">
+            <input type="text" id="search-input" placeholder="Search term or definition... (ESC to close)" oninput="handleSearch()">
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </div>
+    
+    <div id="quiz-container" class="quiz-container" style="display: none;">
+        <div class="quiz-card">
+            <div class="quiz-question-box">
+                <div class="tag-container">
+                    <span class="tag category-tag" id="quiz-category"></span>
+                </div>
+                <h2 id="quiz-question">Question</h2>
+            </div>
+            <div class="quiz-options-grid" id="quiz-options">
+                </div>
+            <div id="quiz-feedback" class="quiz-feedback"></div>
+            <button class="nav-btn" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display: none; margin-top: 20px;">Next Question ➡️</button>
+        </div>
     </div>
 
     <div class="stats">
@@ -165,7 +218,5 @@
             <div class="progress-fill" id="progress-fill"></div>
         </div>
     </div>
-
-    
 </body>
 </html>
