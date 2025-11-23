@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowState | Focus Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <div class="logo">FlowState</div>
+            <div class="stats-summary">
+                <span>Today: <strong id="today-minutes">0</strong>m</span>
+                <span>Sessions: <strong id="today-sessions">0</strong></span>
+            </div>
+            <button id="btn-settings" class="btn-icon" style="font-size: 1.2rem;" title="Settings">⚙️</button>
+        </header>
+
+        <main>
+            <div class="timer-container">
+                <div class="progress-ring">
+                    <svg class="progress-ring__svg" width="300" height="300">
+                        <circle class="progress-ring__circle--bg" stroke-width="8" fill="transparent" r="140" cx="150" cy="150"/>
+                        <circle class="progress-ring__circle" stroke-width="8" fill="transparent" r="140" cx="150" cy="150"/>
+                    </svg>
+                    <div class="timer-display">
+                        <div id="time-left">25:00</div>
+                        <div id="timer-label">FOCUS</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="btn-start" class="btn-primary">Start Focus</button>
+                <button id="btn-pause" class="btn-secondary hidden">Pause</button>
+                <button id="btn-reset" class="btn-icon" title="Reset">↺</button>
+            </div>
+
+            <div class="modes">
+                <button class="mode-btn active" data-mode="focus">Focus</button>
+                <button class="mode-btn" data-mode="short">Short Break</button>
+                <button class="mode-btn" data-mode="long">Long Break</button>
+            </div>
+
+            <div class="task-section">
+                <input type="text" id="task-input" placeholder="What are you working on?" autocomplete="off">
+            </div>
+        </main>
+
+        <section class="history-section">
+            <h3>Session History</h3>
+            <div id="history-list" class="history-list">
+                <div class="empty-state">No sessions completed yet today.</div>
+            </div>
+            
+            <div class="history-actions">
+                <button id="btn-export" class="btn-secondary" style="width: 100%;">Export CSV</button>
+                <button class="clear-history" onclick="clearData()" style="width: auto;">Clear</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Settings</h3>
+            
+            <div class="setting-group">
+                <label>Focus (dk)</label>
+                <input type="number" id="setting-focus" min="1">
+            </div>
+            
+            <div class="setting-group">
+                <label>Short Break (dk)</label>
+                <input type="number" id="setting-short" min="1">
+            </div>
+
+            <div class="setting-group">
+                <label>Long Break (dk)</label>
+                <input type="number" id="setting-long" min="1">
+            </div>
+
+            <div class="modal-actions">
+                <button id="btn-save-settings" class="btn-primary">Save</button>
+                <button id="btn-close-settings" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
