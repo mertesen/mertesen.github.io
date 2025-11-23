@@ -310,7 +310,6 @@ function saveSettings() {
             updateDisplay();
             setProgress(0);
         }
-        alert("Settings Saved!");
     } else {
         alert("Please enter valid minutes.");
     }
