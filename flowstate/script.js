@@ -376,10 +376,36 @@ if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
 if (closeSettingsBtn) closeSettingsBtn.addEventListener('click', closeSettings);
 if (saveSettingsBtn) saveSettingsBtn.addEventListener('click', saveSettings);
 
+document.addEventListener('keydown', (e) => {
+    if (document.activeElement.tagName === 'INPUT') return;
+
+    switch(e.code) {
+        case 'Space':
+            e.preventDefault();
+            isRunning ? pauseTimer() : startTimer();
+            break;
+        case 'KeyR':
+            resetTimer();
+            break;
+        case 'KeyF':
+            document.querySelector('[data-mode="focus"]').click();
+            break;
+        case 'KeyS':
+            document.querySelector('[data-mode="short"]').click();
+            break;
+        case 'KeyL':
+            document.querySelector('[data-mode="long"]').click();
+            break;
+        case 'KeyT':
+            document.querySelector('#btn-pip').click();
+            break;
+    }
+});
+
 window.addEventListener('beforeunload', (e) => {
     if (isRunning) {
         e.preventDefault();
-        e.returnValue = ''; // Modern tarayıcılar için standart
+        e.returnValue = '';
     }
 });
 
