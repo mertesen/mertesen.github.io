@@ -311,6 +311,13 @@ if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
 if (closeSettingsBtn) closeSettingsBtn.addEventListener('click', closeSettings);
 if (saveSettingsBtn) saveSettingsBtn.addEventListener('click', saveSettings);
 
+window.addEventListener('beforeunload', (e) => {
+    if (isRunning) {
+        e.preventDefault();
+        e.returnValue = ''; // Modern tarayıcılar için standart
+    }
+});
+
 window.addEventListener('click', (e) => {
     if (e.target === settingsModal) {
         closeSettings();
