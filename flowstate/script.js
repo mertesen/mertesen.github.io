@@ -19,6 +19,7 @@ const timeLeftEl = document.getElementById('time-left');
 const labelEl = document.getElementById('timer-label');
 const circle = document.querySelector('.progress-ring__circle');
 const startBtn = document.getElementById('btn-start');
+const stopBtn = document.getElementById('btn-stop');
 const pauseBtn = document.getElementById('btn-pause');
 const resetBtn = document.getElementById('btn-reset');
 const taskInput = document.getElementById('task-input');
@@ -146,9 +147,11 @@ function updateDisplay() {
 function toggleControls(active) {
     if (active) {
         startBtn.classList.add('hidden');
+        stopBtn.classList.remove('hidden');
         pauseBtn.classList.remove('hidden');
     } else {
         startBtn.classList.remove('hidden');
+        stopBtn.classList.add('hidden');
         pauseBtn.classList.add('hidden');
     }
 }
@@ -344,6 +347,27 @@ function updateCanvas() {
     ctx.fillText(statusText, 150, 190);
 }
 
+function stopTimer() {
+    if (!isRunning) return;
+
+    clearInterval(timerInterval);
+    isRunning = false;
+
+    const secondsPassed = totalSeconds - timeLeft; 
+    
+    if (secondsPassed >= 60) {
+        totalSeconds = secondsPassed; 
+        
+        completeSession(true);
+        
+    } else {
+        resetTimer();
+        switchMode(currentMode === 'focus' ? 'short' : 'focus');
+    }
+    nextMode(); 
+    toggleControls(false); 
+}
+
 async function togglePiP() {
     if (document.pictureInPictureElement) {
         await document.exitPictureInPicture();
@@ -363,12 +387,11 @@ async function togglePiP() {
     }
 }
 
-
-
 // --- Event Listeners ---
 startBtn.addEventListener('click', startTimer);
 pauseBtn.addEventListener('click', pauseTimer);
 resetBtn.addEventListener('click', resetTimer);
+stopBtn.addEventListener('click', stopTimer);
 pipBtn.addEventListener('click', togglePiP);
 exportBtn.addEventListener('click', exportToCSV);
 
