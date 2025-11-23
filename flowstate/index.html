@@ -17,6 +17,7 @@
                 <span>Sessions: <strong id="today-sessions">0</strong></span>
             </div>
             <button id="btn-settings" class="btn-icon" style="font-size: 1.2rem;" title="Settings">⚙️</button>
+            <button id="btn-pip" class="btn-icon" style="font-size: 1.2rem;" title="Picture in Picture">📺</button>
         </header>
 
         <main>
@@ -89,6 +90,8 @@
         </div>
     </div>
 
+    <canvas id="timer-canvas" width="300" height="300" style="display: none;"></canvas>
+    <video id="timer-video" muted autoplay playsinline style="display: none;"></video>
     <script src="script.js"></script>
 </body>
 </html>

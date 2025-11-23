@@ -27,6 +27,11 @@ const todayMinsEl = document.getElementById('today-minutes');
 const todaySessionsEl = document.getElementById('today-sessions');
 const modeBtns = document.querySelectorAll('.mode-btn');
 const exportBtn = document.getElementById('btn-export');
+const pipBtn = document.getElementById('btn-pip');
+const timerCanvas = document.getElementById('timer-canvas');
+const timerVideo = document.getElementById('timer-video');
+const ctx = timerCanvas.getContext('2d');
+let endTime = null;
 
 // Settings Elements
 const settingsBtn = document.getElementById('btn-settings');
@@ -55,13 +60,25 @@ function startTimer() {
     if (isRunning) return;
     isRunning = true;
     
+    if (!endTime) {
+        endTime = Date.now() + (timeLeft * 1000);
+    } else {
+        endTime = Date.now() + (timeLeft * 1000);
+    }
+
     toggleControls(true);
     
     timerInterval = setInterval(() => {
-        timeLeft--;
-        updateDisplay();
+        const now = Date.now();
+        const remaining = Math.ceil((endTime - now) / 1000);
         
-        if (timeLeft <= 0) {
+        if (remaining >= 0) {
+            timeLeft = remaining;
+            updateDisplay();
+            updateCanvas();
+        } else {
+            timeLeft = 0;
+            updateDisplay();
             completeSession();
         }
     }, 1000);
@@ -70,6 +87,7 @@ function startTimer() {
 function pauseTimer() {
     isRunning = false;
     clearInterval(timerInterval);
+    endTime = null;
     toggleControls(false);
 }
 
@@ -301,22 +319,62 @@ function requestNotificationPermission() {
     }
 }
 
+function updateCanvas() {
+
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(0, 0, timerCanvas.width, timerCanvas.height);
+
+
+    ctx.fillStyle = '#f1f5f9'; // --text-main
+    ctx.font = 'bold 80px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    const timeText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+
+
+    ctx.fillText(timeText, 150, 140);
+
+    ctx.font = '20px Inter, sans-serif';
+    ctx.fillStyle = '#94a3b8'; // --text-dim
+    const statusText = currentMode === 'focus' ? "FOCUS" : "BREAK";
+    ctx.fillText(statusText, 150, 190);
+}
+
+async function togglePiP() {
+    if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+    } else {
+        try {
+            if (timerVideo.srcObject === null) {
+                updateCanvas();
+                const stream = timerCanvas.captureStream(30); // 30 FPS
+                timerVideo.srcObject = stream;
+                await timerVideo.play();
+            }
+            await timerVideo.requestPictureInPicture();
+        } catch (error) {
+            console.error("PiP Hatası:", error);
+            alert("PiP özelliği bu tarayıcıda desteklenmiyor veya izin verilmedi.");
+        }
+    }
+}
+
+
+
 // --- Event Listeners ---
 startBtn.addEventListener('click', startTimer);
 pauseBtn.addEventListener('click', pauseTimer);
 resetBtn.addEventListener('click', resetTimer);
+pipBtn.addEventListener('click', togglePiP);
 exportBtn.addEventListener('click', exportToCSV);
 
 if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
 if (closeSettingsBtn) closeSettingsBtn.addEventListener('click', closeSettings);
 if (saveSettingsBtn) saveSettingsBtn.addEventListener('click', saveSettings);
-
-window.addEventListener('beforeunload', (e) => {
-    if (isRunning) {
-        e.preventDefault();
-        e.returnValue = ''; // Modern tarayıcılar için standart
-    }
-});
 
 window.addEventListener('click', (e) => {
     if (e.target === settingsModal) {
