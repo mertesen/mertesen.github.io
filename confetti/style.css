@@ -6,6 +6,22 @@ body {
     height: 100vh;
     overflow: hidden;
     cursor: crosshair;
+    background: radial-gradient(circle at center, #0a0a1a 0%, #05050a 100%);
+    background-attachment: fixed;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: -50px; left: -50px; right: -50px; bottom: -50px;
+    background-image: 
+        radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 100px 150px, rgba(255,255,255,0.5), rgba(0,0,0,0));
+    background-size: 200px 200px;
+    opacity: 0.3;
+    z-index: 0;
+    transition: transform 0.1s ease-out;
 }
 
 #ui-layer {
