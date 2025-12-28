@@ -47,23 +47,34 @@ themeBtn.addEventListener('click', (e) => {
     themeBtn.innerText = `Theme: ${themes[currentThemeIndex].name}`;
 });
 
-window.addEventListener('click', (e) => {
-    const theme = themes[currentThemeIndex];
-    const x = e.clientX;
-    const y = e.clientY;
 
+function handleInteraction(clientX, clientY) {
+    const theme = themes[currentThemeIndex];
     if (currentMode === 'confetti') {
         if (Math.random() > 0.2) {
             playSFX('confetti');
         } else {
             playSFX('confettiwithkids');
         }
-        launchRandomConfetti(x, y, theme.colors);
+        launchRandomConfetti(clientX, clientY, theme.colors);
     } else {
-        launchThemedFirework(x, y, theme.colors);
+        launchThemedFirework(clientX, clientY, theme.colors);
     }
     triggerNeon();
+}
+
+window.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    handleInteraction(e.clientX, e.clientY);
 });
+
+window.addEventListener('touchstart', (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    
+    const touch = e.touches[0];
+    handleInteraction(touch.clientX, touch.clientY);
+    
+}, { passive: false });
 
 function playSFX(type) {
     const sfx = sounds[type].cloneNode();
@@ -72,6 +83,7 @@ function playSFX(type) {
 }
 
 function launchRandomConfetti(x, y, colors) {
+
     const shapes = ['circle', 'square', 'star'];
     const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
     
@@ -102,6 +114,14 @@ function launchThemedFirework(x, y, colors) {
         fw.launch(1, { x, y });
     }, travelTime);
 }
+
+window.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth) * 20;
+    const y = (e.clientY / window.innerHeight) * 20;
+    document.body.style.setProperty('--bg-x', `${x}px`);
+    document.body.style.setProperty('--bg-y', `${y}px`);
+    document.body.style.backgroundPosition = `${x}px ${y}px`;
+});
 
 function getMessageFromURL() {
     const params = new URLSearchParams(window.location.search);
