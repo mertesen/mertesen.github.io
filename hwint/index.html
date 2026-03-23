@@ -33,6 +33,7 @@
                 <option value="all">Tüm Koleksiyon Tipleri</option>
                 <option value="mainline">Mainline</option>
                 <option value="premium">Premium</option>
+                <option value="silver">Silver</option>
             </select>
 
             <select id="raritySelect" class="filter-select">
@@ -41,6 +42,7 @@
                 <option value="th">Treasure Hunt (TH)</option>
                 <option value="sth">Super Treasure Hunt (STH)</option>
                 <option value="premium">Premium</option>
+                <option value="silver">Silver</option>
                 <option value="chase">Chase</option>
             </select>
 
@@ -67,7 +69,23 @@
             </div>
             
             <div id="collectionWrapper" style="display: none; margin-top: 20px;">
-                <div id="statsContainer"></div>
+                <div class="container my-4">
+                    <div class="row align-items-center mb-3">
+                        <div class="col">
+                            <h2 class="h4 mb-0">İstatistikler</h2>
+                        </div>
+                        <div class="col-auto">
+                            <button id="shareCollectionBtn" class="btn-outline-danger btn-sm">
+                                📷 Koleksiyon Kartını İndir
+                            </button>
+                        </div>
+                    </div>
+                    <div id="statsContainer"></div>
+                </div>
+
+                <!-- Missing items notifier — inside collection section -->
+                <div id="missingItemsContainer"></div>
+
                 <div id="setTrackerContainer"></div>
                 <div id="collectionGrid" class="car-grid"></div>
             </div>
@@ -77,7 +95,7 @@
 
         <section class="wishlist-alani">
             <div class="koleksiyon-header">
-                <h2 onclick="toggleWishlist()" style="cursor: pointer; margin: 0; flex-grow: 1;">
+                <h2 onclick="toggleWishlistArea()" style="cursor: pointer; margin: 0; flex-grow: 1;">
                     ❤️ İstek Listem (<span id="wishlistCount">0</span>) <span id="wishToggleIcon">🔽</span>
                 </h2>
             </div>
@@ -86,7 +104,7 @@
             </div>
         </section>
 
-<section class="katalog-alani">
+        <section class="katalog-alani">
             <h2>📚 Tüm Katalog</h2>
             <div id="catalogGrid" class="car-grid"></div>
             <div style="text-align: center; margin-top: 20px;">
@@ -94,6 +112,16 @@
             </div>
         </section>
     </main>
+
+    <!-- ── DETAIL MODAL ──────────────────────────── -->
+    <div class="modal-backdrop" id="carModal">
+        <div class="modal-box" id="carModalBox">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="carModalContent"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script src="cars/mainline/2010.js"></script>
     <script src="cars/mainline/2011.js"></script>
@@ -139,6 +167,37 @@
     <script src="cars/premium/pop_culture/2024.js"></script>
     <script src="cars/premium/pop_culture/2025.js"></script>
     <script src="cars/premium/pop_culture/2026.js"></script>
+
+    <script src="cars/premium/fast_furious/2019.js"></script>
+    <script src="cars/premium/fast_furious/2020.js"></script>
+    <script src="cars/premium/fast_furious/2021.js"></script>
+    <script src="cars/premium/fast_furious/2022.js"></script>
+    <script src="cars/premium/fast_furious/2023.js"></script>
+    <script src="cars/premium/fast_furious/2024.js"></script>
+    <script src="cars/premium/fast_furious/2025.js"></script>
+    <script src="cars/premium/fast_furious/2026.js"></script>
+
+    <script src="cars/silver/fast_furious/2013.js"></script>
+    <script src="cars/silver/fast_furious/2014.js"></script>
+    <script src="cars/silver/fast_furious/2015.js"></script>
+    <script src="cars/silver/fast_furious/2016.js"></script>
+    <script src="cars/silver/fast_furious/2017.js"></script>
+    <script src="cars/silver/fast_furious/2018.js"></script>
+    <script src="cars/silver/fast_furious/2019.js"></script>
+    <script src="cars/silver/fast_furious/2020.js"></script>
+    <script src="cars/silver/fast_furious/2021.js"></script>
+    <script src="cars/silver/fast_furious/2023.js"></script>
+
+    <script src="cars/silver/fast_furious/womenoffast2024.js"></script>
+    <script src="cars/silver/fast_furious/dominictoretto2024.js"></script>
+    <script src="cars/silver/fast_furious/hwdecadesoffast2024.js"></script>
+    <script src="cars/silver/fast_furious/racing2024.js"></script>
+    <script src="cars/silver/fast_furious/brianoconner2025.js"></script>
+    <script src="cars/silver/fast_furious/graphicremix2025.js"></script>
+    <script src="cars/silver/fast_furious/racingcourse2025.js"></script>
+    <script src="cars/silver/fast_furious/villians2025.js"></script>
+    <script src="cars/silver/fast_furious/dreamlineup2026.js"></script>
+    <script src="cars/silver/fast_furious/tokyodrift2026.js"></script>
 
     <script src="app.js"></script>
 </body>
