@@ -192,6 +192,48 @@ function toggleCollection() {
     wrapper.style.display = wrapper.style.display === 'none' ? 'block' : 'none';
     icon.textContent = wrapper.style.display === 'none' ? '🔽' : '🔼';
 }
+
+function exportCollection() {
+    if (myCollection.length === 0) {
+        alert("Koleksiyonunuz boş, dışa aktarılacak bir şey yok!");
+        return;
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(myCollection));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "hw_envanter_yedek.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+// YENİ: İçe Aktar (Import)
+document.getElementById('importFile').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const fileReader = new FileReader();
+    fileReader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            if (Array.isArray(importedData)) {
+                // Eski koleksiyon ile yeni yükleneni birleştir (Mükerrer olanları sil)
+                myCollection = [...new Set([...myCollection, ...importedData])];
+                localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+                updateInterface();
+                alert("Koleksiyon başarıyla içe aktarıldı!");
+            } else {
+                alert("Geçersiz dosya formatı. Lütfen doğru bir JSON dosyası seçin.");
+            }
+        } catch (error) {
+            alert("Dosya okuma hatası oluştu.");
+        }
+        // Dosya seçiciyi sıfırla ki aynı dosyayı tekrar seçebilsin
+        event.target.value = ''; 
+    };
+    fileReader.readAsText(file);
+});
+
 function updateSetTracker() {
     const trackerContainer = document.getElementById('setTrackerContainer');
     if (!trackerContainer) return;
