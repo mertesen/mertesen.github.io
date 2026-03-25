@@ -65,6 +65,16 @@ const allCars = [
     ...ff2025premium,
     ...ff2026premium,
 
+    ...boulevard2012,
+    ...boulevard2013,
+    ...boulevard2020,
+    ...boulevard2021,
+    ...boulevard2022,
+    ...boulevard2023,
+    ...boulevard2024,
+    ...boulevard2025,
+    ...boulevard2026,
+
     ...ffbrianoconner2025,
     ...ffdominictoretto2024,
     ...ffdreamline2026,
