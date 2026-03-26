@@ -20,22 +20,18 @@
             <select id="yearSelect" class="filter-select">
                 <option value="all">Tüm Yıllar</option>
             </select>
-
             <select id="seriesSelect" class="filter-select">
                 <option value="all">Tüm Seriler</option>
             </select>
-        
             <select id="releaseSelect" class="filter-select">
                 <option value="all">Tüm Sürümler (Release)</option>
             </select>
-
             <select id="typeSelect" class="filter-select">
                 <option value="all">Tüm Koleksiyon Tipleri</option>
                 <option value="mainline">Mainline</option>
                 <option value="premium">Premium</option>
                 <option value="silver">Silver</option>
             </select>
-
             <select id="raritySelect" class="filter-select">
                 <option value="all">Tüm Nadirlik Seviyeleri</option>
                 <option value="normal">Normal</option>
@@ -45,7 +41,6 @@
                 <option value="silver">Silver</option>
                 <option value="chase">Chase</option>
             </select>
-
             <select id="sortSelect" class="filter-select">
                 <option value="newest">Yeniden Eskiye</option>
                 <option value="oldest">Eskiden Yeniye</option>
@@ -68,7 +63,9 @@
                 </div>
             </div>
             
-            <div id="collectionWrapper" style="display: none; margin-top: 20px;">
+            <div id="collectionWrapper" style="display: none; margin-top: 16px;">
+
+                <!-- Stats -->
                 <div class="container my-4">
                     <div class="row align-items-center mb-3">
                         <div class="col">
@@ -83,10 +80,21 @@
                     <div id="statsContainer"></div>
                 </div>
 
-                <!-- Missing items notifier — inside collection section -->
+                <!-- Missing items -->
                 <div id="missingItemsContainer"></div>
 
+                <!-- Set tracker -->
                 <div id="setTrackerContainer"></div>
+
+                <!-- ── Collection filter bar ── -->
+                <div class="collection-filters" id="collectionFiltersBar">
+                    <!-- Populated by JS -->
+                </div>
+                <div style="display:flex; align-items:center; justify-content:flex-end; margin: 4px 0 8px;">
+                    <span id="collFilterCount" style="font-size:12px; color:var(--text3); font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.4px;"></span>
+                </div>
+
+                <!-- Collection grid -->
                 <div id="collectionGrid" class="car-grid"></div>
             </div>
         </section>
@@ -113,7 +121,7 @@
         </section>
     </main>
 
-    <!-- ── DETAIL MODAL ──────────────────────────── -->
+    <!-- DETAIL MODAL -->
     <div class="modal-backdrop" id="carModal">
         <div class="modal-box" id="carModalBox">
             <button class="modal-close" onclick="closeModal()">✕</button>
@@ -176,16 +184,6 @@
     <script src="cars/premium/fast_furious/2024.js"></script>
     <script src="cars/premium/fast_furious/2025.js"></script>
     <script src="cars/premium/fast_furious/2026.js"></script>
-
-    <script src="cars/premium/boulevard/2012.js"></script>
-    <script src="cars/premium/boulevard/2013.js"></script>
-    <script src="cars/premium/boulevard/2020.js"></script>
-    <script src="cars/premium/boulevard/2021.js"></script>
-    <script src="cars/premium/boulevard/2022.js"></script>
-    <script src="cars/premium/boulevard/2023.js"></script>
-    <script src="cars/premium/boulevard/2024.js"></script>
-    <script src="cars/premium/boulevard/2025.js"></script>
-    <script src="cars/premium/boulevard/2026.js"></script>
 
     <script src="cars/silver/fast_furious/2013.js"></script>
     <script src="cars/silver/fast_furious/2014.js"></script>
