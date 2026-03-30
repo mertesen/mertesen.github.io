@@ -1,9 +1,9 @@
 const a90sStreet2025 = [
     {
-        "id": "hw-silver-2025-'90s Street Scene-0-1",
+        "id": "hw-silver-2025-90s Street Scene-0-1",
         "name": "'96 Nissan 180SX Type X",
         "series": "Automative",
-        "release": "'90s Street Scene",
+        "release": "90s Street Scene",
         "year": 2025,
         "toyId": "JCB57",
         "seriesNumber": "1/5",
@@ -16,10 +16,10 @@ const a90sStreet2025 = [
         "wikiLink": "https://hotwheels.fandom.com/wiki/%2796_Nissan_180SX_Type_X"
     },
     {
-        "id": "hw-silver-2025-'90s Street Scene-0-2",
+        "id": "hw-silver-2025-90s Street Scene-0-2",
         "name": "Mitsubishi Lancer Evolution VI",
         "series": "Automative",
-        "release": "'90s Street Scene",
+        "release": "90s Street Scene",
         "year": 2025,
         "toyId": "JCB58",
         "seriesNumber": "2/5",
@@ -32,10 +32,10 @@ const a90sStreet2025 = [
         "wikiLink": "https://hotwheels.fandom.com/wiki/Mitsubishi_Lancer_Evolution_VI"
     },
     {
-        "id": "hw-silver-2025-'90s Street Scene-0-3",
+        "id": "hw-silver-2025-90s Street Scene-0-3",
         "name": "Nissan 300ZX Twin Turbo",
         "series": "Automative",
-        "release": "'90s Street Scene",
+        "release": "90s Street Scene",
         "year": 2025,
         "toyId": "JCB59",
         "seriesNumber": "3/5",
@@ -48,10 +48,10 @@ const a90sStreet2025 = [
         "wikiLink": "https://hotwheels.fandom.com/wiki/Nissan_300ZX_Twin_Turbo"
     },
     {
-        "id": "hw-silver-2025-'90s Street Scene-0-4",
+        "id": "hw-silver-2025-90s Street Scene-0-4",
         "name": "'95 Toyota Celica GT-Four",
         "series": "Automative",
-        "release": "'90s Street Scene",
+        "release": "90s Street Scene",
         "year": 2025,
         "toyId": "JCB60",
         "seriesNumber": "4/5",
@@ -64,10 +64,10 @@ const a90sStreet2025 = [
         "wikiLink": "https://hotwheels.fandom.com/wiki/%2795_Toyota_Celica_GT-Four"
     },
     {
-        "id": "hw-silver-2025-'90s Street Scene-0-5",
+        "id": "hw-silver-2025-90s Street Scene-0-5",
         "name": "'92 Honda Civic EG",
         "series": "Automative",
-        "release": "'90s Street Scene",
+        "release": "90s Street Scene",
         "year": 2025,
         "toyId": "JCB56",
         "seriesNumber": "5/5",
