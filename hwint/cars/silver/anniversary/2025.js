@@ -191,4 +191,4 @@ const purpleandgold2025 = [
         "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/9/9e/Purple_%26_Gold_2025_Mix_2_Rally_Special_Gold_Chrome_Malaysia_JDM31.jpg",
         "wikiLink": "https://hotwheels.fandom.com/wiki/Rally_Speciale"
     }
-],
+];

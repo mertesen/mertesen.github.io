@@ -2,7 +2,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-0-1",
         "name": "'64 Chevy Chevelle SS",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 1",
         "year": 2021,
         "toyId": "GRR36",
@@ -18,7 +18,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-0-2",
         "name": "Custom '56 Ford Truck",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 1",
         "year": 2021,
         "toyId": "GRR37",
@@ -34,7 +34,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-0-3",
         "name": "Custom '62 Chevy Pickup",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 1",
         "year": 2021,
         "toyId": "GRR38",
@@ -50,7 +50,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-0-4",
         "name": "Twin Mill III",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 1",
         "year": 2021,
         "toyId": "GRR41",
@@ -66,7 +66,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-0-5",
         "name": "Custom Cadillac Fleetwood",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 1",
         "year": 2021,
         "toyId": "GRR42",
@@ -82,7 +82,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-1-1",
         "name": "'70 Dodge Hemi Challenger",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 2",
         "year": 2021,
         "toyId": "GRP83",
@@ -98,7 +98,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-1-2",
         "name": "'69 Ford Torino Talladega",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 2",
         "year": 2021,
         "toyId": "GRR09",
@@ -114,7 +114,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-1-3",
         "name": "'18 Camaro SS",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 2",
         "year": 2021,
         "toyId": "GRR18",
@@ -130,7 +130,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-1-4",
         "name": "'71 Porsche 911",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 2",
         "year": 2021,
         "toyId": "GRR39",
@@ -146,7 +146,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-1-5",
         "name": "Project Speeder",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 2",
         "year": 2021,
         "toyId": "GRR40",
@@ -162,7 +162,7 @@ const orangeandyellow2021 = [
     {
         "id": "hw-silver-2021-Orange and Blue-1-6",
         "name": "Gazella R",
-        "series": "Orange and Blue",
+        "series": "Anniversary",
         "release": "Orange and Blue - Mix 2",
         "year": 2021,
         "toyId": "GYH60",
