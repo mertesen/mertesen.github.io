@@ -35,7 +35,7 @@ const vintageracingclud2024 = [
         "id": "hw-silver-2024-Vintage Racing Club-0-3",
         "name": "BMW 2002",
         "series": "Vintage",
-        "release": "Vintage Racing Club - Mix 1"",
+        "release": "Vintage Racing Club - Mix 1",
         "year": 2024,
         "toyId": "HRV02",
         "seriesNumber": "3/6",
