@@ -1,7 +1,7 @@
 const purpleandgold2025 = [
     {
         "id": "hw-silver-2025-Purple and Gold-0-1",
-        "name": "Volkswagen \"Baja Bug\"",
+        "name": "Volkswagen 'Baja Bug'",
         "series": "Anniversary",
         "release": "Purple and Gold - Mix 1",
         "year": 2025,
