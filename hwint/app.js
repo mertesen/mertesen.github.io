@@ -206,6 +206,46 @@ let sortOrder        = 'newest';
 let myCollection     = JSON.parse(localStorage.getItem('hw_koleksiyon')) || [];
 let myWishlist       = JSON.parse(localStorage.getItem('hw_wishlist'))   || [];
 
+let needsUpdate = false;
+// 1. Eski koleksiyonu (sadece string ID'ler) yeni formata (toyId ve price objesi) çevir
+if (myCollection.length > 0 && typeof myCollection[0] === 'string') {
+    let newColl = [];
+    myCollection.forEach(carId => {
+        const car = allCars.find(c => c.id === carId);
+        if (car && car.toyId) newColl.push({ toyId: car.toyId, price: 0 });
+    });
+    myCollection = newColl;
+    needsUpdate = true;
+}
+// 2. Eski istek listesini (string ID'ler) toyId array'ine çevir
+if (myWishlist.length > 0 && myWishlist[0].startsWith('hw-')) {
+    let newWish = [];
+    myWishlist.forEach(carId => {
+        const car = allCars.find(c => c.id === carId);
+        if (car && car.toyId) newWish.push(car.toyId);
+    });
+    myWishlist = newWish;
+    needsUpdate = true;
+}
+if (needsUpdate) { // Eğer dönüştürme yapıldıysa kaydet
+    localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+    localStorage.setItem('hw_wishlist', JSON.stringify(myWishlist));
+    console.log("Mevcut veriler başarıyla toyId sistemine aktarıldı.");
+}
+
+// Koleksiyonda var mı ve fiyatı ne kontrolü için yardımcı fonksiyonlar
+function getOwnedItem(carId) {
+    const car = allCars.find(c => c.id === carId);
+    if (!car || !car.toyId) return null;
+    return myCollection.find(item => item.toyId === car.toyId);
+}
+function isWished(carId) {
+    const car = allCars.find(c => c.id === carId);
+    if (!car || !car.toyId) return false;
+    return myWishlist.includes(car.toyId);
+}
+// --------------------------------------------------------------------
+
 // Active collection filter state
 let collFilter       = 'all';   // 'all' | 'mainline' | 'premium' | 'silver' | 'th' | 'sth' | 'chase'
 let collSearch       = '';
@@ -255,8 +295,8 @@ function buildCard(car, isCollection) {
 
     const mainImg  = car.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image';
     const hasHover = car.imageUrlCardboard && car.imageUrlCardboard.trim() !== '';
-    const isWished = myWishlist.includes(car.id);
-    const inColl   = myCollection.includes(car.id);
+    const inWhislist = isWished(car.id);
+    const inColl   = !!getOwnedItem(car.id);
 
     const hoverImg = hasHover
         ? `<img src="${car.imageUrlCardboard}" class="img-hover" loading="lazy">` : '';
@@ -275,7 +315,7 @@ function buildCard(car, isCollection) {
             ? `<button class="btn-remove" onclick="removeFromCollection('${car.id}')">✓ Var</button>`
             : `<button class="btn-add" onclick="addToCollection('${car.id}', event)">+ Ekle</button>`;
 
-    const wishBtn = `<button class="btn-wish ${isWished ? 'active' : ''}" onclick="toggleWishlist('${car.id}')">${isWished ? '❤️' : '🤍'}</button>`;
+    const wishBtn = `<button class="btn-wish ${inWhislist ? 'active' : ''}" onclick="toggleWishlist('${car.id}')">${inWhislist ? '❤️' : '🤍'}</button>`;
 
     el.innerHTML = `
         <div class="car-image-container ${hasHover ? 'has-hover' : ''}" onclick="openModal('${car.id}')">
@@ -390,7 +430,7 @@ function applyCollectionFilters(cars) {
 }
 
 function renderFilteredCollection() {
-    const allCollected = allCars.filter(car => myCollection.includes(car.id));
+    const allCollected = allCars.filter(car => !!getOwnedItem(car.id));
     const filtered     = applyCollectionFilters(allCollected);
 
     // Show count next to filter
@@ -413,7 +453,7 @@ function updateMissingItems() {
         const key = `${car.series}||${car.release}||${car.year}||${total}`;
         if (!sets[key]) sets[key] = { total, owned: 0, cars: [], series: car.series, release: car.release, year: car.year };
         sets[key].cars.push(car);
-        if (myCollection.includes(car.id)) sets[key].owned++;
+        if (!!getOwnedItem(car.id)) sets[key].owned++;
     });
 
     const nearly = Object.values(sets)
@@ -427,7 +467,7 @@ function updateMissingItems() {
     if (nearly.length === 0) { container.innerHTML = ''; return; }
 
     const items = nearly.flatMap(s =>
-        s.cars.filter(c => !myCollection.includes(c.id)).map(c => `
+        s.cars.filter(c => !!!getOwnedItem(c.id)).map(c => `
             <div class="missing-item">
                 <span class="missing-badge">${s.owned}/${s.total}</span>
                 <div>
@@ -470,8 +510,8 @@ function updateInterface() {
 
     filtered.sort((a,b) => sortOrder === 'newest' ? b.year - a.year : a.year - b.year);
 
-    const collectedCars = allCars.filter(car => myCollection.includes(car.id));
-    const wishedCars    = allCars.filter(car => myWishlist.includes(car.id));
+    const collectedCars = allCars.filter(car => !!getOwnedItem(car.id));
+    const wishedCars    = allCars.filter(car => isWished(car.id));
 
     document.getElementById('collectionCount').innerText = collectedCars.length;
     document.getElementById('wishlistCount').innerText   = wishedCars.length;
@@ -498,9 +538,20 @@ function updateInterface() {
 
 // ── Collection management ──────────────────────
 function addToCollection(carId, event) {
-    if (!myCollection.includes(carId)) {
-        myCollection.push(carId);
+    const car = allCars.find(c => c.id === carId);
+    if (!car || !car.toyId) {
+        alert("Bu aracın sistemde Toy ID'si bulunmuyor, koleksiyona eklenemez."); return;
+    }
+
+    if (!getOwnedItem(carId)) {
+        // Eklemeden önce fiyat soralım
+        let priceInput = prompt(`${car.name} aracı için ödediğiniz fiyatı girin (Euro)\n(Fiyat girmek istemiyorsanız boş bırakın):`, "0");
+        let price = parseFloat(priceInput);
+        if (isNaN(price)) price = 0;
+
+        myCollection.push({ toyId: car.toyId, price: price });
         localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+        
         if (event) {
             const btn = event.target;
             btn.classList.add('card-add-flash');
@@ -513,14 +564,23 @@ function addToCollection(carId, event) {
 }
 
 function removeFromCollection(carId) {
-    myCollection = myCollection.filter(id => id !== carId);
+    const car = allCars.find(c => c.id === carId);
+    if (!car || !car.toyId) return;
+    myCollection = myCollection.filter(item => item.toyId !== car.toyId);
     localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
     updateInterface();
 }
 
 function toggleWishlist(carId) {
-    const idx = myWishlist.indexOf(carId);
-    idx === -1 ? myWishlist.push(carId) : myWishlist.splice(idx, 1);
+    const car = allCars.find(c => c.id === carId);
+    if (!car || !car.toyId) return;
+    
+    const idx = myWishlist.indexOf(car.toyId);
+    if (idx === -1) {
+        myWishlist.push(car.toyId);
+    } else {
+        myWishlist.splice(idx, 1);
+    }
     localStorage.setItem('hw_wishlist', JSON.stringify(myWishlist));
     updateInterface();
 }
@@ -542,10 +602,16 @@ function toggleWishlistArea() {
 
 // ── Export / Import ────────────────────────────
 function exportCollection() {
-    if (!myCollection.length) { alert('Koleksiyonunuz boş!'); return; }
+    if (!myCollection.length && !myWishlist.length) { 
+        alert('Dışa aktarılacak veri (koleksiyon veya istek listesi) yok!'); return; 
+    }
+    const dataToExport = {
+        collection: myCollection,
+        wishlist: myWishlist
+    };
     const a = document.createElement('a');
-    a.href     = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(myCollection));
-    a.download = 'hw_envanter_yedek.json';
+    a.href     = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataToExport, null, 2));
+    a.download = `HW-Koleksiyon-Yedek-${new Date().toISOString().slice(0,10)}.json`;
     document.body.appendChild(a); a.click(); a.remove();
 }
 
@@ -557,11 +623,26 @@ document.getElementById('importFile').addEventListener('change', function(e) {
         try {
             const data = JSON.parse(ev.target.result);
             if (Array.isArray(data)) {
-                myCollection = [...new Set([...myCollection, ...data])];
+                alert('Eski tip (sadece Array) bir yedek yüklemeye çalıştınız. Lütfen bu kod değişikliğinden sonra alınmış yeni bir yedek kullanın.');
+            } else if (data.collection !== undefined && data.wishlist !== undefined) {
+                // Koleksiyonu mevcutlarla birleştir (aynı toyId varsa ekleme)
+                data.collection.forEach(newItem => {
+                    if (!myCollection.find(item => item.toyId === newItem.toyId)) {
+                        myCollection.push(newItem);
+                    }
+                });
+                // İstek listesini birleştir
+                data.wishlist.forEach(newId => {
+                    if (!isWished(newId)) myWishlist.push(newId);
+                });
+                
                 localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+                localStorage.setItem('hw_wishlist', JSON.stringify(myWishlist));
                 updateInterface();
-                alert('Koleksiyon başarıyla içe aktarıldı!');
-            } else { alert('Geçersiz dosya formatı.'); }
+                alert('Veriler başarıyla içe aktarıldı ve mevcut koleksiyonunuzla birleştirildi!');
+            } else { 
+                alert('Geçersiz dosya formatı.'); 
+            }
         } catch { alert('Dosya okuma hatası.'); }
         e.target.value = '';
     };
@@ -570,7 +651,7 @@ document.getElementById('importFile').addEventListener('change', function(e) {
 
 // ── Stats ──────────────────────────────────────
 function updateStats() {
-    const collected = allCars.filter(c => myCollection.includes(c.id));
+    const collected = allCars.filter(c => !!getOwnedItem(c.id));
 
     const catKW = {
         'JDM 🎌':       ['nissan','honda','toyota','mazda','subaru','mitsubishi','datsun','skyline','silvia','supra','ae86'],
@@ -590,6 +671,8 @@ function updateStats() {
         }
     });
 
+    const totalPrice = myCollection.reduce((sum, item) => sum + (item.price || 0), 0);
+
     const seriesMap = {};
     allCars.forEach(car => {
         if (car.series && car.seriesNumber?.includes('/')) {
@@ -597,7 +680,7 @@ function updateStats() {
             const key   = `${car.series} (${car.year})`;
             if (!isNaN(total)) {
                 if (!seriesMap[key]) seriesMap[key] = { collected: 0, total, year: car.year };
-                if (myCollection.includes(car.id)) seriesMap[key].collected++;
+                if (!!getOwnedItem(car.id)) seriesMap[key].collected++;
             }
         }
     });
@@ -614,6 +697,7 @@ function updateStats() {
                     <p>STH: <strong>${collected.filter(c => rarityKey(c) === 'sth').length}</strong></p>
                     <p>Chase: <strong>${collected.filter(c => rarityKey(c) === 'chase').length}</strong></p>
                     <p>TH: <strong>${collected.filter(c => rarityKey(c) === 'th').length}</strong></p>
+                    <p>Koleksiyon Satın Alınan Değeri: <strong style="color:var(--gold-dark);">${totalPrice} €</strong></p>
                 </div>
             </div>
             <div class="stat-card">
@@ -652,7 +736,7 @@ function updateSetTracker() {
         if (car.release) {
             if (!sets[car.release]) sets[car.release] = { total: 0, owned: 0 };
             sets[car.release].total++;
-            if (myCollection.includes(car.id)) sets[car.release].owned++;
+            if (!!getOwnedItem(car.id)) sets[car.release].owned++;
         }
     });
 
@@ -680,8 +764,8 @@ function openModal(carId) {
     const box    = document.getElementById('carModalBox');
     const rKey   = rarityKey(car);
     const tKey   = typeKey(car);
-    const inColl = myCollection.includes(car.id);
-    const wished = myWishlist.includes(car.id);
+    const inColl = !!getOwnedItem(car.id);
+    const wished = isWished(car.id);
 
     box.className = `modal-box rarity-${rKey} type-${tKey}`;
 
@@ -695,21 +779,29 @@ function openModal(carId) {
            </div>`
         : `<div class="modal-images single"><div><div class="modal-img-wrap"><img src="${mainImg}" alt="${car.name}"></div><div class="modal-img-label">Araç Görseli</div></div></div>`;
 
-    const details = [
-        { label: 'Yıl',             value: car.year        },
-        { label: 'Toy ID',          value: car.toyId       },
-        { label: 'Seri',            value: car.series      },
-        { label: 'Sürüm',           value: car.release     },
-        { label: 'Seri No',         value: car.seriesNumber },
-        { label: 'Mainline No',     value: car.mainlineNumber },
-        { label: 'Nadirlik',        value: car.rarity      },
-        { label: 'Koleksiyon Tipi', value: car.collectionType ? car.collectionType[0].toUpperCase() + car.collectionType.slice(1) : null },
-    ].filter(d => d.value).map(d =>
-        `<div class="modal-detail-row">
-            <span class="modal-detail-label">${d.label}</span>
-            <span class="modal-detail-value">${d.value}</span>
-        </div>`
-    ).join('');
+        let detailsArray = [
+            { label: 'Yıl',             value: car.year        },
+            { label: 'Toy ID',          value: car.toyId       },
+            { label: 'Seri',            value: car.series      },
+            { label: 'Sürüm',           value: car.release     },
+            { label: 'Seri No',         value: car.seriesNumber },
+            { label: 'Mainline No',     value: car.mainlineNumber },
+            { label: 'Nadirlik',        value: car.rarity      },
+            { label: 'Koleksiyon Tipi', value: car.collectionType ? car.collectionType[0].toUpperCase() + car.collectionType.slice(1) : null },
+        ];
+    
+        // Fiyat bilgisi varsa modala ekle
+        const ownedItem = getOwnedItem(car.id);
+        if (ownedItem && ownedItem.price > 0) {
+            detailsArray.push({ label: '💸 Ödenen Fiyat', value: `<strong>${ownedItem.price} €</strong>` });
+        }
+    
+        const details = detailsArray.filter(d => d.value).map(d =>
+            `<div class="modal-detail-row">
+                <span class="modal-detail-label">${d.label}</span>
+                <span class="modal-detail-value">${d.value}</span>
+            </div>`
+        ).join('');
 
     const noteHTML = car.extraNote ? `<div class="modal-note">📝 ${car.extraNote}</div>` : '';
 
@@ -740,8 +832,8 @@ function openModal(carId) {
 function updateModalButtons(carId) {
     const car    = allCars.find(c => c.id === carId);
     if (!car) return;
-    const inColl = myCollection.includes(carId);
-    const wished = myWishlist.includes(carId);
+    const inColl = !!getOwnedItem(carId);
+    const wished = isWished(carId);
     const actions= document.getElementById('modalActions');
     if (!actions) return;
 
