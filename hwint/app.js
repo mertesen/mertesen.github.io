@@ -233,16 +233,22 @@ if (needsUpdate) { // Eğer dönüştürme yapıldıysa kaydet
     console.log("Mevcut veriler başarıyla toyId sistemine aktarıldı.");
 }
 
+let myWishlistSet = new Set(myWishlist);
+let myCollectionSet = new Set(myCollection.map(item => item.toyId)); // veya id
 // Koleksiyonda var mı ve fiyatı ne kontrolü için yardımcı fonksiyonlar
-function getOwnedItem(carId) {
-    const car = allCars.find(c => c.id === carId);
-    if (!car || !car.toyId) return null;
-    return myCollection.find(item => item.toyId === car.toyId);
+
+function syncSets() {
+    myWishlistSet = new Set(myWishlist);
+    myCollectionSet = new Set(myCollection.map(item => item.toyId));
 }
-function isWished(carId) {
-    const car = allCars.find(c => c.id === carId);
-    if (!car || !car.toyId) return false;
-    return myWishlist.includes(car.toyId);
+
+function getOwnedItem(toyId) {
+    if (!toyId) return false;
+    return myCollectionSet.has(toyId);
+}
+function isWished(toyId) {
+    if (!toyId) return false;
+    return myWishlistSet.has(toyId);
 }
 // --------------------------------------------------------------------
 
@@ -295,8 +301,8 @@ function buildCard(car, isCollection) {
 
     const mainImg  = car.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image';
     const hasHover = car.imageUrlCardboard && car.imageUrlCardboard.trim() !== '';
-    const inWhislist = isWished(car.id);
-    const inColl   = !!getOwnedItem(car.id);
+    const inWhislist = isWished(car.toyId);
+    const inColl   = getOwnedItem(car.toyId);
 
     const hoverImg = hasHover
         ? `<img src="${car.imageUrlCardboard}" class="img-hover" loading="lazy">` : '';
@@ -430,7 +436,7 @@ function applyCollectionFilters(cars) {
 }
 
 function renderFilteredCollection() {
-    const allCollected = allCars.filter(car => !!getOwnedItem(car.id));
+    const allCollected = allCars.filter(car => getOwnedItem(car.toyId));
     const filtered     = applyCollectionFilters(allCollected);
 
     // Show count next to filter
@@ -453,7 +459,7 @@ function updateMissingItems() {
         const key = `${car.series}||${car.release}||${car.year}||${total}`;
         if (!sets[key]) sets[key] = { total, owned: 0, cars: [], series: car.series, release: car.release, year: car.year };
         sets[key].cars.push(car);
-        if (!!getOwnedItem(car.id)) sets[key].owned++;
+        if (getOwnedItem(car.toyId)) sets[key].owned++;
     });
 
     const nearly = Object.values(sets)
@@ -467,7 +473,7 @@ function updateMissingItems() {
     if (nearly.length === 0) { container.innerHTML = ''; return; }
 
     const items = nearly.flatMap(s =>
-        s.cars.filter(c => !!!getOwnedItem(c.id)).map(c => `
+        s.cars.filter(c => !getOwnedItem(c.toyId)).map(c => `
             <div class="missing-item">
                 <span class="missing-badge">${s.owned}/${s.total}</span>
                 <div>
@@ -510,8 +516,8 @@ function updateInterface() {
 
     filtered.sort((a,b) => sortOrder === 'newest' ? b.year - a.year : a.year - b.year);
 
-    const collectedCars = allCars.filter(car => !!getOwnedItem(car.id));
-    const wishedCars    = allCars.filter(car => isWished(car.id));
+    const collectedCars = allCars.filter(car => getOwnedItem(car.toyId));
+    const wishedCars    = allCars.filter(car => isWished(car.toyId));
 
     document.getElementById('collectionCount').innerText = collectedCars.length;
     document.getElementById('wishlistCount').innerText   = wishedCars.length;
@@ -543,7 +549,7 @@ function addToCollection(carId, event) {
         alert("Bu aracın sistemde Toy ID'si bulunmuyor, koleksiyona eklenemez."); return;
     }
 
-    if (!getOwnedItem(carId)) {
+    if (!getOwnedItem(car.toyId)) {
         // Eklemeden önce fiyat soralım
         let priceInput = prompt(`${car.name} aracı için ödediğiniz fiyatı girin (Euro)\n(Fiyat girmek istemiyorsanız boş bırakın):`, "0");
         let price = parseFloat(priceInput);
@@ -551,6 +557,7 @@ function addToCollection(carId, event) {
 
         myCollection.push({ toyId: car.toyId, price: price });
         localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+        syncSets();
         
         if (event) {
             const btn = event.target;
@@ -568,6 +575,7 @@ function removeFromCollection(carId) {
     if (!car || !car.toyId) return;
     myCollection = myCollection.filter(item => item.toyId !== car.toyId);
     localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+    syncSets();
     updateInterface();
 }
 
@@ -582,6 +590,7 @@ function toggleWishlist(carId) {
         myWishlist.splice(idx, 1);
     }
     localStorage.setItem('hw_wishlist', JSON.stringify(myWishlist));
+    syncSets();
     updateInterface();
 }
 
@@ -925,7 +934,14 @@ function downloadCollectionImage() {
 }
 
 // ── Event listeners ────────────────────────────
-document.getElementById('searchInput').addEventListener('input', () => { visibleCount = 10; updateInterface(); });
+let searchTimeout;
+document.getElementById('searchInput').addEventListener('input', () => { 
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        visibleCount = 10; 
+        updateInterface(); 
+    }, 300); // 300ms bekle
+});
 document.querySelectorAll('.filter-select').forEach(s => s.addEventListener('change', () => { visibleCount = 10; updateInterface(); }));
 document.addEventListener('DOMContentLoaded', () => {
     const sb = document.getElementById('shareCollectionBtn');
