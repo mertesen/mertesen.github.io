@@ -244,7 +244,7 @@ function syncSets() {
 
 function getOwnedItem(toyId) {
     if (!toyId) return false;
-    return myCollectionSet.has(toyId);
+    return myCollection.find(item => item.toyId === toyId);
 }
 function isWished(toyId) {
     if (!toyId) return false;
@@ -323,11 +323,15 @@ function buildCard(car, isCollection) {
 
     const wishBtn = `<button class="btn-wish ${inWhislist ? 'active' : ''}" onclick="toggleWishlist('${car.id}')">${inWhislist ? '❤️' : '🤍'}</button>`;
 
+    const priceBadge = isCollection && inColl && inColl.price > 0
+        ? `<span class="card-price-badge">💶 ${inColl.price} €</span>` : '';
+
     el.innerHTML = `
         <div class="car-image-container ${hasHover ? 'has-hover' : ''}" onclick="openModal('${car.id}')">
             <img src="${mainImg}" class="img-main" loading="lazy">
             ${hoverImg}
             ${typePillHTML}
+            ${priceBadge}
             <span class="img-zoom-hint">🔍 Detay</span>
         </div>
         <div class="car-body">
@@ -636,8 +640,13 @@ document.getElementById('importFile').addEventListener('change', function(e) {
             } else if (data.collection !== undefined && data.wishlist !== undefined) {
                 // Koleksiyonu mevcutlarla birleştir (aynı toyId varsa ekleme)
                 data.collection.forEach(newItem => {
-                    if (!myCollection.find(item => item.toyId === newItem.toyId)) {
+                    const existingItem = myCollection.find(item => item.toyId === newItem.toyId);
+                    if (!existingItem) {
+                        // Araç hiç yoksa ekle
                         myCollection.push(newItem);
+                    } else if (existingItem.price === 0 && newItem.price > 0) {
+                        // Araç var ama fiyatı 0 (eski kayıttan kalma), import dosyasında fiyat varsa güncelle
+                        existingItem.price = newItem.price;
                     }
                 });
                 // İstek listesini birleştir
@@ -660,7 +669,7 @@ document.getElementById('importFile').addEventListener('change', function(e) {
 
 // ── Stats ──────────────────────────────────────
 function updateStats() {
-    const collected = allCars.filter(c => !!getOwnedItem(c.id));
+    const collected = allCars.filter(c => !!getOwnedItem(c.toyId));
 
     const catKW = {
         'JDM 🎌':       ['nissan','honda','toyota','mazda','subaru','mitsubishi','datsun','skyline','silvia','supra','ae86'],
@@ -689,7 +698,7 @@ function updateStats() {
             const key   = `${car.series} (${car.year})`;
             if (!isNaN(total)) {
                 if (!seriesMap[key]) seriesMap[key] = { collected: 0, total, year: car.year };
-                if (!!getOwnedItem(car.id)) seriesMap[key].collected++;
+                if (!!getOwnedItem(car.toyId)) seriesMap[key].collected++;
             }
         }
     });
@@ -745,7 +754,7 @@ function updateSetTracker() {
         if (car.release) {
             if (!sets[car.release]) sets[car.release] = { total: 0, owned: 0 };
             sets[car.release].total++;
-            if (!!getOwnedItem(car.id)) sets[car.release].owned++;
+            if (!!getOwnedItem(car.toyId)) sets[car.release].owned++;
         }
     });
 
@@ -773,8 +782,8 @@ function openModal(carId) {
     const box    = document.getElementById('carModalBox');
     const rKey   = rarityKey(car);
     const tKey   = typeKey(car);
-    const inColl = !!getOwnedItem(car.id);
-    const wished = isWished(car.id);
+    const inColl = !!getOwnedItem(car.toyId);
+    const wished = isWished(car.toyId);
 
     box.className = `modal-box rarity-${rKey} type-${tKey}`;
 
@@ -799,11 +808,11 @@ function openModal(carId) {
             { label: 'Koleksiyon Tipi', value: car.collectionType ? car.collectionType[0].toUpperCase() + car.collectionType.slice(1) : null },
         ];
     
-        // Fiyat bilgisi varsa modala ekle
-        const ownedItem = getOwnedItem(car.id);
-        if (ownedItem && ownedItem.price > 0) {
-            detailsArray.push({ label: '💸 Ödenen Fiyat', value: `<strong>${ownedItem.price} €</strong>` });
-        }
+        // Fiyat satırı — id ile tanımlanmış, kayıtsız güncellenebilir
+        const ownedItem = getOwnedItem(car.toyId);
+        const priceRowContent = ownedItem && ownedItem.price > 0
+            ? `<span class="modal-detail-label">💸 Ödenen Fiyat</span><span class="modal-detail-value"><strong style="color:var(--gold-dark);">${ownedItem.price} €</strong></span>`
+            : '';
     
         const details = detailsArray.filter(d => d.value).map(d =>
             `<div class="modal-detail-row">
@@ -827,7 +836,10 @@ function openModal(carId) {
         ${imagesHTML}
         <div class="modal-details">
             ${noteHTML}
-            <div class="modal-detail-grid">${details}</div>
+            <div class="modal-detail-grid">
+                ${details}
+                <div class="modal-detail-row" id="modalPriceRow">${priceRowContent}</div>
+            </div>
         </div>
         <div class="modal-actions" id="modalActions"></div>
     `;
@@ -839,21 +851,94 @@ function openModal(carId) {
 }
 
 function updateModalButtons(carId) {
-    const car    = allCars.find(c => c.id === carId);
+    const car     = allCars.find(c => c.id === carId);
     if (!car) return;
-    const inColl = !!getOwnedItem(carId);
-    const wished = isWished(carId);
-    const actions= document.getElementById('modalActions');
+    const ownedItem = getOwnedItem(car.toyId);
+    const inColl  = !!ownedItem;
+    const wished  = isWished(car.toyId);
+    const actions = document.getElementById('modalActions');
     if (!actions) return;
+
+    const priceLabel = inColl && ownedItem.price > 0
+        ? `✏️ Fiyatı Düzenle (${ownedItem.price} €)`
+        : '✏️ Fiyat Ekle';
 
     actions.innerHTML = `
         ${inColl
-            ? `<button class="modal-btn modal-btn-remove" onclick="removeFromCollection('${carId}'); updateModalButtons('${carId}')">✓ Koleksiyondan Çıkar</button>`
+            ? `<button class="modal-btn modal-btn-remove" onclick="removeFromCollection('${carId}'); updateModalButtons('${carId}')">✓ Koleksiyondan Çıkar</button>
+               <button class="modal-btn modal-btn-price"  onclick="openPriceEditor('${carId}')">${priceLabel}</button>`
             : `<button class="modal-btn modal-btn-add"    onclick="addToCollection('${carId}'); updateModalButtons('${carId}')">+ Koleksiyona Ekle</button>`}
         <button class="modal-btn modal-btn-wish ${wished ? 'active' : ''}" onclick="toggleWishlist('${carId}'); updateModalButtons('${carId}')">${wished ? '❤️ İstek Listesinde' : '🤍 İstek Listesine Ekle'}</button>
         <a href="${car.wikiLink || '#'}" target="_blank" class="modal-btn modal-btn-wiki">🔗 Wiki</a>
     `;
     updateInterface();
+}
+
+// ── Price editor modal ──────────────────────────
+function openPriceEditor(carId) {
+    const car = allCars.find(c => c.id === carId);
+    if (!car) return;
+    const ownedItem = getOwnedItem(car.toyId);
+    if (!ownedItem) return;
+
+    // Remove any existing price editor
+    const existing = document.getElementById('priceEditorOverlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'priceEditorOverlay';
+    overlay.innerHTML = `
+        <div class="price-editor-box">
+            <h3 class="price-editor-title">💰 Fiyat Güncelle</h3>
+            <p class="price-editor-car">${car.name} <span>${car.year || ''}</span></p>
+            <div class="price-editor-input-row">
+                <input type="number" id="priceEditorInput" class="price-editor-input"
+                    value="${ownedItem.price || 0}" min="0" step="0.01" placeholder="0.00">
+                <span class="price-editor-currency">€</span>
+            </div>
+            <div class="price-editor-actions">
+                <button class="price-editor-btn price-editor-cancel" onclick="closePriceEditor()">İptal</button>
+                <button class="price-editor-btn price-editor-save"   onclick="savePrice('${carId}')">💾 Kaydet</button>
+            </div>
+        </div>
+    `;
+    overlay.addEventListener('click', e => { if (e.target === overlay) closePriceEditor(); });
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('open'));
+    setTimeout(() => document.getElementById('priceEditorInput')?.focus(), 80);
+}
+
+function closePriceEditor() {
+    const overlay = document.getElementById('priceEditorOverlay');
+    if (overlay) {
+        overlay.classList.remove('open');
+        setTimeout(() => overlay.remove(), 180);
+    }
+}
+
+function savePrice(carId) {
+    const car = allCars.find(c => c.id === carId);
+    if (!car) return;
+    const ownedItem = getOwnedItem(car.toyId);
+    if (!ownedItem) return;
+
+    const input = document.getElementById('priceEditorInput');
+    const newPrice = parseFloat(input?.value);
+    ownedItem.price = isNaN(newPrice) || newPrice < 0 ? 0 : newPrice;
+
+    localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+    closePriceEditor();
+
+    // Refresh modal detail row and buttons
+    const priceRow = document.getElementById('modalPriceRow');
+    if (priceRow) {
+        if (ownedItem.price > 0) {
+            priceRow.innerHTML = `<span class="modal-detail-label">💸 Ödenen Fiyat</span><span class="modal-detail-value"><strong style="color:var(--gold-dark);">${ownedItem.price} €</strong></span>`;
+        } else {
+            priceRow.innerHTML = '';
+        }
+    }
+    updateModalButtons(carId);
 }
 
 function closeModal() {

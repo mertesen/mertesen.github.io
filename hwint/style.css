@@ -504,6 +504,133 @@ hr { border: 0; height: 1px; background: var(--border); margin: 12px 0; opacity:
 .btn { padding: 7px 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
 .btn-sm { padding: 5px 10px; font-size: 12px; }
 
+/* ── Price badge on collection cards ─────────── */
+.card-price-badge {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    background: rgba(0,0,0,0.72);
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    letter-spacing: 0.3px;
+    pointer-events: none;
+}
+
+/* ── Edit price modal button ─────────────────── */
+.modal-btn-price {
+    background: linear-gradient(135deg, #c9960a, var(--gold));
+    color: #1a1100;
+    font-weight: 700;
+}
+.modal-btn-price:hover { filter: brightness(1.1); }
+
+/* ── Price editor overlay ────────────────────── */
+#priceEditorOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(6px);
+}
+#priceEditorOverlay.open { display: flex; animation: fadeIn 0.15s ease; }
+
+.price-editor-box {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 28px 32px;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+    animation: slideUp 0.2s cubic-bezier(0.175,0.885,0.32,1.275);
+    border-top: 4px solid var(--gold);
+}
+
+.price-editor-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gold-dark);
+    margin: 0 0 6px;
+}
+
+.price-editor-car {
+    font-size: 14px;
+    color: var(--text2);
+    margin: 0 0 20px;
+    font-weight: 600;
+}
+.price-editor-car span { color: var(--text3); font-weight: 400; }
+
+.price-editor-input-row {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface2);
+    transition: border-color 0.2s;
+    margin-bottom: 20px;
+}
+.price-editor-input-row:focus-within { border-color: var(--gold); }
+
+.price-editor-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 14px;
+    font-size: 1.1rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--text);
+    outline: none;
+}
+.price-editor-currency {
+    padding: 0 14px;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold-dark);
+    background: var(--surface2);
+}
+
+.price-editor-actions {
+    display: flex;
+    gap: 10px;
+}
+.price-editor-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: 0.2s;
+}
+.price-editor-cancel {
+    background: var(--surface2);
+    color: var(--text2);
+    border: 1px solid var(--border);
+}
+.price-editor-cancel:hover { background: var(--border); }
+.price-editor-save {
+    background: linear-gradient(135deg, #c9960a, var(--gold));
+    color: #1a1100;
+}
+.price-editor-save:hover { filter: brightness(1.1); }
+
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 600px) {
     body { padding: 10px; }
