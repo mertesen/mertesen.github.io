@@ -55,7 +55,8 @@
                     ⭐ Benim Koleksiyonum (<span id="collectionCount">0</span>) <span id="toggleIcon">🔽</span>
                 </h2>
                 <div class="data-actions">
-                    <button class="btn-export" onclick="exportCollection()">📥 Dışa Aktar</button>
+                    <button class="btn-export" onclick="exportCollection()">📥 JSON</button>
+                    <button class="btn-export btn-export--csv" onclick="exportCSV()">📊 CSV</button>
                     <label class="btn-import">
                         📤 İçe Aktar
                         <input type="file" id="importFile" accept=".json" style="display: none;">
@@ -65,20 +66,8 @@
             
             <div id="collectionWrapper" style="display: none; margin-top: 16px;">
 
-                <!-- Stats -->
-                <div class="container my-4">
-                    <div class="row align-items-center mb-3">
-                        <div class="col">
-                            <h2 class="h4 mb-0">İstatistikler</h2>
-                        </div>
-                        <div class="col-auto">
-                            <button id="shareCollectionBtn" class="btn-outline-danger btn-sm">
-                                📷 Koleksiyon Kartını İndir
-                            </button>
-                        </div>
-                    </div>
-                    <div id="statsContainer"></div>
-                </div>
+                <!-- Stats + Analytics (collapsible, rendered by JS) -->
+                <div id="statsContainer"></div>
 
                 <!-- Missing items -->
                 <div id="missingItemsContainer"></div>

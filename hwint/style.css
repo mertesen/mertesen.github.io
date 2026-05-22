@@ -710,6 +710,310 @@ hr { border: 0; height: 1px; background: var(--border); margin: 12px 0; opacity:
 }
 .price-editor-save--market:hover { filter: brightness(1.1); }
 
+
+/* ══════════════════════════════════════════════
+   COLLAPSIBLE SECTIONS
+   ══════════════════════════════════════════════ */
+.collapsible-section {
+    margin-bottom: 12px;
+}
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 11px 16px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s, border-color 0.15s;
+    box-shadow: var(--shadow);
+}
+.collapsible-header:hover { background: var(--surface2); border-color: var(--red); }
+.collapsible-header--missing { border-left: 4px solid var(--red); }
+
+.collapsible-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text);
+}
+
+.collapsible-chevron {
+    font-size: 14px;
+    color: var(--text3);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+}
+
+.collapsible-body {
+    padding: 12px 0 4px;
+    animation: fadeIn 0.18s ease;
+}
+
+/* ══════════════════════════════════════════════
+   COLLECTION SORT SELECT
+   ══════════════════════════════════════════════ */
+.collection-sort-select {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 12px;
+    font-family: var(--font-body);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    max-width: 200px;
+}
+.collection-sort-select:focus { border-color: var(--red); }
+
+/* ══════════════════════════════════════════════
+   ANALYTICS CARDS
+   ══════════════════════════════════════════════ */
+.stat-card--wide {
+    grid-column: span 1;
+}
+
+.analytics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.analytics-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    flex-wrap: wrap;
+}
+
+.analytics-row-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.analytics-row-year {
+    font-weight: 400;
+    color: var(--text3);
+    font-size: 11px;
+    margin-left: 4px;
+}
+
+.analytics-row-vals {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.analytics-badge {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+.analytics-badge--market {
+    background: rgba(41,128,185,0.12);
+    color: #2980b9;
+    border: 1px solid rgba(41,128,185,0.25);
+}
+.analytics-badge--price {
+    background: rgba(201,150,10,0.12);
+    color: var(--gold-dark);
+    border: 1px solid rgba(201,150,10,0.25);
+}
+.analytics-badge--pl {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 11px;
+}
+
+/* ── Type breakdown bar chart ─────────────────── */
+.type-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 4px;
+}
+
+.type-chart-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    align-items: start;
+    gap: 12px;
+}
+
+.type-chart-label {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--text2);
+    padding-top: 3px;
+}
+
+.type-chart-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.type-chart-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.type-chart-bar {
+    height: 14px;
+    border-radius: 4px;
+    min-width: 4px;
+    transition: width 0.5s ease;
+    flex-shrink: 0;
+}
+.type-chart-bar--spent  { background: linear-gradient(90deg, #c9960a, var(--gold)); }
+.type-chart-bar--market { background: linear-gradient(90deg, #1a5fa8, #2980b9); }
+
+.type-chart-val {
+    font-size: 11px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--text2);
+    white-space: nowrap;
+}
+
+
+/* ══════════════════════════════════════════════
+   DUPLICATE / QUANTITY
+   ══════════════════════════════════════════════ */
+
+/* Badge on card image (top-right corner) */
+.card-dup-badge {
+    position: absolute;
+    top: 28px;
+    right: 6px;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 3;
+}
+
+/* Quantity stepper on collection card bottom row */
+.qty-stepper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.qty-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.15s;
+    flex-shrink: 0;
+    padding: 0;
+}
+.qty-btn--plus:hover  { background: var(--red); border-color: var(--red); color: #fff; }
+.qty-btn--minus:hover { background: var(--surface); border-color: var(--text3); }
+
+.qty-display {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text);
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Quantity stepper inside modal actions */
+.modal-qty-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 0 2px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+}
+
+.modal-qty-label {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text3);
+    flex: 1;
+}
+
+.modal-qty-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.15s;
+    flex-shrink: 0;
+    padding: 0;
+}
+.modal-qty-btn:hover { background: var(--red); border-color: var(--red); color: #fff; }
+
+.modal-qty-display {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    min-width: 32px;
+    text-align: center;
+}
+
+/* ── CSV export button variant ───────────────── */
+.btn-export--csv {
+    background: #1a6b38;
+}
+.btn-export--csv:hover { background: #27ae60; }
+
 /* ── Responsive ──────────────────────────────── */ ──────────────────────────────── */
 @media (max-width: 600px) {
     body { padding: 10px; }

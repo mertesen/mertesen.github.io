@@ -212,7 +212,7 @@ if (myCollection.length > 0 && typeof myCollection[0] === 'string') {
     let newColl = [];
     myCollection.forEach(carId => {
         const car = allCars.find(c => c.id === carId);
-        if (car && car.toyId) newColl.push({ toyId: car.toyId, price: 0, marketValue: 0 });
+        if (car && car.toyId) newColl.push({ toyId: car.toyId, price: 0, marketValue: 0, quantity: 1 });
     });
     myCollection = newColl;
     needsUpdate = true;
@@ -255,6 +255,7 @@ function isWished(toyId) {
 // Active collection filter state
 let collFilter       = 'all';   // 'all' | 'mainline' | 'premium' | 'silver' | 'th' | 'sth' | 'chase'
 let collSearch       = '';
+let collSort         = localStorage.getItem('hw_collSort') || 'newest';
 
 // ── Helpers ───────────────────────────────────
 function rarityKey(car) {
@@ -315,8 +316,14 @@ function buildCard(car, isCollection) {
         typePillHTML = `<span class="card-type-pill ${pillClass}">${pillLabel}</span>`;
     }
 
+    const qty = isCollection && inColl ? (inColl.quantity || 1) : 1;
     const actionBtn = isCollection
-        ? `<button class="btn-remove" onclick="removeFromCollection('${car.id}')">Çıkar</button>`
+        ? `<div class="qty-stepper">
+               <button class="qty-btn qty-btn--minus" onclick="changeQty('${car.id}',-1)" title="Adet Azalt">−</button>
+               <span class="qty-display">${qty}</span>
+               <button class="qty-btn qty-btn--plus"  onclick="changeQty('${car.id}',+1)" title="Adet Artır">+</button>
+               <button class="btn-remove" onclick="removeFromCollection('${car.id}')">✕</button>
+           </div>`
         : inColl
             ? `<button class="btn-remove" onclick="removeFromCollection('${car.id}')">✓ Var</button>`
             : `<button class="btn-add" onclick="addToCollection('${car.id}', event)">+ Ekle</button>`;
@@ -327,6 +334,8 @@ function buildCard(car, isCollection) {
         ? `<span class="card-price-badge">💶 ${Number(inColl.price).toFixed(2)} €</span>` : '';
     const marketBadge = isCollection && inColl && (inColl.marketValue || 0) > 0
         ? `<span class="card-market-badge">📈 ${Number(inColl.marketValue).toFixed(2)} €</span>` : '';
+    const dupBadge = isCollection && inColl && (inColl.quantity || 1) > 1
+        ? `<span class="card-dup-badge">×${inColl.quantity}</span>` : '';
 
     el.innerHTML = `
         <div class="car-image-container ${hasHover ? 'has-hover' : ''}" onclick="openModal('${car.id}')">
@@ -335,6 +344,7 @@ function buildCard(car, isCollection) {
             ${typePillHTML}
             ${priceBadge}
             ${marketBadge}
+            ${dupBadge}
             <span class="img-zoom-hint">🔍 Detay</span>
         </div>
         <div class="car-body">
@@ -402,6 +412,18 @@ function buildCollectionFilters() {
         }
     });
 
+    // Sort select
+    html += `<select class="collection-sort-select" onchange="setCollSort(this.value)">
+        <option value="newest"  ${collSort==='newest'  ?'selected':''}>Yıl: Yeniden Eskiye</option>
+        <option value="oldest"  ${collSort==='oldest'  ?'selected':''}>Yıl: Eskiden Yeniye</option>
+        <option value="price_desc"  ${collSort==='price_desc'  ?'selected':''}>💶 Fiyat: Yüksekten Düşüğe</option>
+        <option value="price_asc"   ${collSort==='price_asc'   ?'selected':''}>💶 Fiyat: Düşükten Yükseğe</option>
+        <option value="market_desc" ${collSort==='market_desc' ?'selected':''}>📈 Piyasa: Yüksekten Düşüğe</option>
+        <option value="market_asc"  ${collSort==='market_asc'  ?'selected':''}>📈 Piyasa: Düşükten Yükseğe</option>
+        <option value="name_asc"    ${collSort==='name_asc'    ?'selected':''}>A–Z İsim</option>
+        <option value="name_desc"   ${collSort==='name_desc'   ?'selected':''}>Z–A İsim</option>
+    </select>`;
+
     // Search inside collection
     html += `<input type="text" class="collection-search" id="collectionSearchInput" placeholder="Koleksiyonda ara..." value="${collSearch}" oninput="setCollSearch(this.value)">`;
 
@@ -416,6 +438,12 @@ function setCollFilter(key) {
 
 function setCollSearch(val) {
     collSearch = val.toLowerCase();
+    renderFilteredCollection();
+}
+
+function setCollSort(val) {
+    collSort = val;
+    localStorage.setItem('hw_collSort', val);
     renderFilteredCollection();
 }
 
@@ -446,13 +474,59 @@ function renderFilteredCollection() {
     const allCollected = allCars.filter(car => getOwnedItem(car.toyId));
     const filtered     = applyCollectionFilters(allCollected);
 
+    // Sort collection
+    filtered.sort((a, b) => {
+        const ao = getOwnedItem(a.toyId) || {};
+        const bo = getOwnedItem(b.toyId) || {};
+        switch (collSort) {
+            case 'oldest':     return (a.year || 0) - (b.year || 0);
+            case 'price_desc': return (bo.price || 0) - (ao.price || 0);
+            case 'price_asc':  return (ao.price || 0) - (bo.price || 0);
+            case 'market_desc':return (bo.marketValue || 0) - (ao.marketValue || 0);
+            case 'market_asc': return (ao.marketValue || 0) - (bo.marketValue || 0);
+            case 'name_asc':   return a.name.localeCompare(b.name);
+            case 'name_desc':  return b.name.localeCompare(a.name);
+            default:           return (b.year || 0) - (a.year || 0); // newest
+        }
+    });
+
     // Show count next to filter
     const countEl = document.getElementById('collFilterCount');
     if (countEl) countEl.textContent = `${filtered.length} araç`;
 
+    // Render collection grid inside collapsible wrapper if not already wrapped
+    const gridWrapper = document.getElementById('collGridHeader');
+    if (!gridWrapper) {
+        const filtersBar = document.getElementById('collectionFiltersBar');
+        if (filtersBar) {
+            // Insert collapsible header before filters bar
+            const headerEl = document.createElement('div');
+            headerEl.id = 'collGridHeader';
+            headerEl.className = 'collapsible-section';
+            headerEl.innerHTML = `
+                <div class="collapsible-header" onclick="toggleSection('collGrid')">
+                    <span class="collapsible-title">🚗 Koleksiyon</span>
+                    <span id="chevron-collGrid" class="collapsible-chevron">▾</span>
+                </div>`;
+            filtersBar.parentNode.insertBefore(headerEl, filtersBar);
+
+            // Wrap filters bar + count + grid in a body div
+            const bodyEl = document.createElement('div');
+            bodyEl.id = 'collGridBody';
+            bodyEl.className = 'collapsible-body';
+            const countRow = filtersBar.nextElementSibling; // the count row div
+            const grid = document.getElementById('collectionGrid');
+            bodyEl.appendChild(filtersBar);
+            if (countRow) bodyEl.appendChild(countRow);
+            if (grid) bodyEl.appendChild(grid);
+            headerEl.appendChild(bodyEl);
+        }
+    }
+
     renderCars(filtered, 'collectionGrid', true);
     updateSetTracker();
     updateMissingItems();
+    applySectionStates();
 }
 
 // ── Missing items ─────────────────────────────
@@ -491,10 +565,16 @@ function updateMissingItems() {
     ).join('');
 
     container.innerHTML = `
-        <div class="missing-banner">
-            <h3>🎯 Neredeyse Tam — Eksik Parçalar</h3>
-            <div class="missing-items-grid">${items}</div>
+        <div class="collapsible-section">
+            <div class="collapsible-header collapsible-header--missing" onclick="toggleSection('missing')">
+                <span class="collapsible-title">🎯 Neredeyse Tam — Eksik Parçalar</span>
+                <span class="collapsible-chevron" id="chevron-missing">▾</span>
+            </div>
+            <div id="missingBody" class="collapsible-body">
+                <div class="missing-items-grid">${items}</div>
+            </div>
         </div>`;
+    applySectionStates();
 }
 
 // ── Main interface update ──────────────────────
@@ -562,7 +642,7 @@ function addToCollection(carId, event) {
         let price = parseFloat(priceInput);
         if (isNaN(price)) price = 0;
 
-        myCollection.push({ toyId: car.toyId, price: price, marketValue: 0 });
+        myCollection.push({ toyId: car.toyId, price: price, marketValue: 0, quantity: 1 });
         localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
         syncSets();
         
@@ -584,6 +664,18 @@ function removeFromCollection(carId) {
     localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
     syncSets();
     updateInterface();
+}
+
+function changeQty(carId, delta) {
+    const car = allCars.find(c => c.id === carId);
+    if (!car || !car.toyId) return;
+    const item = getOwnedItem(car.toyId);
+    if (!item) return;
+    const newQty = Math.max(1, (item.quantity || 1) + delta);
+    item.quantity = newQty;
+    localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+    renderFilteredCollection();
+    updateStats();
 }
 
 function toggleWishlist(carId) {
@@ -631,6 +723,49 @@ function exportCollection() {
     document.body.appendChild(a); a.click(); a.remove();
 }
 
+function exportCSV() {
+    if (!myCollection.length) { alert('Dışa aktarılacak koleksiyon verisi yok!'); return; }
+
+    const headers = [
+        'İsim', 'Yıl', 'Toy ID', 'Seri', 'Sürüm', 'Seri No', 'Mainline No',
+        'Nadirlik', 'Koleksiyon Tipi', 'Adet', 'Satın Alma Fiyatı (€)',
+        'Piyasa Değeri (€)', 'Kâr/Zarar (€)', 'Wiki URL'
+    ];
+
+    const rows = myCollection.map(item => {
+        const car = allCars.find(c => c.toyId === item.toyId);
+        if (!car) return null;
+        const qty    = item.quantity || 1;
+        const price  = item.price || 0;
+        const market = item.marketValue || 0;
+        const pl     = market > 0 ? ((market - price) * qty).toFixed(2) : '';
+        const esc    = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+        return [
+            esc(car.name),
+            esc(car.year || ''),
+            esc(car.toyId || ''),
+            esc(car.series || ''),
+            esc(car.release || ''),
+            esc(car.seriesNumber || ''),
+            esc(car.mainlineNumber || ''),
+            esc(car.rarity || 'Normal'),
+            esc(car.collectionType || 'mainline'),
+            qty,
+            (price * qty).toFixed(2),
+            market > 0 ? (market * qty).toFixed(2) : '',
+            pl,
+            esc(car.wikiLink || '')
+        ].join(',');
+    }).filter(Boolean);
+
+    const csv = [headers.join(','), ...rows].join('\n');
+    const bom = '\uFEFF'; // UTF-8 BOM so Excel opens it correctly
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(bom + csv);
+    a.download = `HW-Koleksiyon-${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+}
+
 document.getElementById('importFile').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -670,6 +805,59 @@ document.getElementById('importFile').addEventListener('change', function(e) {
     reader.readAsText(file);
 });
 
+
+// ── Collapsible section state ──────────────────
+const sectionState = JSON.parse(localStorage.getItem('hw_sections') || '{}');
+const sectionDefaults = {
+    stats: true,
+    missing: true,
+    setTracker: false,
+    analytics: true,
+    collGrid: true,
+};
+
+function isSectionOpen(key) {
+    return key in sectionState ? sectionState[key] : (sectionDefaults[key] ?? true);
+}
+
+function toggleSection(key) {
+    sectionState[key] = !isSectionOpen(key);
+    localStorage.setItem('hw_sections', JSON.stringify(sectionState));
+    applySectionStates();
+}
+
+function applySectionStates() {
+    // stats
+    const statsBody = document.getElementById('statsBody');
+    const statsChevron = document.getElementById('chevron-stats');
+    if (statsBody) statsBody.style.display = isSectionOpen('stats') ? '' : 'none';
+    if (statsChevron) statsChevron.textContent = isSectionOpen('stats') ? '▾' : '▸';
+
+    // analytics
+    const analyticsBody = document.getElementById('analyticsBody');
+    const analyticsChevron = document.getElementById('chevron-analytics');
+    if (analyticsBody) analyticsBody.style.display = isSectionOpen('analytics') ? '' : 'none';
+    if (analyticsChevron) analyticsChevron.textContent = isSectionOpen('analytics') ? '▾' : '▸';
+
+    // missing
+    const missingBody = document.getElementById('missingBody');
+    const missingChevron = document.getElementById('chevron-missing');
+    if (missingBody) missingBody.style.display = isSectionOpen('missing') ? '' : 'none';
+    if (missingChevron) missingChevron.textContent = isSectionOpen('missing') ? '▾' : '▸';
+
+    // set tracker
+    const setBody = document.getElementById('setBody');
+    const setChevron = document.getElementById('chevron-setTracker');
+    if (setBody) setBody.style.display = isSectionOpen('setTracker') ? '' : 'none';
+    if (setChevron) setChevron.textContent = isSectionOpen('setTracker') ? '▾' : '▸';
+
+    // collection grid
+    const collBody = document.getElementById('collGridBody');
+    const collChevron = document.getElementById('chevron-collGrid');
+    if (collBody) collBody.style.display = isSectionOpen('collGrid') ? '' : 'none';
+    if (collChevron) collChevron.textContent = isSectionOpen('collGrid') ? '▾' : '▸';
+}
+
 // ── Stats ──────────────────────────────────────
 function updateStats() {
     const collected = allCars.filter(c => !!getOwnedItem(c.toyId));
@@ -692,9 +880,11 @@ function updateStats() {
         }
     });
 
-    const totalPrice = myCollection.reduce((sum, item) => sum + (item.price || 0), 0);
-    const totalMarket = myCollection.reduce((sum, item) => sum + (item.marketValue || 0), 0);
+    const totalQty    = myCollection.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    const totalPrice  = myCollection.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
+    const totalMarket = myCollection.reduce((sum, item) => sum + (item.marketValue || 0) * (item.quantity || 1), 0);
     const valuedCount = myCollection.filter(item => (item.marketValue || 0) > 0).length;
+    const dupCount    = myCollection.filter(item => (item.quantity || 1) > 1).length;
     const profitLoss  = totalMarket - totalPrice;
     const plSign      = profitLoss >= 0 ? '+' : '';
     const plColor     = profitLoss >= 0 ? '#27ae60' : '#e74c3c';
@@ -711,50 +901,151 @@ function updateStats() {
         }
     });
 
+    // Top 5 by market value
+    const top5market = [...myCollection]
+        .filter(item => (item.marketValue || 0) > 0)
+        .sort((a, b) => (b.marketValue || 0) - (a.marketValue || 0))
+        .slice(0, 5)
+        .map(item => {
+            const car = allCars.find(c => c.toyId === item.toyId);
+            if (!car) return '';
+            const pl = (item.marketValue || 0) - (item.price || 0);
+            const plSign2 = pl >= 0 ? '+' : '';
+            const plCol   = pl >= 0 ? '#27ae60' : '#e74c3c';
+            return `<div class="analytics-row">
+                <div class="analytics-row-name">${car.name} <span class="analytics-row-year">${car.year || ''}</span></div>
+                <div class="analytics-row-vals">
+                    <span class="analytics-badge analytics-badge--market">📈 ${Number(item.marketValue).toFixed(2)} €</span>
+                    ${item.price > 0 ? `<span class="analytics-badge analytics-badge--pl" style="color:${plCol};">${plSign2}${pl.toFixed(2)} €</span>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+
+    // Top 5 by purchase price
+    const top5price = [...myCollection]
+        .filter(item => (item.price || 0) > 0)
+        .sort((a, b) => (b.price || 0) - (a.price || 0))
+        .slice(0, 5)
+        .map(item => {
+            const car = allCars.find(c => c.toyId === item.toyId);
+            if (!car) return '';
+            return `<div class="analytics-row">
+                <div class="analytics-row-name">${car.name} <span class="analytics-row-year">${car.year || ''}</span></div>
+                <div class="analytics-row-vals">
+                    <span class="analytics-badge analytics-badge--price">💶 ${Number(item.price).toFixed(2)} €</span>
+                </div>
+            </div>`;
+        }).join('');
+
+    // Price vs Market bar chart data
+    const typeBreakdown = ['mainline','premium','silver'].map(t => {
+        const cars = collected.filter(c => typeKey(c) === t);
+        const spent  = cars.reduce((s, c) => { const o = getOwnedItem(c.toyId); return s + (o?.price || 0); }, 0);
+        const market = cars.reduce((s, c) => { const o = getOwnedItem(c.toyId); return s + (o?.marketValue || 0); }, 0);
+        return { label: t.charAt(0).toUpperCase() + t.slice(1), spent, market, count: cars.length };
+    }).filter(d => d.count > 0);
+
+    const maxVal = Math.max(...typeBreakdown.flatMap(d => [d.spent, d.market]), 1);
+
+    const typeChartHTML = typeBreakdown.map(d => `
+        <div class="type-chart-row">
+            <div class="type-chart-label">${d.label} (${d.count})</div>
+            <div class="type-chart-bars">
+                ${d.spent > 0 ? `<div class="type-chart-bar-wrap">
+                    <div class="type-chart-bar type-chart-bar--spent" style="width:${Math.round((d.spent/maxVal)*100)}%"></div>
+                    <span class="type-chart-val">💶 ${d.spent.toFixed(0)} €</span>
+                </div>` : ''}
+                ${d.market > 0 ? `<div class="type-chart-bar-wrap">
+                    <div class="type-chart-bar type-chart-bar--market" style="width:${Math.round((d.market/maxVal)*100)}%"></div>
+                    <span class="type-chart-val">📈 ${d.market.toFixed(0)} €</span>
+                </div>` : ''}
+            </div>
+        </div>`).join('');
+
     const statsHTML = `
-        <div class="advanced-stats">
-            <div class="stat-card">
-                <h3>📊 Koleksiyon Özeti</h3>
-                <div class="stats-summary-grid">
-                    <p>Toplam: <strong>${collected.length}</strong> / ${allCars.length}</p>
-                    <p>Mainline: <strong>${collected.filter(c => typeKey(c) === 'mainline').length}</strong></p>
-                    <p>Premium: <strong>${collected.filter(c => typeKey(c) === 'premium').length}</strong></p>
-                    <p>Silver: <strong>${collected.filter(c => typeKey(c) === 'silver').length}</strong></p>
-                    <p>STH: <strong>${collected.filter(c => rarityKey(c) === 'sth').length}</strong></p>
-                    <p>Chase: <strong>${collected.filter(c => rarityKey(c) === 'chase').length}</strong></p>
-                    <p>TH: <strong>${collected.filter(c => rarityKey(c) === 'th').length}</strong></p>
-                    <p>Koleksiyon Satın Alınan Değeri: <strong style="color:var(--gold-dark);">${totalPrice.toFixed(2)} €</strong></p>
-                    ${totalMarket > 0 ? `
-                    <p>Piyasa Değeri (${valuedCount} araç): <strong style="color:#2980b9;">${totalMarket.toFixed(2)} €</strong></p>
-                    <p>Kâr / Zarar: <strong style="color:${plColor};">${plSign}${profitLoss.toFixed(2)} €</strong></p>
-                    ` : ''}
+        <!-- ── Stats section ── -->
+        <div class="collapsible-section">
+            <div class="collapsible-header" onclick="toggleSection('stats')">
+                <span class="collapsible-title">📊 Koleksiyon Özeti</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <button id="shareCollectionBtn2" class="btn-outline-danger btn-sm" onclick="event.stopPropagation();downloadCollectionImage()">📷 Kartı İndir</button>
+                    <span class="collapsible-chevron" id="chevron-stats">▾</span>
                 </div>
             </div>
-            <div class="stat-card">
-                <h3>🏷️ Akıllı Kategoriler</h3>
-                <div class="category-badges">
-                    ${Object.entries(catCounts).filter(([,v]) => v > 0)
-                        .map(([n,v]) => `<span class="cat-badge"><b>${n}:</b> ${v}</span>`).join('')}
+            <div id="statsBody" class="collapsible-body">
+                <div class="advanced-stats">
+                    <div class="stat-card">
+                        <h3>📊 Sayılar</h3>
+                        <div class="stats-summary-grid">
+                            <p>Benzersiz: <strong>${collected.length}</strong> / ${allCars.length}</p>
+                            <p>Toplam Adet: <strong>${totalQty}</strong>${dupCount > 0 ? ` <span style="color:var(--text3);font-size:11px;">(${dupCount} çift)</span>` : ''}</p>
+                            <p>Mainline: <strong>${collected.filter(c => typeKey(c) === 'mainline').length}</strong></p>
+                            <p>Premium: <strong>${collected.filter(c => typeKey(c) === 'premium').length}</strong></p>
+                            <p>Silver: <strong>${collected.filter(c => typeKey(c) === 'silver').length}</strong></p>
+                            <p>STH: <strong>${collected.filter(c => rarityKey(c) === 'sth').length}</strong></p>
+                            <p>Chase: <strong>${collected.filter(c => rarityKey(c) === 'chase').length}</strong></p>
+                            <p>TH: <strong>${collected.filter(c => rarityKey(c) === 'th').length}</strong></p>
+                            <p>Harcanan: <strong style="color:var(--gold-dark);">${totalPrice.toFixed(2)} €</strong></p>
+                            ${totalMarket > 0 ? `
+                            <p>Piyasa (${valuedCount} araç): <strong style="color:#2980b9;">${totalMarket.toFixed(2)} €</strong></p>
+                            <p>Kâr/Zarar: <strong style="color:${plColor};">${plSign}${profitLoss.toFixed(2)} €</strong></p>
+                            ` : ''}
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🏷️ Akıllı Kategoriler</h3>
+                        <div class="category-badges">
+                            ${Object.entries(catCounts).filter(([,v]) => v > 0)
+                                .map(([n,v]) => `<span class="cat-badge"><b>${n}:</b> ${v}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🏆 Tamamlanmaya Yakın Setler</h3>
+                        ${Object.entries(seriesMap)
+                            .filter(([,d]) => d.collected > 0 && d.collected < d.total)
+                            .sort((a,b) => (b[1].collected/b[1].total) - (a[1].collected/a[1].total))
+                            .slice(0,4)
+                            .map(([name,d]) => {
+                                const pct = Math.round((d.collected/d.total)*100);
+                                return `<div class="progress-container">
+                                    <div class="progress-label"><span>${name}</span><span>${d.collected}/${d.total}</span></div>
+                                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+                                </div>`;
+                            }).join('')}
+                    </div>
                 </div>
             </div>
-            <div class="stat-card">
-                <h3>🏆 Tamamlanmaya Yakın Setler</h3>
-                ${Object.entries(seriesMap)
-                    .filter(([,d]) => d.collected > 0 && d.collected < d.total)
-                    .sort((a,b) => (b[1].collected/b[1].total) - (a[1].collected/a[1].total))
-                    .slice(0,4)
-                    .map(([name,d]) => {
-                        const pct = Math.round((d.collected/d.total)*100);
-                        return `<div class="progress-container">
-                            <div class="progress-label"><span>${name}</span><span>${d.collected}/${d.total}</span></div>
-                            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-                        </div>`;
-                    }).join('')}
+        </div>
+
+        <!-- ── Analytics section ── -->
+        <div class="collapsible-section">
+            <div class="collapsible-header" onclick="toggleSection('analytics')">
+                <span class="collapsible-title">📈 Değer Analitiği</span>
+                <span class="collapsible-chevron" id="chevron-analytics">▾</span>
             </div>
-        </div>`;
+            <div id="analyticsBody" class="collapsible-body">
+                <div class="advanced-stats">
+                    ${top5market ? `<div class="stat-card stat-card--wide">
+                        <h3>🏅 En Değerli 5 Araç (Piyasa)</h3>
+                        <div class="analytics-list">${top5market}</div>
+                    </div>` : ''}
+                    ${top5price ? `<div class="stat-card stat-card--wide">
+                        <h3>💸 En Pahalı 5 Satın Alım</h3>
+                        <div class="analytics-list">${top5price}</div>
+                    </div>` : ''}
+                    ${typeChartHTML ? `<div class="stat-card" style="grid-column:1/-1;">
+                        <h3>⚖️ Tip Bazında Harcama vs Piyasa</h3>
+                        <div class="type-chart">${typeChartHTML}</div>
+                    </div>` : ''}
+                    ${!top5market && !top5price ? `<div class="stat-card"><p style="color:var(--text3);font-size:13px;">Araçlarınıza fiyat ve piyasa değeri girdikten sonra burada analizler görünecek.</p></div>` : ''}
+                </div>
+            </div>
+        </div>
+    `;
 
     const c = document.getElementById('statsContainer');
     if (c) c.innerHTML = statsHTML;
+    applySectionStates();
 }
 
 function updateSetTracker() {
@@ -770,19 +1061,29 @@ function updateSetTracker() {
         }
     });
 
-    let html = '<h3>🧩 Set Tamamlama Durumu</h3><div class="tracker-grid">';
+    let inner = '';
     Object.entries(sets).forEach(([setName, s]) => {
         if (s.owned > 0) {
             const pct  = (s.owned / s.total) * 100;
             const done = s.owned === s.total;
-            html += `<div class="set-item ${done ? 'completed' : ''}">
+            inner += `<div class="set-item ${done ? 'completed' : ''}">
                 <div class="set-info"><strong>${setName}</strong><span>${s.owned}/${s.total}</span></div>
                 <div class="progress-bar"><div class="progress" style="width:${pct}%"></div></div>
             </div>`;
         }
     });
-    html += '</div>';
-    tc.innerHTML = html;
+
+    tc.innerHTML = `
+        <div class="collapsible-section">
+            <div class="collapsible-header" onclick="toggleSection('setTracker')">
+                <span class="collapsible-title">🧩 Set Tamamlama Durumu</span>
+                <span class="collapsible-chevron" id="chevron-setTracker">▾</span>
+            </div>
+            <div id="setBody" class="collapsible-body">
+                <div class="tracker-grid">${inner}</div>
+            </div>
+        </div>`;
+    applySectionStates();
 }
 
 // ── DETAIL MODAL ───────────────────────────────
@@ -820,8 +1121,11 @@ function openModal(carId) {
             { label: 'Koleksiyon Tipi', value: car.collectionType ? car.collectionType[0].toUpperCase() + car.collectionType.slice(1) : null },
         ];
     
-        // Fiyat satırları — id ile tanımlanmış, kayıtsız güncellenebilir
+        // Fiyat + adet satırları — id ile tanımlanmış, kayıtsız güncellenebilir
         const ownedItem = getOwnedItem(car.toyId);
+        const qtyRowContent = ownedItem
+            ? `<span class="modal-detail-label">📦 Adet</span><span class="modal-detail-value" id="modalQtyValue"><strong>${ownedItem.quantity || 1}</strong></span>`
+            : '';
         const priceRowContent = ownedItem && ownedItem.price > 0
             ? `<span class="modal-detail-label">💸 Ödenen Fiyat</span><span class="modal-detail-value"><strong style="color:var(--gold-dark);">${Number(ownedItem.price).toFixed(2)} €</strong></span>`
             : '';
@@ -853,6 +1157,7 @@ function openModal(carId) {
             ${noteHTML}
             <div class="modal-detail-grid">
                 ${details}
+                ${ownedItem ? `<div class="modal-detail-row" id="modalQtyRow">${qtyRowContent}</div>` : ''}
                 <div class="modal-detail-row" id="modalPriceRow">${priceRowContent}</div>
                 <div class="modal-detail-row" id="modalMarketRow">${marketRowContent}</div>
             </div>
@@ -885,11 +1190,19 @@ function updateModalButtons(carId) {
 
     // Build eBay search URL using name + toyId for precision
     const ebayQuery = encodeURIComponent(`Hot Wheels ${car.name}${car.toyId ? ' ' + car.toyId : ''}`);
-    const ebayUrl   = `https://www.ebay.nl/sch/i.html?_nkw=${ebayQuery}&LH_Sold=1&LH_Complete=1`;
+    const ebayUrl   = `https://www.ebay.com/sch/i.html?_nkw=${ebayQuery}&LH_Sold=1&LH_Complete=1`;
+
+    const qty = inColl ? (ownedItem.quantity || 1) : 1;
 
     actions.innerHTML = `
         ${inColl
-            ? `<button class="modal-btn modal-btn-remove" onclick="removeFromCollection('${carId}'); updateModalButtons('${carId}')">✓ Koleksiyondan Çıkar</button>
+            ? `<div class="modal-qty-row">
+                   <span class="modal-qty-label">📦 Adet:</span>
+                   <button class="modal-qty-btn" onclick="changeQtyModal('${carId}',-1)">−</button>
+                   <span class="modal-qty-display" id="modalQtyDisplay">${qty}</span>
+                   <button class="modal-qty-btn" onclick="changeQtyModal('${carId}',+1)">+</button>
+               </div>
+               <button class="modal-btn modal-btn-remove" onclick="removeFromCollection('${carId}'); updateModalButtons('${carId}')">✕ Koleksiyondan Çıkar</button>
                <button class="modal-btn modal-btn-price"  onclick="openPriceEditor('${carId}')">${priceLabel}</button>
                <button class="modal-btn modal-btn-market" onclick="openMarketEditor('${carId}')">${marketLabel}</button>`
             : `<button class="modal-btn modal-btn-add" onclick="addToCollection('${carId}'); updateModalButtons('${carId}')">+ Koleksiyona Ekle</button>`}
@@ -898,6 +1211,24 @@ function updateModalButtons(carId) {
         <a href="${car.wikiLink || '#'}" target="_blank" class="modal-btn modal-btn-wiki">🔗 Wiki</a>
     `;
     updateInterface();
+}
+
+// ── Quantity change from modal ────────────────────
+function changeQtyModal(carId, delta) {
+    const car = allCars.find(c => c.id === carId);
+    if (!car || !car.toyId) return;
+    const item = getOwnedItem(car.toyId);
+    if (!item) return;
+    item.quantity = Math.max(1, (item.quantity || 1) + delta);
+    localStorage.setItem('hw_koleksiyon', JSON.stringify(myCollection));
+
+    // Update display in-place without full re-render
+    const disp = document.getElementById('modalQtyDisplay');
+    if (disp) disp.textContent = item.quantity;
+    const qtyVal = document.getElementById('modalQtyValue');
+    if (qtyVal) qtyVal.innerHTML = `<strong>${item.quantity}</strong>`;
+    renderFilteredCollection();
+    updateStats();
 }
 
 // ── Price editor modal ──────────────────────────
@@ -1087,8 +1418,8 @@ viewToggle.addEventListener('click', () => {
 
 // ── Share collection image ─────────────────────
 function downloadCollectionImage() {
-    const el  = document.getElementById('statsContainer');
-    const btn = document.getElementById('shareCollectionBtn');
+    const el  = document.getElementById('statsBody') || document.getElementById('statsContainer');
+    const btn = document.getElementById('shareCollectionBtn2') || document.getElementById('shareCollectionBtn');
     if (!el || !window.html2canvas) { alert('Kütüphane yüklenemedi.'); return; }
     const orig = btn.innerHTML;
     btn.innerHTML = '⏳ Hazırlanıyor...'; btn.disabled = true;
