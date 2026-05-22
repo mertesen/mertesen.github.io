@@ -631,7 +631,86 @@ hr { border: 0; height: 1px; background: var(--border); margin: 12px 0; opacity:
 }
 .price-editor-save:hover { filter: brightness(1.1); }
 
-/* ── Responsive ──────────────────────────────── */
+/* ── Market value badge on collection cards ──── */
+.card-market-badge {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background: rgba(0,30,80,0.78);
+    color: #74b9ff;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    letter-spacing: 0.3px;
+    pointer-events: none;
+}
+
+/* ── Market value modal button ───────────────── */
+.modal-btn-market {
+    background: linear-gradient(135deg, #1a5fa8, #2980b9);
+    color: #fff;
+    font-weight: 700;
+}
+.modal-btn-market:hover { filter: brightness(1.12); }
+
+/* ── eBay search button ──────────────────────── */
+.modal-btn-ebay {
+    background: var(--surface2);
+    border: 1px solid #e8a300;
+    color: #c47d00;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+}
+.modal-btn-ebay:hover { background: #fff8e1; border-color: #c47d00; color: #7a4d00; }
+.dark-mode .modal-btn-ebay { background: #2a2200; color: #f5c518; border-color: #c9960a; }
+.dark-mode .modal-btn-ebay:hover { background: #3a3000; }
+
+/* ── Market editor box variant ───────────────── */
+.price-editor-box--market {
+    border-top-color: #2980b9;
+}
+.price-editor-box--market .price-editor-input-row:focus-within {
+    border-color: #2980b9;
+}
+
+.price-editor-hint {
+    font-size: 12px;
+    color: var(--text3);
+    margin: -12px 0 16px;
+    line-height: 1.5;
+}
+.price-editor-ebay-link {
+    color: #2980b9;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 4px;
+}
+.price-editor-ebay-link:hover { text-decoration: underline; }
+
+.price-editor-pl {
+    font-size: 12px;
+    color: var(--text2);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: -8px 0 16px;
+}
+
+.price-editor-save--market {
+    background: linear-gradient(135deg, #1a5fa8, #2980b9) !important;
+    color: #fff !important;
+}
+.price-editor-save--market:hover { filter: brightness(1.1); }
+
+/* ── Responsive ──────────────────────────────── */ ──────────────────────────────── */
 @media (max-width: 600px) {
     body { padding: 10px; }
     header h1 { font-size: 2rem; }
