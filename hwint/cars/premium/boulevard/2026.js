@@ -172,7 +172,7 @@ const boulevard2026 = [
         "collectionType": "premium",
         "extraNote": "New Casting, Base code(s): V06A, V07A",
         "imageUrl": "https://static.wikia.nocookie.net/hotwheels/images/a/a2/ToyotaAlphard.jpg",
-        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/b/b5/Image_Not_Available.jpg",
+        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/f/fd/風火輪_2015_Toyota_Alphard_豐田_林蔭大道_金標_2026_MIX3_151號-1.jpg",
         "wikiLink": "https://hotwheels.fandom.com/wiki/2015_Toyota_Alphard"
     },
     {
@@ -188,7 +188,7 @@ const boulevard2026 = [
         "collectionType": "premium",
         "extraNote": "New Casting, Base code(s): V06A, V07A",
         "imageUrl": "https://static.wikia.nocookie.net/hotwheels/images/6/61/KoenigseggCC850.jpg",
-        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/b/b5/Image_Not_Available.jpg",
+        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/e/e4/風火輪_Koenigsegg_CC850_科尼賽克_超級跑車_林蔭大道_金標_2026_MIX3_152號-1.jpg",
         "wikiLink": "https://hotwheels.fandom.com/wiki/Koenigsegg_CC850"
     },
     {
@@ -204,7 +204,7 @@ const boulevard2026 = [
         "collectionType": "premium",
         "extraNote": "Base code(s): V06A, V07A",
         "imageUrl": "https://static.wikia.nocookie.net/hotwheels/images/a/af/DatsunRacePickup.jpg",
-        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/b/b5/Image_Not_Available.jpg",
+        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/1/10/風火輪_Datsun_King_Cab_Baja_Custom_達特桑_越野車_林蔭大道_金標_2026_MIX3_153號-1.jpg",
         "wikiLink": "https://hotwheels.fandom.com/wiki/Datsun_King_Cab_Baja_Custom"
     },
     {
@@ -220,7 +220,7 @@ const boulevard2026 = [
         "collectionType": "premium",
         "extraNote": "Modified Casting, Base code(s): V06A, V07A",
         "imageUrl": "https://static.wikia.nocookie.net/hotwheels/images/4/4c/JeepsterCommando.jpg",
-        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/b/b5/Image_Not_Available.jpg",
+        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/a/a9/風火輪_1967_Jeepster_Commando_吉普_越野車_林蔭大道_金標_2026_MIX3_154號-1.jpg",
         "wikiLink": "https://hotwheels.fandom.com/wiki/%2767_Jeepster_Commando"
     },
     {
@@ -236,7 +236,7 @@ const boulevard2026 = [
         "collectionType": "premium",
         "extraNote": "Base code(s): V06A, V07A",
         "imageUrl": "https://static.wikia.nocookie.net/hotwheels/images/2/23/PettySupra.jpg",
-        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/b/b5/Image_Not_Available.jpg",
+        "imageUrlCardboard": "https://static.wikia.nocookie.net/hotwheels/images/c/c2/風火輪_2021_Toyota_GR_Supra_豐田_日系跑車_林蔭大道_金標_2026_MIX3_155號-1.jpg",
         "wikiLink": "https://hotwheels.fandom.com/wiki/2021_Toyota_GR_Supra"
     }
 ];
